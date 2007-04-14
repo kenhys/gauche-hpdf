@@ -367,29 +367,106 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   }
   SCM_RESULT = h;"))
 
-(define-cproc hpdf-free (c::<hDoc>)
+(define-cproc hpdf-free (doc::<hDoc>)
   (body <void>
-  "  HPDF_Free(c->h);
-  c->h = NULL;"))
+  "  HPDF_Free(doc->h);
+  doc->h = NULL;"))
 
-(define-cproc hpdf-newdoc (c::<hDoc>)
-  (body <void> ""))
-(define-cproc hpdf-freedoc (c::<hDoc>)
-  (body <void> ""))
-(define-cproc hpdf-freedocall (c::<hDoc>)
+(define-cproc hpdf-newdoc (doc::<hDoc>)
   (body <void> ""))
 
-(define-cproc hpdf-addpage (c::<hDoc>)
+(define-cproc hpdf-hasdoc (doc::<hDoc>)
+  (body <int> "SCM_RESULT = HPDF_HasDoc(doc->h);"))
+
+(define-cproc hpdf-freedoc (doc::<hDoc>)
+  (body <void> ""))
+
+(define-cproc hpdf-freedocall (doc::<hDoc>)
+  (body <void> ""))
+
+(define-cproc hpdf-addpage (doc::<hDoc>)
   (body <hPage>
   "  ScmHpdfPage *h = SCM_NEW(ScmHpdfPage);
   SCM_SET_CLASS(h, SCM_CLASS_HPAGE);
-  h->h = HPDF_AddPage(c->h);
+  h->h = HPDF_AddPage(doc->h);
   SCM_RESULT = h;"))
 
-(define-cproc hpdf-savetofile (c::<hDoc> n::<const-cstring>)
-  (body <int>
-  "  SCM_RESULT = HPDF_SaveToFile(c->h, n);"))
+(define-cproc hpdf-getstreamsize (doc::<hDoc>)
+  (body <uint32> "SCM_RESULT = HPDF_GetStreamSize(doc->h);"))
 
+;; FIXME use port?
+;;(define-cproc hpdf-readfromstream (doc::<hDoc> buf size)
+;;  (body <ulong> "SCM_RESULT = HPDF_ReadFromStream(doc->h, buf, size);"))
+
+(define-cproc hpdf-resetstream (doc::<hDoc>)
+  (body <ulong> "SCM_RESULT = HPDF_ResetStream(doc->h);"))
+
+(define-cproc hpdf-savetofile (doc::<hDoc> n::<const-cstring>)
+  (body <int> "SCM_RESULT = HPDF_SaveToFile(doc->h, n);"))
+
+(define-cproc hpdf-get-error (doc::<hDoc>)
+  (body <ulong> "SCM_RESULT = HPDF_GetError(doc->h);"))
+
+(define-cproc hpdf-get-error-detail (doc::<hDoc>)
+  (body <ulong> "SCM_RESULT = HPDF_GetErrorDetail(doc->h);"))
+
+(define-cproc hpdf-reset-error (doc::<hDoc>)
+  (body <void> "HPDF_ResetError(doc->h);"))
+
+(define-cproc hpdf-set-page-configuration (doc::<hDoc> page_per_pages::<uint>)
+  (body <ulong> "SCM_RESULT = HPDF_SetPagesConfiguration(doc->h, page_per_pages);"))
+
+(define-cproc hpdf-get-page-by-index (doc::<hDoc> index::<uint>)
+  (body <hPage>
+        "  ScmHpdfPage *h = SCM_NEW(ScmHpdfPage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPAGE);
+  h->h = HPDF_GetPageByIndex(doc->h, index);
+  SCM_RESULT = h;"))
+
+;;
+;; Layout Handling
+;;
+(define-cproc hpdf-get-page-layout (doc::<hDoc>)
+  (body <fixnum>
+        "/* enum HPDF_PageLayout */"
+        "SCM_RESULT = HPDF_GetPageLayout(doc->h);"))
+
+(define-cproc hpdf-set-page-layout (doc::<hDoc> layout::<fixnum>)
+  (body <ulong>
+        "/* enum HPDF_PageLayout */"
+        "switch (layout) {"
+        "case HPDF_PAGE_LAYOUT_SINGLE:"
+        "case HPDF_PAGE_LAYOUT_ONE_COLUMN:"
+        "case HPDF_PAGE_LAYOUT_TWO_COLUMN_LEFT:"
+        "case HPDF_PAGE_LAYOUT_TWO_COLUMN_RIGHT:"
+        "  SCM_RESULT = HPDF_SetPageLayout(doc->h, layout);"
+        "  break;"
+        "default:"
+        " /* error */"
+        "  break;"
+        "}"
+        ))
+
+(define-cproc hpdf-get-page-mode (doc::<hDoc>)
+  (body <fixnum>
+        "/* enum HPDF_PageMode */"
+        "SCM_RESULT = HPDF_GetPageMode(doc->h);"))
+
+(define-cproc hpdf-set-page-mode (doc::<hDoc> mode::<fixnum>)
+  (body <ulong> "SCM_RESULT = HPDF_SetPageMode(doc->h, mode);"))
+
+(define-cproc hpdf-get-viewer-preference (doc::<hDoc>)
+  (body <uint> "SCM_RESULT = HPDF_GetViewerPreference(doc->h);"))
+
+(define-cproc hpdf-set-viewer-preference (doc::<hDoc> value::<uint>)
+  (body <ulong> "SCM_RESULT = HPDF_SetViewerPreference(doc->h, value);"))
+
+(define-cproc hpdf-set-open-action (doc::<hDoc> open_action::<hDestination>)
+  (body <ulong> "SCM_RESULT = HPDF_SetOpenAction(doc->h, open_action->h);"))
+
+;;
+;;
+;;
 (define-cproc hpdf-page-setwidth (p::<hPage> v::<float>)
   (body <ulong> "  SCM_RESULT = HPDF_Page_SetWidth(p->h, v);"))
 

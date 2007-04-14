@@ -31,8 +31,25 @@
     hpdf-freedoc
     hpdf-freedocall
     hpdf-addpage
+    hpdf-getstreamsize
+    hpdf-resetstream
     hpdf-savetofile
+    hpdf-get-error
+    hpdf-get-error-detail
+    hpdf-reset-error
+    hpdf-set-page-configuration
+    hpdf-get-page-by-index
 
+    hpdf-get-page-layout
+    hpdf-set-page-layout
+    hpdf-get-page-mode
+    hpdf-set-page-mode
+    hpdf-get-viewer-preference
+    hpdf-set-viewer-preference
+    hpdf-set-open-action
+
+    ;;
+    ;;
     hpdf-page-setwidth
     hpdf-page-setheight
     hpdf-page-setsize
