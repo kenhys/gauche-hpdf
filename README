@@ -1,0 +1,18 @@
+
+This is Gauche-hpdf, libharu binding for Gauche.
+
+* System Requirement
+
+Gauche 0.8.9
+libharu 2.0.8
+
+* Install
+
+$ configure
+$ make
+$ make install
+
+* Initial Test
+
+After make process, you can make check.
+

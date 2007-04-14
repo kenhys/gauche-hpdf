@@ -11,7 +11,6 @@
 ;; The following is a dummy test code.
 ;; Replace it for your tests.
 (test* "hpdf-getversion" "2.0.8" (hpdf-getversion))
-;(test* "hpdf-new" "2.0.8" (hpdf-new))
 
 ;; Test Constant
 (test* "HPDF_TRUE" 1 HPDF_TRUE)
