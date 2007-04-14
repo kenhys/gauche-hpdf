@@ -90,6 +90,21 @@
     hpdf-text-annot-set-icon
     hpdf-text-annot-set-opened
     
+    ;; Image Data
+    hpdf-load-png-image-from-file
+    hpdf-load-png-image-from-file2
+    hpdf-load-jpeg-image-from-file
+    hpdf-load-raw-image-from-file
+    ;;hpdf-load-raw-image-from-mem
+    hpdf-image-get-size
+    ;;hpdf-image-get-size2
+    hpdf-image-get-width
+    hpdf-image-get-height
+    hpdf-image-get-bits-per-component
+    hpdf-image-get-color-space
+    hpdf-image-set-color-mask
+    hpdf-image-set-mask-image
+    
     hpdf-page-textwidth
     ;;hpdf-page-measuretext
     hpdf-page-getgmode

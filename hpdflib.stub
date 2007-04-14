@@ -67,17 +67,17 @@ SCM_CLASS_DECL(Scm_HStreamClass);
 ())
 
 "
-typedef struct ScmHImageRec {
+typedef struct ScmHpdfImageRec {
 SCM_HEADER;
 HPDF_Image h;
-} ScmHImage;
+} ScmHpdfImage;
 
-SCM_CLASS_DECL(Scm_HImageClass);
- #define SCM_CLASS_HIMAGE (&Scm_HImageClass)
- #define SCM_HIMAGE(obj) ((ScmHImage*)(obj))
+SCM_CLASS_DECL(Scm_HpdfImageClass);
+ #define SCM_CLASS_HIMAGE (&Scm_HpdfImageClass)
+ #define SCM_HIMAGE(obj) ((ScmHpdfImage*)(obj))
  #define SCM_HIMAGEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HIMAGE))
 "
-(define-cclass <hImage> :base "ScmHImage*" "Scm_HImageClass"
+(define-cclass <hImage> :base "ScmHpdfImage*" "Scm_HpdfImageClass"
 ()
 ())
 
@@ -963,6 +963,74 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 
 (define-cproc hpdf-text-annot-set-opened (annot::<hAnnotation> opened::<boolean>)
   (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetOpened (annot->h, opened);"))
+
+;;
+;; Image Data
+;;
+(define-cproc hpdf-load-png-image-from-file (doc::<hDoc> filename::<const-cstring>)
+  (body <hImage>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HIMAGE);
+  h->h = HPDF_LoadPngImageFromFile(doc->h, filename);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-load-png-image-from-file2 (doc::<hDoc> filename::<const-cstring>)
+  (body <hImage>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HIMAGE);
+  h->h = HPDF_LoadPngImageFromFile2(doc->h, filename);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-load-jpeg-image-from-file (doc::<hDoc> filename::<const-cstring>)
+  (body <hImage>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HIMAGE);
+  h->h = HPDF_LoadJpegImageFromFile(doc->h, filename);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-load-raw-image-from-file (doc::<hDoc> filename::<const-cstring> width::<uint> height::<uint> color_space::<fixnum>)
+  (body <hImage>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HIMAGE);
+  h->h = HPDF_LoadRawImageFromFile(doc->h, filename, width, height, color_space);
+  SCM_RESULT = h;"))
+
+;; FIXME
+(define-cproc hpdf-load-raw-image-from-mem (doc::<hDoc> buf::<const-cstring> width::<uint> height::<uint> color_space::<fixnum> bits_per_component::<uint>)
+  (body <hImage>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HIMAGE);
+  h->h = HPDF_LoadRawImageFromMem(doc->h, buf, width, height, color_space, bits_per_component);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-image-get-size (image::<hImage>)
+  (body <hPdfPoint>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFPOINT);
+  h->h = HPDF_Image_GetSize(image->h);
+  SCM_RESULT = h;"))
+
+;; FIXME
+;;(define-cproc hpdf-image-get-size2 (image::<hImage> size::<hPdfPoint>)
+;;  (body <ulong> "SCM_RESULT = HPDF_Image_GetSize2 (image->h, size->h);"))
+
+(define-cproc hpdf-image-get-width (image::<hImage>)
+  (body <uint> "SCM_RESULT = HPDF_Image_GetWidth(image->h);"))
+
+(define-cproc hpdf-image-get-height (image::<hImage>)
+  (body <uint> "SCM_RESULT = HPDF_Image_GetHeight(image->h);"))
+
+(define-cproc hpdf-image-get-bits-per-component (image::<hImage>)
+  (body <uint> "SCM_RESULT = HPDF_Image_GetBitsPerComponent(image->h);"))
+
+(define-cproc hpdf-image-get-color-space (image::<hImage>)
+  (body <const-cstring> "SCM_RESULT = HPDF_Image_GetColorSpace(image->h);"))
+
+(define-cproc hpdf-image-set-color-mask (image::<hImage> rmin::<uint> rmax::<uint> gmin::<uint> gmax::<uint> bmin::<uint> bmax::<uint>)
+  (body <ulong> "SCM_RESULT = HPDF_Image_SetColorMask(image->h, rmin, rmax, gmin, gmax, bmin, bmax);"))
+
+(define-cproc hpdf-image-set-mask-image (image::<hImage> mask_image::<hImage>)
+  (body <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h);"))
 
 ;;
 ;; Constants
