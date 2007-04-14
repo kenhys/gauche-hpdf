@@ -81,9 +81,15 @@
     hpdf-destination-set-fitbh
     hpdf-destination-set-fitbv
 
-    hpdf-page-createtextannot
-    hpdf-page-createlinkannot
-    hpdf-page-createurilinkannot
+    ;; Annotation
+    hpdf-page-create-text-annot
+    hpdf-page-create-link-annot
+    hpdf-page-create-uri-link-annot
+    hpdf-link-annot-set-highlight-mode
+    hpdf-link-annot-set-border-style
+    hpdf-text-annot-set-icon
+    hpdf-text-annot-set-opened
+    
     hpdf-page-textwidth
     ;;hpdf-page-measuretext
     hpdf-page-getgmode

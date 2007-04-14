@@ -929,6 +929,42 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   (body <ulong> "SCM_RESULT = HPDF_UseCNTEncodings(doc->h);"))
 
 ;;
+;; Annotation
+;;
+(define-cproc hpdf-page-create-text-annot (page::<hPage> rect::<hPdfRect> text::<const-cstring> encoder::<hEncoder>)
+  (body <hAnnotation>
+        "  ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);
+  SCM_SET_CLASS(h, SCM_CLASS_HANNOTATION);
+  h->h = HPDF_Page_CreateTextAnnot(page->h, rect->h, text, encoder->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-link-annot (page::<hPage> rect::<hPdfRect> dst::<hDestination>)
+  (body <hAnnotation>
+        "  ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);
+  SCM_SET_CLASS(h, SCM_CLASS_HANNOTATION);
+  h->h = HPDF_Page_CreateLinkAnnot(page->h, rect->h, dst->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-uri-link-annot (page::<hPage> rect::<hPdfRect> uri::<const-cstring>)
+  (body <hAnnotation>
+        "  ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);
+  SCM_SET_CLASS(h, SCM_CLASS_HANNOTATION);
+  h->h = HPDF_Page_CreateURILinkAnnot(page->h, rect->h, uri);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-link-annot-set-highlight-mode (annot::<hAnnotation> mode::<fixnum>)
+  (body <ulong> "SCM_RESULT = HPDF_LinkAnnot_SetHighlightMode (annot->h, mode);"))
+
+(define-cproc hpdf-link-annot-set-border-style (annot::<hAnnotation> width::<float> dash_on::<uint16> dash_off::<uint16>)
+  (body <ulong> "SCM_RESULT = HPDF_LinkAnnot_SetBorderStyle (annot->h, width, dash_on, dash_off);"))
+
+(define-cproc hpdf-text-annot-set-icon (annot::<hAnnotation> icon::<fixnum>)
+  (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetIcon (annot->h, icon);"))
+
+(define-cproc hpdf-text-annot-set-opened (annot::<hAnnotation> opened::<boolean>)
+  (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetOpened (annot->h, opened);"))
+
+;;
 ;; Constants
 ;;
 (define-enum HPDF_TRUE)
