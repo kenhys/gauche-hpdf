@@ -49,14 +49,38 @@
     hpdf-set-open-action
 
     ;;
+    ;; Page Handling
     ;;
-    hpdf-page-setwidth
-    hpdf-page-setheight
-    hpdf-page-setsize
-    hpdf-page-setrotate
-    hpdf-page-getwidth
-    hpdf-page-getheight
-    hpdf-page-createdestination
+    hpdf-page-set-width
+    hpdf-page-set-height
+    hpdf-page-set-size
+    hpdf-page-set-rotate
+
+    ;; Font Handling
+    hpdf-get-font
+    hpdf-load-type1-font-from-file
+    hpdf-load-ttf-font-from-file
+    hpdf-load-ttf-font-from-file2
+    hpdf-add-page-label
+    hpdf-use-jp-fonts
+    hpdf-use-kr-fonts
+    hpdf-use-cns-fonts
+    hpdf-use-cnt-fonts
+
+    hpdf-page-get-width
+    hpdf-page-get-height
+
+    ;; Destination
+    hpdf-page-create-destination
+    hpdf-destination-set-xyz
+    hpdf-destination-set-fit
+    hpdf-destination-set-fith
+    hpdf-destination-set-fitv
+    hpdf-destination-set-fitr
+    hpdf-destination-set-fitb
+    hpdf-destination-set-fitbh
+    hpdf-destination-set-fitbv
+
     hpdf-page-createtextannot
     hpdf-page-createlinkannot
     hpdf-page-createurilinkannot
@@ -151,16 +175,6 @@
     hpdf-page-textout
     hpdf-page-textrect
 
-    ;; Font Handling
-    hpdf-getfont
-    hpdf-loadtype1fontfromfile
-    hpdf-loadttfontfromfile
-    hpdf-loadttfontfromfile2
-    hpdf-addpagelabel
-    hpdf-usejpfonts
-    hpdf-usekrfonts
-    hpdf-usecnsfonts
-    hpdf-usecntfonts
 
     ;; Constant
     HPDF_TRUE

@@ -418,7 +418,7 @@
   (hpdf-savetofile doc "test/page1.pdf"))
 
 (let* ((doc (hpdf-new))
-       (font (hpdf-getfont doc "Helvetica" ""))
+       (font (hpdf-get-font doc "Helvetica" ""))
        (page_1 (hpdf-addpage doc))
        (font (hpdf-page-setfontandsize page_1 font 14))
        (s (hpdf-page-begintext page_1))
