@@ -1,0 +1,1277 @@
+;;;
+;;; hpdflib.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+
+typedef struct ScmHDocRec {
+SCM_HEADER;
+HPDF_Doc h;
+} ScmHpdfDoc;
+
+SCM_CLASS_DECL(Scm_HpdfDocClass);
+ #define SCM_CLASS_HDOC (&Scm_HpdfDocClass)
+ #define SCM_HDOC(obj) ((ScmHpdfDoc*)(obj))
+ #define SCM_HDOCP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HDOC))
+"
+(define-cclass <hDoc> :base "ScmHpdfDoc*" "Scm_HpdfDocClass"
+()
+())
+
+"
+typedef struct ScmHPageRec {
+SCM_HEADER;
+HPDF_Page h;
+} ScmHpdfPage;
+
+SCM_CLASS_DECL(Scm_HPageClass);
+ #define SCM_CLASS_HPAGE (&Scm_HPageClass)
+ #define SCM_HPAGE(obj) ((ScmHpdfPage*)(obj))
+ #define SCM_HPAGEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPAGE))
+"
+
+(define-cclass <hPage> :base "ScmHpdfPage*" "Scm_HPageClass"
+()
+())
+
+"
+typedef struct ScmHPagesRec {
+SCM_HEADER;
+HPDF_Pages h;
+} ScmHPages;
+
+SCM_CLASS_DECL(Scm_HPagesClass);
+ #define SCM_CLASS_HPAGES (&Scm_HPagesClass)
+ #define SCM_HPAGES(obj) ((ScmHPages*)(obj))
+ #define SCM_HPAGESP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPAGES))
+"
+(define-cclass <hPages> :base "ScmHPages*" "Scm_HPagesClass"
+()
+())
+
+"
+typedef struct ScmHStreamRec {
+SCM_HEADER;
+HPDF_Stream h;
+} ScmHStream;
+
+SCM_CLASS_DECL(Scm_HStreamClass);
+ #define SCM_CLASS_HSTREAM (&Scm_HStreamClass)
+ #define SCM_HSTREAM(obj) ((ScmHStream*)(obj))
+ #define SCM_HSTREAMP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HSTREAM))
+"
+(define-cclass <hStream> :base "ScmHStream*" "Scm_HStreamClass"
+()
+())
+
+"
+typedef struct ScmHImageRec {
+SCM_HEADER;
+HPDF_Image h;
+} ScmHImage;
+
+SCM_CLASS_DECL(Scm_HImageClass);
+ #define SCM_CLASS_HIMAGE (&Scm_HImageClass)
+ #define SCM_HIMAGE(obj) ((ScmHImage*)(obj))
+ #define SCM_HIMAGEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HIMAGE))
+"
+(define-cclass <hImage> :base "ScmHImage*" "Scm_HImageClass"
+()
+())
+
+"
+typedef struct ScmHFontRec {
+SCM_HEADER;
+HPDF_Font h;
+} ScmHFont;
+
+SCM_CLASS_DECL(Scm_HFontClass);
+ #define SCM_CLASS_HFONT (&Scm_HFontClass)
+ #define SCM_HFONT(obj) ((ScmHFont*)(obj))
+ #define SCM_HFONTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HFONT))
+"
+(define-cclass <hFont> :base "ScmHFont*" "Scm_HFontClass"
+()
+())
+
+"
+typedef struct ScmHOutlineRec {
+SCM_HEADER;
+HPDF_Outline h;
+} ScmHOutline;
+
+SCM_CLASS_DECL(Scm_HOutlineClass);
+ #define SCM_CLASS_HOUTLINE (&Scm_HOutlineClass)
+ #define SCM_HOUTLINE(obj) ((ScmHOutline*)(obj))
+ #define SCM_HOUTLINEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HOUTLINE))
+"
+(define-cclass <hOutline> :base "ScmHOutline*" "Scm_HOutlineClass"
+()
+())
+
+"
+typedef struct ScmHEncoderRec {
+SCM_HEADER;
+HPDF_Encoder h;
+} ScmHEncoder;
+
+SCM_CLASS_DECL(Scm_HEncoderClass);
+ #define SCM_CLASS_HENCODER (&Scm_HEncoderClass)
+ #define SCM_HENCODER(obj) ((ScmHEncoder*)(obj))
+ #define SCM_HENCODERP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HENCODER))
+"
+(define-cclass <hEncoder> :base "ScmHEncoder*" "Scm_HEncoderClass"
+()
+())
+
+"
+typedef struct ScmHpdfDestinationRec {
+SCM_HEADER;
+HPDF_Destination h;
+} ScmHpdfDestination;
+
+SCM_CLASS_DECL(Scm_HDestinationClass);
+ #define SCM_CLASS_HDESTINATION (&Scm_HDestinationClass)
+ #define SCM_HDESTINATION(obj) ((ScmHpdfDestination*)(obj))
+ #define SCM_HDESTINATIONP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HDESTINATION))
+"
+(define-cclass <hDestination> :base "ScmHpdfDestination*" "Scm_HDestinationClass"
+()
+())
+
+"
+typedef struct ScmHpdfXObjectRec {
+SCM_HEADER;
+HPDF_XObject h;
+} ScmHpdfXObject;
+
+SCM_CLASS_DECL(Scm_HpdfXObjectClass);
+ #define SCM_CLASS_HXOBJECT (&Scm_HpdfXObjectClass)
+ #define SCM_HXOBJECT(obj) ((ScmHpdfXObject*)(obj))
+ #define SCM_HXOBJECTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HXOBJECT))
+"
+(define-cclass <hXObject> :base "ScmHpdfXObject*" "Scm_HpdfXObjectClass"
+()
+())
+
+"
+typedef struct ScmHpdfAnnotationRec {
+SCM_HEADER;
+HPDF_Annotation h;
+} ScmHpdfAnnotation;
+
+SCM_CLASS_DECL(Scm_HpdfAnnotationClass);
+ #define SCM_CLASS_HANNOTATION (&Scm_HpdfAnnotationClass)
+ #define SCM_HANNOTATION(obj) ((ScmHpdfAnnotation*)(obj))
+ #define SCM_HANNOTATIONP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HANNOTATION))
+"
+(define-cclass <hAnnotation> :base "ScmHpdfAnnotation*" "Scm_HpdfAnnotationClass"
+()
+())
+
+"
+typedef struct ScmHpdfExtGStateRec {
+SCM_HEADER;
+HPDF_ExtGState h;
+} ScmHpdfExtGState;
+
+SCM_CLASS_DECL(Scm_HpdfExtGStateClass);
+ #define SCM_CLASS_HEXTGSTATE (&Scm_HpdfExtGStateClass)
+ #define SCM_HEXTGSTATE(obj) ((ScmHpdfExtGState*)(obj))
+ #define SCM_HEXTGSTATEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HEXTGSTATE))
+"
+(define-cclass <hExtGState> :base "ScmHpdfExtGState*" "Scm_HpdfExtGStateClass"
+()
+())
+
+;;
+;; define private structure
+;;
+"
+typedef struct ScmHpdfPointRec {
+SCM_HEADER;
+HPDF_Point h;
+} ScmHpdfPoint;
+
+SCM_CLASS_DECL(Scm_HpdfPointClass);
+ #define SCM_CLASS_HPDFPOINT (&Scm_HpdfPointClass)
+ #define SCM_HPDFPOINT(obj) ((ScmHpdfPoint*)(obj))
+ #define SCM_HPDFPOINTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFPOINT))
+"
+(define-cclass <hPdfPoint> "ScmHpdfPoint*" "Scm_HpdfPointClass"
+()
+())
+
+"
+typedef struct ScmHpdfRectRec {
+SCM_HEADER;
+HPDF_Rect h;
+} ScmHpdfRect;
+
+SCM_CLASS_DECL(Scm_HpdfRectClass);
+ #define SCM_CLASS_HPDFRECT (&Scm_HpdfRectClass)
+ #define SCM_HPDFRECT(obj) ((ScmHpdfRect*)(obj))
+ #define SCM_HPDFRECTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFRECT))
+"
+(define-cclass <hPdfRect> "ScmHpdfRect*" "Scm_HpdfRectClass"
+()
+())
+
+"
+typedef struct ScmHpdfBoxRec {
+SCM_HEADER;
+HPDF_Box h;
+} ScmHpdfBox;
+
+SCM_CLASS_DECL(Scm_HpdfBoxClass);
+ #define SCM_CLASS_HPDFBOX (&Scm_HpdfBoxClass)
+ #define SCM_HPDFBOX(obj) ((ScmHpdfBox*)(obj))
+ #define SCM_HPDFBOXP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFBOX))
+"
+(define-cclass <hPdfBox> "ScmHpdfBox*" "Scm_HpdfBoxClass"
+()
+())
+
+"
+typedef struct ScmHpdfTransMatrixRec {
+SCM_HEADER;
+HPDF_TransMatrix h;
+} ScmHpdfTransMatrix;
+
+SCM_CLASS_DECL(Scm_HpdfTransMatrixClass);
+ #define SCM_CLASS_HPDFTRANSMATRIX (&Scm_HpdfTransMatrixClass)
+ #define SCM_HPDFTRANSMATRIX(obj) ((ScmHpdfTransMatrix*)(obj))
+ #define SCM_HPDFTRANSMATRIXP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTRANSMATRIX))
+"
+(define-cclass <hPdfTransMatrix> "ScmHpdfTransMatrix*" "Scm_HpdfTransMatrixClass"
+()
+())
+
+"
+typedef struct ScmHpdfRGBColorRec {
+SCM_HEADER;
+HPDF_RGBColor h;
+} ScmHpdfRGBColor;
+
+SCM_CLASS_DECL(Scm_HpdfRGBColorClass);
+ #define SCM_CLASS_HPDFRGBCOLOR (&Scm_HpdfRGBColorClass)
+ #define SCM_HPDFRGBCOLOR(obj) ((ScmHpdfRGBColor*)(obj))
+ #define SCM_HPDFRGBCOLORP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFRGBCOLOR))
+"
+(define-cclass <hPdfRGBColor> "ScmHpdfRGBColor*" "Scm_HpdfRGBColorClass"
+()
+())
+
+"
+typedef struct ScmHpdfCMYKColorRec {
+SCM_HEADER;
+HPDF_CMYKColor h;
+} ScmHpdfCMYKColor;
+
+SCM_CLASS_DECL(Scm_HpdfCMYKColorClass);
+ #define SCM_CLASS_HPDFCMYKCOLOR (&Scm_HpdfCMYKColorClass)
+ #define SCM_HPDFCMYKCOLOR(obj) ((ScmHpdfCMYKColor*)(obj))
+ #define SCM_HPDFCMYKCOLORP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTRANSMATRIX))
+"
+(define-cclass <hPdfCMYKColor> "ScmHpdfCMYKColor*" "Scm_HpdfCMYKColorClass"
+()
+())
+
+"
+typedef struct ScmHpdfFontRec {
+SCM_HEADER;
+HPDF_Font h;
+} ScmHpdfFont;
+
+SCM_CLASS_DECL(Scm_HpdfFontClass);
+ #define SCM_CLASS_HPDFFONT (&Scm_HpdfFontClass)
+ #define SCM_HPDFFONT(obj) ((ScmHpdfFont*)(obj))
+ #define SCM_HPDFFONTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFFONT))
+"
+(define-cclass <hPdfFont> "ScmHpdfFont*" "Scm_HpdfFontClass"
+()
+())
+
+"
+typedef struct ScmHpdfLineCapRec {
+SCM_HEADER;
+HPDF_LineCap h;
+} ScmHpdfLineCap;
+
+SCM_CLASS_DECL(Scm_HpdfLineCapClass);
+ #define SCM_CLASS_HPDFLINECAP (&Scm_HpdfLineCapClass)
+ #define SCM_HPDFLINECAP(obj) ((ScmHpdfLineCap*)(obj))
+ #define SCM_HPDFLINECAPP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFLINECAP))
+"
+(define-cclass <hPdfLineCap> "ScmHpdfLineCap*" "Scm_HpdfLineCapClass"
+()
+())
+
+"
+typedef struct ScmHpdfLineJoinRec {
+SCM_HEADER;
+HPDF_LineJoin h;
+} ScmHpdfLineJoin;
+
+SCM_CLASS_DECL(Scm_HpdfLineJoinClass);
+ #define SCM_CLASS_HPDFLINEJOIN (&Scm_HpdfLineJoinClass)
+ #define SCM_HPDFLINEJOIN(obj) ((ScmHpdfLineJoin*)(obj))
+ #define SCM_HPDFLINEJOINP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFLINEJOIN))
+"
+(define-cclass <hPdfLineJoin> "ScmHpdfLineJoin*" "Scm_HpdfLineJoinClass"
+()
+())
+
+"
+typedef struct ScmHpdfDashModeRec {
+SCM_HEADER;
+HPDF_DashMode h;
+} ScmHpdfDashMode;
+
+SCM_CLASS_DECL(Scm_HpdfDashModeClass);
+ #define SCM_CLASS_HPDFDASHMODE (&Scm_HpdfDashModeClass)
+ #define SCM_HPDFDASHMODE(obj) ((ScmHpdfDashMode*)(obj))
+ #define SCM_HPDFDASHMODEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDASHMODE))
+"
+(define-cclass <hPdfDashMode> "ScmHpdfDashMode*" "Scm_HpdfDashModeClass"
+()
+())
+
+;;
+;; The following entry is a procedure
+;;
+
+"
+void hpdf_error_handler(HPDF_STATUS   error_no,
+                        HPDF_STATUS   detail_no,
+                        void         *user_data)
+{
+ ScmObj scm = user_data;
+        
+}
+"
+
+(define-cproc hpdf-getversion () 
+  (body <const-cstring> "SCM_RESULT = HPDF_GetVersion();"))
+
+(define-cproc hpdf-new (c::<closure>) 
+  (body <hDoc>
+  "  ScmHpdfDoc *h = SCM_NEW(ScmHpdfDoc);
+  SCM_SET_CLASS(h, SCM_CLASS_HDOC);
+  h->h = HPDF_New(hpdf_error_handler, (void *)c);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-free (c::<hDoc>)
+  (body <void>
+  "  HPDF_Free(c->h);
+  c->h = NULL;"))
+
+(define-cproc hpdf-newdoc (c::<hDoc>)
+  (body <void> ""))
+(define-cproc hpdf-freedoc (c::<hDoc>)
+  (body <void> ""))
+(define-cproc hpdf-freedocall (c::<hDoc>)
+  (body <void> ""))
+
+(define-cproc hpdf-addpage (c::<hDoc>)
+  (body <hPage>
+  "  ScmHpdfPage *h = SCM_NEW(ScmHpdfPage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPAGE);
+  h->h = HPDF_AddPage(c->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-savetofile (c::<hDoc> n::<const-cstring>)
+  (body <int>
+  "  SCM_RESULT = HPDF_SaveToFile(c->h, n);"))
+
+(define-cproc hpdf-page-setwidth (p::<hPage> v::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetWidth(p->h, v);"))
+
+(define-cproc hpdf-page-setheight (p::<hPage> v::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetHeight(p->h, v);"))
+
+(define-cproc hpdf-page-setsize (p::<hPage> psize::<uint> pdirect::<uint>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetSize(p->h, psize, pdirect);"))
+
+(define-cproc hpdf-page-setrotate (p::<hPage> angle::<uint16>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetRotate(p->h, angle);"))
+
+(define-cproc hpdf-page-getwidth (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetWidth(p->h);"))
+
+(define-cproc hpdf-page-getheight (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetHeight(p->h);"))
+
+(define-cproc hpdf-page-createdestination (p::<hPage>)
+  (body <uint> "  SCM_RESULT = HPDF_Page_CreateDestination(p->h);"))
+
+(define-cproc hpdf-page-createtextannot (p::<hPage> rect::<hPdfRect> s::<const-cstring> enc::<hEncoder>)
+  (body <hAnnotation>
+        "  ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);
+  SCM_SET_CLASS(h, SCM_CLASS_HANNOTATION);
+  h->h = HPDF_Page_CreateTextAnnot(p->h, rect->h, s, enc->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-createlinkannot (p::<hPage> rect::<hPdfRect> dest::<hDestination>)
+  (body <hAnnotation>
+        "  ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);
+  SCM_SET_CLASS(h, SCM_CLASS_HANNOTATION);
+  h->h = HPDF_Page_CreateLinkAnnot(p->h, rect->h, dest->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-createurilinkannot (p::<hPage> rect::<hPdfRect> s::<const-cstring>)
+  (body <hAnnotation>
+        "  ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);
+  SCM_SET_CLASS(h, SCM_CLASS_HANNOTATION);
+  h->h = HPDF_Page_CreateURILinkAnnot(p->h, rect->h, s);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-textwidth (p::<hPage> s::<const-cstring>)
+  (body <float> "  SCM_RESULT = HPDF_Page_TextWidth(p->h, s);"))
+
+;;(define-cproc hpdf-page-measuretext (p::<hPage> s::<const-cstring> width::<float> wordwrap::<int> rwidth::<float>?)
+;;  (body <uint> "  SCM_RESULT = HPDF_Page_MeasureText(p->h, s, width, wordwrap, rwidth);"))
+
+(define-cproc hpdf-page-getgmode (p::<hPage>)
+  (body <uint16> "  SCM_RESULT = HPDF_Page_GetGMode(p->h);"))
+
+(define-cproc hpdf-page-getcurrentpos (p::<hPage>)
+  (body <hPdfPoint>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFPOINT);
+  h->h = HPDF_Page_GetCurrentPos(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getcurrenttextpos (p::<hPage>)
+  (body <hPdfPoint>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFPOINT);
+  h->h = HPDF_Page_GetCurrentTextPos(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getcurrentfont (p::<hPage>)
+  (body <hPdfFont>
+        "  ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFFONT);
+  h->h = HPDF_Page_GetCurrentFont(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getcurrentfontsize (p::<hPage>)
+  (body <float>
+        "  SCM_RESULT = HPDF_Page_GetCurrentFontSize(p->h);"))
+
+(define-cproc hpdf-page-gettransmatrix (p::<hPage>)
+  (body <hPdfTransMatrix>
+        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFTRANSMATRIX);
+  h->h = HPDF_Page_GetTransMatrix(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getlinewidth (p::<hPage>)
+  (body <float>
+        "  SCM_RESULT = HPDF_Page_GetLineWidth(p->h);"))
+
+(define-cproc hpdf-page-getlinecap (p::<hPage>)
+  (body <hPdfLineCap>
+        "  ScmHpdfLineCap *h = SCM_NEW(ScmHpdfLineCap);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFLINECAP);
+  h->h = HPDF_Page_GetLineCap(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getlinejoin (p::<hPage>)
+  (body <hPdfLineJoin>
+        "  ScmHpdfLineJoin *h = SCM_NEW(ScmHpdfLineJoin);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFLINEJOIN);
+  h->h = HPDF_Page_GetLineJoin(p->h);
+  SCM_RESULT = h;"))
+(define-cproc hpdf-page-getmiterlimit (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetMiterLimit(p->h);"))
+
+(define-cproc hpdf-page-getdash (p::<hPage>)
+  (body <hPdfDashMode>
+        "  ScmHpdfDashMode *h = SCM_NEW(ScmHpdfDashMode);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFDASHMODE);
+  h->h = HPDF_Page_GetDash(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getflat (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetFlat(p->h);"))
+
+(define-cproc hpdf-page-getcharspace (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetCharSpace(p->h);"))
+
+(define-cproc hpdf-page-getwordspace (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetWordSpace(p->h);"))
+
+(define-cproc hpdf-page-gethorizontalscalling (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetHorizontalScalling(p->h);"))
+
+(define-cproc hpdf-page-gettextleading (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetTextLeading(p->h);"))
+
+(define-cproc hpdf-page-gettextrenderingmode (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetTextRenderingMode(p->h);"))
+
+(define-cproc hpdf-page-gettextrise (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetTextRise(p->h);"))
+
+(define-cproc hpdf-page-getrgbfill (p::<hPage>)
+  (body <hPdfRGBColor>
+        "  ScmHpdfRGBColor *h = SCM_NEW(ScmHpdfRGBColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFRGBCOLOR);
+  h->h = HPDF_Page_GetRGBFill(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getrgbstroke (p::<hPage>)
+  (body <hPdfRGBColor>
+        "  ScmHpdfRGBColor *h = SCM_NEW(ScmHpdfRGBColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFRGBCOLOR);
+  h->h = HPDF_Page_GetRGBStroke(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getcmykfill (p::<hPage>)
+  (body <hPdfCMYKColor>
+        "  ScmHpdfCMYKColor *h = SCM_NEW(ScmHpdfCMYKColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFCMYKCOLOR);
+  h->h = HPDF_Page_GetCMYKFill(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getcmykstroke (p::<hPage>)
+  (body <hPdfCMYKColor>
+        "  ScmHpdfCMYKColor *h = SCM_NEW(ScmHpdfCMYKColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFCMYKCOLOR);
+  h->h = HPDF_Page_GetCMYKStroke(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getgrayfill (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetGrayFill(p->h);"))
+(define-cproc hpdf-page-getgraystroke (p::<hPage>)
+  (body <float> "  SCM_RESULT = HPDF_Page_GetGrayStroke(p->h);"))
+(define-cproc hpdf-page-getstrokingcolorspace (p::<hPage>)
+  (body <int> "  SCM_RESULT = HPDF_Page_GetStrokingColorSpace(p->h);"))
+(define-cproc hpdf-page-getfillingcolorspace (p::<hPage>)
+  (body <int> "  SCM_RESULT = HPDF_Page_GetFillingColorSpace(p->h);"))
+
+(define-cproc hpdf-page-gettextmatrix (p::<hPage>)
+  (body <hPdfTransMatrix>
+        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFTRANSMATRIX);
+  h->h = HPDF_Page_GetTextMatrix(p->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-getgstatedepth (p::<hPage>)
+  (body <uint> "  SCM_RESULT = HPDF_Page_GetGStateDepth(p->h);"))
+(define-cproc hpdf-page-setslideshow (p::<hPage> type::<uint> disp::<float> trans::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetSlideShow(p->h, type, disp, trans);"))
+
+;;
+;; Graphics
+;;
+(define-cproc hpdf-page-setlinewidth (p::<hPage> line_width::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetLineWidth(p->h, line_width);"))
+
+(define-cproc hpdf-page-setlinecap (p::<hPage> cap::<hPdfLineCap>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetLineCap(p->h, cap->h);"))
+
+(define-cproc hpdf-page-setlinejoin (p::<hPage> join::<uint>)
+  (body <ulong>
+        "  switch (join) {
+  case HPDF_MITER_JOIN:
+  case HPDF_ROUND_JOIN:
+  case HPDF_BEVEL_JOIN:
+  default:
+    /* error */
+    break;
+  }
+  SCM_RESULT = HPDF_Page_SetLineJoin(p->h, join);"))
+
+(define-cproc hpdf-page-setmiterlimit (p::<hPage>) (body <float> ""))
+
+(define-cproc hpdf-page-setdash (p::<hPage> dash::<uint> num_param::<uint> phase::<uint>)
+  (body <ulong> ""))
+
+(define-cproc hpdf-page-setextgstate (p::<hPage> gstate::<hExtGState>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetExtGState(p->h, gstate->h);"))
+
+(define-cproc hpdf-page-gsave (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_GSave(p->h);"))
+
+(define-cproc hpdf-page-grestore (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_GRestore(p->h);"))
+
+(define-cproc hpdf-page-concat (p::<hPage>
+                                a::<float>
+                                b::<float>
+                                c::<float>
+                                d::<float>
+                                x::<float>
+                                y::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_Concat(p->h, a, b, c, d, x, y);"))
+
+(define-cproc hpdf-page-moveto (p::<hPage> x::<float> y::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_MoveTo(p->h, x, y);"))
+
+(define-cproc hpdf-page-lineto (p::<hPage> x::<float> y::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_LineTo(p->h, x, y);"))
+
+(define-cproc hpdf-page-curveto (p::<hPage> x1::<float> y1::<float> x2::<float> y2::<float> x3::<float> y3::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_CurveTo(p->h, x1, y1, x2, y2, x3, y3);"))
+
+(define-cproc hpdf-page-curveto2 (p::<hPage> x2::<float> y2::<float> x3::<float> y3::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_CurveTo2(p->h, x2, y2, x3, y3);"))
+
+(define-cproc hpdf-page-curveto3 (p::<hPage> x1::<float> y1::<float> x3::<float> y3::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_CurveTo2(p->h, x1, y1, x3, y3);"))
+
+(define-cproc hpdf-page-closepath (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePath(p->h);"))
+
+(define-cproc hpdf-page-rectangle (p::<hPage> x::<float> y::<float> width::<float> height::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_Rectangle(p->h, x, y, width, height);"))
+
+(define-cproc hpdf-page-stroke (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_Stroke(p->h);"))
+
+(define-cproc hpdf-page-closepathstroke (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePathStroke(p->h);"))
+
+(define-cproc hpdf-page-fill (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_Fill(p->h);"))
+
+(define-cproc hpdf-page-eofill (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_Eofill(p->h);"))
+
+(define-cproc hpdf-page-fillstroke (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_FillStroke(p->h);"))
+
+(define-cproc hpdf-page-eofillstroke (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_EofillStroke(p->h);"))
+
+(define-cproc hpdf-page-closepathfillstroke (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePathFillStroke(p->h);"))
+
+(define-cproc hpdf-page-closepatheofillstroke (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePathEofillStroke(p->h);"))
+
+(define-cproc hpdf-page-endpath (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_EndPath(p->h);"))
+
+(define-cproc hpdf-page-clip (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-eoclip (p::<hPage>) (body <float> ""))
+
+(define-cproc hpdf-page-begintext (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_BeginText(p->h);"))
+
+(define-cproc hpdf-page-endtext (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_EndText(p->h);"))
+
+(define-cproc hpdf-page-setcharspace (p::<hPage> value::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetCharSpace(p->h, value);"))
+
+(define-cproc hpdf-page-setwordspace (p::<hPage> value::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetWordSpace(p->h, value);"))
+
+(define-cproc hpdf-page-sethorizontalscalling (p::<hPage> value::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetWordSpace(p->h, value);"))
+
+(define-cproc hpdf-page-settextleading (p::<hPage> value::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetTextLeading(p->h, value);"))
+
+(define-cproc hpdf-page-setfontandsize (p::<hPage> font::<hFont> size::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetFontAndSize(p->h, font->h, size);"))
+
+(define-cproc hpdf-page-settextrenderingmode (p::<hPage> mode::<uint>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_SetTextRenderingMode(p->h, mode);"))
+
+(define-cproc hpdf-page-settextrise (p::<hPage>) (body <float> ""))
+
+(define-cproc hpdf-page-movetextpos (p::<hPage> x::<float> y::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_MoveTextPos(p->h, x, y);"))
+
+(define-cproc hpdf-page-movetextpos2 (p::<hPage> x::<float> y::<float>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_MoveTextPos(p->h, x, y);"))
+
+(define-cproc hpdf-page-settextmatrix (p::<hPage>) (body <float> ""))
+
+(define-cproc hpdf-page-movetonextline (p::<hPage>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_MoveToNextLine(p->h);"))
+  
+(define-cproc hpdf-page-showtext (p::<hPage> text::<const-cstring>)
+  (body <ulong> "  SCM_RESULT = HPDF_Page_ShowText(p->h, text);"))
+
+(define-cproc hpdf-page-showtextnextline (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-showtextnextlineex (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-setgrayfill (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-setgraystroke (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-setrgbfill (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-setrgbstroke (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-setcmykfill (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-setcmykstroke (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-executexobject (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-drawimage (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-circle (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-arc (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-textout (p::<hPage>) (body <float> ""))
+(define-cproc hpdf-page-textrect (p::<hPage>) (body <float> ""))
+
+
+;;
+;; Font Handling
+;;
+(define-cproc hpdf-getfont (doc::<hDoc> font::<const-cstring> enc::<const-cstring>)
+  (body <hFont>
+        "  ScmHFont *h = SCM_NEW(ScmHFont);
+  SCM_SET_CLASS(h, SCM_CLASS_HFONT);
+  h->h = HPDF_GetFont(doc->h, font, NULL);
+  SCM_RESULT = h;"))
+
+
+(define-cproc hpdf-loadtype1fontfromfile (doc::<hDoc> afm::<const-cstring> data::<const-cstring>)
+  (body <const-cstring>
+        "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm, data);"))
+
+(define-cproc hpdf-loadttfontfromfile (doc::<hDoc> file::<const-cstring> embedding::<int>)
+  (body <const-cstring>
+        "SCM_RESULT = HPDF_LoadTTFontFromFile(doc->h, file, embedding);"))
+
+(define-cproc hpdf-loadttfontfromfile2 (doc::<hDoc> file::<const-cstring> index::<uint> embedding::<uint>)
+  (body <const-cstring>
+        "SCM_RESULT = HPDF_LoadTTFontFromFile2(doc->h, file, index, embedding);"))
+
+(define-cproc hpdf-addpagelabel (doc::<hDoc> page-num::<uint> page-style::<uint> first-page::<uint> prefix::<const-cstring>)
+  (body <ulong>
+        ""))
+
+(define-cproc hpdf-usejpfonts (doc::<hDoc>)
+  (body <ulong> "  SCM_RESULT = HPDF_UseJPFonts(doc->h);"))
+
+(define-cproc hpdf-usekrfonts (doc::<hDoc>)
+  (body <ulong> "  SCM_RESULT = HPDF_UseKRFonts(doc->h);"))
+
+(define-cproc hpdf-usecnsfonts (doc::<hDoc>)
+  (body <ulong> "  SCM_RESULT = HPDF_UseCNSFonts(doc->h);"))
+
+(define-cproc hpdf-usecntfonts (doc::<hDoc>)
+  (body <ulong> "  SCM_RESULT = HPDF_UseCNTFonts(doc->h);"))
+
+;;
+;; Outline
+;;
+(define-cproc hpdf-createoutline (doc::<hDoc> parent::<hOutline> title::<const-cstring> encoder::<hEncoder>)
+  (body <hOutline>
+        "  ScmHOutline *h = SCM_NEW(ScmHOutline);
+  SCM_SET_CLASS(h, SCM_CLASS_HOUTLINE);
+  h->h = HPDF_CreateOutline(doc->h, parent->h, title, encoder->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-setopened (out::<hOutline> opened::<int>)
+  (body <ulong> "  SCM_RESULT = HPDF_Outline_SetOpened(out->h, opened);"))
+
+(define-cproc hpdf-setdestination (out::<hOutline> dst::<hDestination>)
+  (body <ulong> "  SCM_RESULT = HPDF_Outline_SetDestination(out->h, dst->h);"))
+
+
+;;
+;; Constants
+;;
+(define-enum HPDF_TRUE)
+(define-enum HPDF_FALSE)
+(define-enum HPDF_OK)
+(define-enum HPDF_NOERROR)
+
+;; buffer size which is required when we convert to character string.
+(define-enum HPDF_TMP_BUF_SIZ)
+(define-enum HPDF_SHORT_BUF_SIZ)
+(define-enum HPDF_REAL_LEN)
+(define-enum HPDF_INT_LEN)
+(define-enum HPDF_TEXT_DEFAULT_LEN)
+(define-enum HPDF_UNICODE_HEADER_LEN)
+(define-enum HPDF_DATE_TIME_STR_LEN)
+;; length of each item defined in PDF
+(define-enum HPDF_BYTE_OFFSET_LEN)
+(define-enum HPDF_OBJ_ID_LEN)
+(define-enum HPDF_GEN_NO_LEN)
+
+;; default value of Graphic State 
+(define-constant HPDF_DEF_FONT (c "SCM_MAKE_STR(HPDF_DEF_FONT)"))
+(define-enum HPDF_DEF_PAGE_LAYOUT)
+(define-enum HPDF_DEF_PAGE_MODE)
+(define-enum HPDF_DEF_WORDSPACE)
+(define-enum HPDF_DEF_CHARSPACE)
+(define-enum HPDF_DEF_FONTSIZE)
+(define-enum HPDF_DEF_HSCALING)
+(define-enum HPDF_DEF_LEADING)
+(define-enum HPDF_DEF_RENDERING_MODE)
+(define-enum HPDF_DEF_RISE)
+(define-enum HPDF_DEF_RAISE)
+(define-enum HPDF_DEF_LINEWIDTH)
+(define-enum HPDF_DEF_LINECAP)
+(define-enum HPDF_DEF_LINEJOIN)
+(define-enum HPDF_DEF_MITERLIMIT)
+(define-enum HPDF_DEF_FLATNESS)
+(define-enum HPDF_DEF_PAGE_NUM)
+
+(define-enum HPDF_BS_DEF_WIDTH)
+
+(define-enum HPDF_DEF_PAGE_WIDTH)
+(define-enum HPDF_DEF_PAGE_HEIGHT)
+
+(define-constant HPDF_VERSION_TEXT (c "SCM_MAKE_STR(HPDF_VERSION_TEXT)"))
+
+;; compression mode
+(define-enum  HPDF_COMP_NONE)
+(define-enum  HPDF_COMP_TEXT)
+(define-enum  HPDF_COMP_IMAGE)
+(define-enum  HPDF_COMP_METADATA)
+(define-enum  HPDF_COMP_ALL)
+(define-enum  HPDF_COMP_MASK)
+
+;; permission flags (only Revision 2 is supported)
+(define-enum HPDF_ENABLE_READ)
+(define-enum HPDF_ENABLE_PRINT)   
+(define-enum HPDF_ENABLE_EDIT_ALL)
+(define-enum HPDF_ENABLE_COPY)
+(define-enum HPDF_ENABLE_EDIT)
+
+
+;; viewer preferences definitions
+(define-enum HPDF_HIDE_TOOLBAR)
+(define-enum HPDF_HIDE_MENUBAR)
+(define-enum HPDF_HIDE_WINDOW_UI)
+(define-enum HPDF_FIT_WINDOW)
+(define-enum HPDF_CENTER_WINDOW)
+
+;; limitation of object implementation (PDF1.4)
+(define-enum HPDF_LIMIT_MAX_INT)
+(define-enum HPDF_LIMIT_MIN_INT)
+
+(define-enum HPDF_LIMIT_MAX_REAL)
+(define-enum HPDF_LIMIT_MIN_REAL)
+
+(define-enum HPDF_LIMIT_MAX_STRING_LEN)
+(define-enum HPDF_LIMIT_MAX_NAME_LEN)
+
+(define-enum HPDF_LIMIT_MAX_ARRAY)
+(define-enum HPDF_LIMIT_MAX_DICT_ELEMENT)
+(define-enum HPDF_LIMIT_MAX_XREF_ELEMENT)
+(define-enum HPDF_LIMIT_MAX_GSTATE)
+(define-enum HPDF_LIMIT_MAX_DEVICE_N)
+(define-enum HPDF_LIMIT_MAX_DEVICE_N_V15)
+(define-enum HPDF_LIMIT_MAX_CID)
+(define-enum HPDF_MAX_GENERATION_NUM)
+
+(define-enum HPDF_MIN_PAGE_HEIGHT)
+(define-enum HPDF_MIN_PAGE_WIDTH)
+(define-enum HPDF_MAX_PAGE_HEIGHT)
+(define-enum HPDF_MAX_PAGE_WIDTH)
+(define-enum HPDF_MIN_MAGNIFICATION_FACTOR)
+(define-enum HPDF_MAX_MAGNIFICATION_FACTOR)
+
+;; limitation of various properties
+(define-enum HPDF_MIN_PAGE_SIZE)
+(define-enum HPDF_MAX_PAGE_SIZE)
+(define-enum HPDF_MIN_HORIZONTALSCALING)
+(define-enum HPDF_MAX_HORIZONTALSCALING)
+(define-enum HPDF_MIN_WORDSPACE)
+(define-enum HPDF_MAX_WORDSPACE)
+(define-enum HPDF_MIN_CHARSPACE)
+(define-enum HPDF_MAX_CHARSPACE)
+(define-enum HPDF_MAX_FONTSIZE)
+(define-enum HPDF_MAX_ZOOMSIZE)
+(define-enum HPDF_MAX_LEADING)
+(define-enum HPDF_MAX_LINEWIDTH)
+(define-enum HPDF_MAX_DASH_PATTERN)
+
+(define-enum HPDF_MAX_JWW_NUM)
+
+;; country code definition
+(define-constant HPDF_COUNTRY_AF (c "SCM_MAKE_STR(HPDF_COUNTRY_AF)")) ;;* AFGHANISTAN
+(define-constant HPDF_COUNTRY_AL (c "SCM_MAKE_STR(HPDF_COUNTRY_AL)")) ;; ALBANIA
+(define-constant HPDF_COUNTRY_DZ (c "SCM_MAKE_STR(HPDF_COUNTRY_DZ)")) ;; ALGERIA
+(define-constant HPDF_COUNTRY_AS (c "SCM_MAKE_STR(HPDF_COUNTRY_AS)")) ;; AMERICAN SAMOA
+(define-constant HPDF_COUNTRY_AD (c "SCM_MAKE_STR(HPDF_COUNTRY_AD)")) ;; ANDORRA
+(define-constant HPDF_COUNTRY_AO (c "SCM_MAKE_STR(HPDF_COUNTRY_AO)")) ;; ANGOLA
+(define-constant HPDF_COUNTRY_AI (c "SCM_MAKE_STR(HPDF_COUNTRY_AI)")) ;; ANGUILLA
+(define-constant HPDF_COUNTRY_AQ (c "SCM_MAKE_STR(HPDF_COUNTRY_AQ)")) ;; ANTARCTICA
+(define-constant HPDF_COUNTRY_AG (c "SCM_MAKE_STR(HPDF_COUNTRY_AG)")) ;; ANTIGUA AND BARBUDA
+(define-constant HPDF_COUNTRY_AR (c "SCM_MAKE_STR(HPDF_COUNTRY_AR)")) ;; ARGENTINA
+(define-constant HPDF_COUNTRY_AM (c "SCM_MAKE_STR(HPDF_COUNTRY_AM)")) ;; ARMENIA
+(define-constant HPDF_COUNTRY_AW (c "SCM_MAKE_STR(HPDF_COUNTRY_AW)")) ;; ARUBA
+(define-constant HPDF_COUNTRY_AU (c "SCM_MAKE_STR(HPDF_COUNTRY_AU)")) ;; AUSTRALIA
+(define-constant HPDF_COUNTRY_AT (c "SCM_MAKE_STR(HPDF_COUNTRY_AT)")) ;; AUSTRIA
+(define-constant HPDF_COUNTRY_AZ (c "SCM_MAKE_STR(HPDF_COUNTRY_AZ)")) ;; AZERBAIJAN
+(define-constant HPDF_COUNTRY_BS (c "SCM_MAKE_STR(HPDF_COUNTRY_BS)")) ;; BAHAMAS
+(define-constant HPDF_COUNTRY_BH (c "SCM_MAKE_STR(HPDF_COUNTRY_BH)")) ;; BAHRAIN
+(define-constant HPDF_COUNTRY_BD (c "SCM_MAKE_STR(HPDF_COUNTRY_BD)")) ;; BANGLADESH
+(define-constant HPDF_COUNTRY_BB (c "SCM_MAKE_STR(HPDF_COUNTRY_BB)")) ;; BARBADOS
+(define-constant HPDF_COUNTRY_BY (c "SCM_MAKE_STR(HPDF_COUNTRY_BY)")) ;; BELARUS
+(define-constant HPDF_COUNTRY_BE (c "SCM_MAKE_STR(HPDF_COUNTRY_BE)")) ;; BELGIUM
+(define-constant HPDF_COUNTRY_BZ (c "SCM_MAKE_STR(HPDF_COUNTRY_BZ)")) ;; BELIZE
+(define-constant HPDF_COUNTRY_BJ (c "SCM_MAKE_STR(HPDF_COUNTRY_BJ)")) ;; BENIN
+(define-constant HPDF_COUNTRY_BM (c "SCM_MAKE_STR(HPDF_COUNTRY_BM)")) ;; BERMUDA
+(define-constant HPDF_COUNTRY_BT (c "SCM_MAKE_STR(HPDF_COUNTRY_BT)")) ;; BHUTAN
+(define-constant HPDF_COUNTRY_BO (c "SCM_MAKE_STR(HPDF_COUNTRY_BO)")) ;; BOLIVIA
+(define-constant HPDF_COUNTRY_BA (c "SCM_MAKE_STR(HPDF_COUNTRY_BA)")) ;; BOSNIA AND HERZEGOWINA
+(define-constant HPDF_COUNTRY_BW (c "SCM_MAKE_STR(HPDF_COUNTRY_BW)")) ;; BOTSWANA
+(define-constant HPDF_COUNTRY_BV (c "SCM_MAKE_STR(HPDF_COUNTRY_BV)")) ;; BOUVET ISLAND
+(define-constant HPDF_COUNTRY_BR (c "SCM_MAKE_STR(HPDF_COUNTRY_BR)")) ;; BRAZIL
+(define-constant HPDF_COUNTRY_IO (c "SCM_MAKE_STR(HPDF_COUNTRY_IO)")) ;; BRITISH INDIAN OCEAN TERRITORY
+(define-constant HPDF_COUNTRY_BN (c "SCM_MAKE_STR(HPDF_COUNTRY_BN)")) ;; BRUNEI DARUSSALAM
+(define-constant HPDF_COUNTRY_BG (c "SCM_MAKE_STR(HPDF_COUNTRY_BG)")) ;; BULGARIA
+(define-constant HPDF_COUNTRY_BF (c "SCM_MAKE_STR(HPDF_COUNTRY_BF)")) ;; BURKINA FASO
+(define-constant HPDF_COUNTRY_BI (c "SCM_MAKE_STR(HPDF_COUNTRY_BI)")) ;; BURUNDI
+(define-constant HPDF_COUNTRY_KH (c "SCM_MAKE_STR(HPDF_COUNTRY_KH)")) ;; CAMBODIA
+(define-constant HPDF_COUNTRY_CM (c "SCM_MAKE_STR(HPDF_COUNTRY_CM)")) ;; CAMEROON
+(define-constant HPDF_COUNTRY_CA (c "SCM_MAKE_STR(HPDF_COUNTRY_CA)")) ;; CANADA
+(define-constant HPDF_COUNTRY_CV (c "SCM_MAKE_STR(HPDF_COUNTRY_CV)")) ;; CAPE VERDE
+(define-constant HPDF_COUNTRY_KY (c "SCM_MAKE_STR(HPDF_COUNTRY_KY)")) ;; CAYMAN ISLANDS
+(define-constant HPDF_COUNTRY_CF (c "SCM_MAKE_STR(HPDF_COUNTRY_CF)")) ;; CENTRAL AFRICAN REPUBLIC
+(define-constant HPDF_COUNTRY_TD (c "SCM_MAKE_STR(HPDF_COUNTRY_TD)")) ;; CHAD
+(define-constant HPDF_COUNTRY_CL (c "SCM_MAKE_STR(HPDF_COUNTRY_CL)")) ;; CHILE
+(define-constant HPDF_COUNTRY_CN (c "SCM_MAKE_STR(HPDF_COUNTRY_CN)")) ;; CHINA
+(define-constant HPDF_COUNTRY_CX (c "SCM_MAKE_STR(HPDF_COUNTRY_CX)")) ;; CHRISTMAS ISLAND
+(define-constant HPDF_COUNTRY_CC (c "SCM_MAKE_STR(HPDF_COUNTRY_CC)")) ;; COCOS (KEELING) ISLANDS
+(define-constant HPDF_COUNTRY_CO (c "SCM_MAKE_STR(HPDF_COUNTRY_CO)")) ;; COLOMBIA
+(define-constant HPDF_COUNTRY_KM (c "SCM_MAKE_STR(HPDF_COUNTRY_KM)")) ;; COMOROS
+(define-constant HPDF_COUNTRY_CG (c "SCM_MAKE_STR(HPDF_COUNTRY_CG)")) ;; CONGO
+(define-constant HPDF_COUNTRY_CK (c "SCM_MAKE_STR(HPDF_COUNTRY_CK)")) ;; COOK ISLANDS
+(define-constant HPDF_COUNTRY_CR (c "SCM_MAKE_STR(HPDF_COUNTRY_CR)")) ;; COSTA RICA
+(define-constant HPDF_COUNTRY_CI (c "SCM_MAKE_STR(HPDF_COUNTRY_CI)")) ;; COTE D'IVOIRE
+(define-constant HPDF_COUNTRY_HR (c "SCM_MAKE_STR(HPDF_COUNTRY_HR)")) ;; CROATIA (local name: Hrvatska)
+(define-constant HPDF_COUNTRY_CU (c "SCM_MAKE_STR(HPDF_COUNTRY_CU)")) ;; CUBA
+(define-constant HPDF_COUNTRY_CY (c "SCM_MAKE_STR(HPDF_COUNTRY_CY)")) ;; CYPRUS
+(define-constant HPDF_COUNTRY_CZ (c "SCM_MAKE_STR(HPDF_COUNTRY_CZ)")) ;; CZECH REPUBLIC
+(define-constant HPDF_COUNTRY_DK (c "SCM_MAKE_STR(HPDF_COUNTRY_DK)")) ;; DENMARK
+(define-constant HPDF_COUNTRY_DJ (c "SCM_MAKE_STR(HPDF_COUNTRY_DJ)")) ;; DJIBOUTI
+(define-constant HPDF_COUNTRY_DM (c "SCM_MAKE_STR(HPDF_COUNTRY_DM)")) ;; DOMINICA
+(define-constant HPDF_COUNTRY_DO (c "SCM_MAKE_STR(HPDF_COUNTRY_DO)")) ;; DOMINICAN REPUBLIC
+(define-constant HPDF_COUNTRY_TP (c "SCM_MAKE_STR(HPDF_COUNTRY_TP)")) ;; EAST TIMOR
+(define-constant HPDF_COUNTRY_EC (c "SCM_MAKE_STR(HPDF_COUNTRY_EC)")) ;; ECUADOR
+(define-constant HPDF_COUNTRY_EG (c "SCM_MAKE_STR(HPDF_COUNTRY_EG)")) ;; EGYPT
+(define-constant HPDF_COUNTRY_SV (c "SCM_MAKE_STR(HPDF_COUNTRY_SV)")) ;; EL SALVADOR
+(define-constant HPDF_COUNTRY_GQ (c "SCM_MAKE_STR(HPDF_COUNTRY_GQ)")) ;; EQUATORIAL GUINEA
+(define-constant HPDF_COUNTRY_ER (c "SCM_MAKE_STR(HPDF_COUNTRY_ER)")) ;; ERITREA
+(define-constant HPDF_COUNTRY_EE (c "SCM_MAKE_STR(HPDF_COUNTRY_EE)")) ;; ESTONIA
+(define-constant HPDF_COUNTRY_ET (c "SCM_MAKE_STR(HPDF_COUNTRY_ET)")) ;; ETHIOPIA
+(define-constant HPDF_COUNTRY_FK (c "SCM_MAKE_STR(HPDF_COUNTRY_FK)")) ;; FALKLAND ISLANDS (MALVINAS)
+(define-constant HPDF_COUNTRY_FO (c "SCM_MAKE_STR(HPDF_COUNTRY_FO)")) ;; FAROE ISLANDS
+(define-constant HPDF_COUNTRY_FJ (c "SCM_MAKE_STR(HPDF_COUNTRY_FJ)")) ;; FIJI
+(define-constant HPDF_COUNTRY_FI (c "SCM_MAKE_STR(HPDF_COUNTRY_FI)")) ;; FINLAND
+(define-constant HPDF_COUNTRY_FR (c "SCM_MAKE_STR(HPDF_COUNTRY_FR)")) ;; FRANCE
+(define-constant HPDF_COUNTRY_FX (c "SCM_MAKE_STR(HPDF_COUNTRY_FX)")) ;; FRANCE, METROPOLITAN
+(define-constant HPDF_COUNTRY_GF (c "SCM_MAKE_STR(HPDF_COUNTRY_GF)")) ;; FRENCH GUIANA
+(define-constant HPDF_COUNTRY_PF (c "SCM_MAKE_STR(HPDF_COUNTRY_PF)")) ;; FRENCH POLYNESIA
+(define-constant HPDF_COUNTRY_TF (c "SCM_MAKE_STR(HPDF_COUNTRY_TF)")) ;; FRENCH SOUTHERN TERRITORIES
+(define-constant HPDF_COUNTRY_GA (c "SCM_MAKE_STR(HPDF_COUNTRY_GA)")) ;; GABON
+(define-constant HPDF_COUNTRY_GM (c "SCM_MAKE_STR(HPDF_COUNTRY_GM)")) ;; GAMBIA
+(define-constant HPDF_COUNTRY_GE (c "SCM_MAKE_STR(HPDF_COUNTRY_GE)")) ;; GEORGIA
+(define-constant HPDF_COUNTRY_DE (c "SCM_MAKE_STR(HPDF_COUNTRY_DE)")) ;; GERMANY
+(define-constant HPDF_COUNTRY_GH (c "SCM_MAKE_STR(HPDF_COUNTRY_GH)")) ;; GHANA
+(define-constant HPDF_COUNTRY_GI (c "SCM_MAKE_STR(HPDF_COUNTRY_GI)")) ;; GIBRALTAR
+(define-constant HPDF_COUNTRY_GR (c "SCM_MAKE_STR(HPDF_COUNTRY_GR)")) ;; GREECE
+(define-constant HPDF_COUNTRY_GL (c "SCM_MAKE_STR(HPDF_COUNTRY_GL)")) ;; GREENLAND
+(define-constant HPDF_COUNTRY_GD (c "SCM_MAKE_STR(HPDF_COUNTRY_GD)")) ;; GRENADA
+(define-constant HPDF_COUNTRY_GP (c "SCM_MAKE_STR(HPDF_COUNTRY_GP)")) ;; GUADELOUPE
+(define-constant HPDF_COUNTRY_GU (c "SCM_MAKE_STR(HPDF_COUNTRY_GU)")) ;; GUAM
+(define-constant HPDF_COUNTRY_GT (c "SCM_MAKE_STR(HPDF_COUNTRY_GT)")) ;; GUATEMALA
+(define-constant HPDF_COUNTRY_GN (c "SCM_MAKE_STR(HPDF_COUNTRY_GN)")) ;; GUINEA
+(define-constant HPDF_COUNTRY_GW (c "SCM_MAKE_STR(HPDF_COUNTRY_GW)")) ;; GUINEA-BISSAU
+(define-constant HPDF_COUNTRY_GY (c "SCM_MAKE_STR(HPDF_COUNTRY_GY)")) ;; GUYANA
+(define-constant HPDF_COUNTRY_HT (c "SCM_MAKE_STR(HPDF_COUNTRY_HT)")) ;; HAITI
+(define-constant HPDF_COUNTRY_HM (c "SCM_MAKE_STR(HPDF_COUNTRY_HM)")) ;; HEARD AND MC DONALD ISLANDS
+(define-constant HPDF_COUNTRY_HN (c "SCM_MAKE_STR(HPDF_COUNTRY_HN)")) ;; HONDURAS
+(define-constant HPDF_COUNTRY_HK (c "SCM_MAKE_STR(HPDF_COUNTRY_HK)")) ;; HONG KONG
+(define-constant HPDF_COUNTRY_HU (c "SCM_MAKE_STR(HPDF_COUNTRY_HU)")) ;; HUNGARY
+(define-constant HPDF_COUNTRY_IS (c "SCM_MAKE_STR(HPDF_COUNTRY_IS)")) ;; ICELAND
+(define-constant HPDF_COUNTRY_IN (c "SCM_MAKE_STR(HPDF_COUNTRY_IN)")) ;; INDIA
+(define-constant HPDF_COUNTRY_ID (c "SCM_MAKE_STR(HPDF_COUNTRY_ID)")) ;; INDONESIA
+(define-constant HPDF_COUNTRY_IR (c "SCM_MAKE_STR(HPDF_COUNTRY_IR)")) ;; IRAN (ISLAMIC REPUBLIC OF)
+(define-constant HPDF_COUNTRY_IQ (c "SCM_MAKE_STR(HPDF_COUNTRY_IQ)")) ;; IRAQ
+(define-constant HPDF_COUNTRY_IE (c "SCM_MAKE_STR(HPDF_COUNTRY_IE)")) ;; IRELAND
+(define-constant HPDF_COUNTRY_IL (c "SCM_MAKE_STR(HPDF_COUNTRY_IL)")) ;; ISRAEL
+(define-constant HPDF_COUNTRY_IT (c "SCM_MAKE_STR(HPDF_COUNTRY_IT)")) ;; ITALY
+(define-constant HPDF_COUNTRY_JM (c "SCM_MAKE_STR(HPDF_COUNTRY_JM)")) ;; JAMAICA
+(define-constant HPDF_COUNTRY_JP (c "SCM_MAKE_STR(HPDF_COUNTRY_JP)")) ;; JAPAN
+(define-constant HPDF_COUNTRY_JO (c "SCM_MAKE_STR(HPDF_COUNTRY_JO)")) ;; JORDAN
+(define-constant HPDF_COUNTRY_KZ (c "SCM_MAKE_STR(HPDF_COUNTRY_KZ)")) ;; KAZAKHSTAN
+(define-constant HPDF_COUNTRY_KE (c "SCM_MAKE_STR(HPDF_COUNTRY_KE)")) ;; KENYA
+(define-constant HPDF_COUNTRY_KI (c "SCM_MAKE_STR(HPDF_COUNTRY_KI)")) ;; KIRIBATI
+(define-constant HPDF_COUNTRY_KP (c "SCM_MAKE_STR(HPDF_COUNTRY_KP)")) ;; KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF
+(define-constant HPDF_COUNTRY_KR (c "SCM_MAKE_STR(HPDF_COUNTRY_KR)")) ;; KOREA, REPUBLIC OF
+(define-constant HPDF_COUNTRY_KW (c "SCM_MAKE_STR(HPDF_COUNTRY_KW)")) ;; KUWAIT
+(define-constant HPDF_COUNTRY_KG (c "SCM_MAKE_STR(HPDF_COUNTRY_KG)")) ;; KYRGYZSTAN
+(define-constant HPDF_COUNTRY_LA (c "SCM_MAKE_STR(HPDF_COUNTRY_LA)")) ;; LAO PEOPLE'S DEMOCRATIC REPUBLIC
+(define-constant HPDF_COUNTRY_LV (c "SCM_MAKE_STR(HPDF_COUNTRY_LV)")) ;; LATVIA
+(define-constant HPDF_COUNTRY_LB (c "SCM_MAKE_STR(HPDF_COUNTRY_LB)")) ;; LEBANON
+(define-constant HPDF_COUNTRY_LS (c "SCM_MAKE_STR(HPDF_COUNTRY_LS)")) ;; LESOTHO
+(define-constant HPDF_COUNTRY_LR (c "SCM_MAKE_STR(HPDF_COUNTRY_LR)")) ;; LIBERIA
+(define-constant HPDF_COUNTRY_LY (c "SCM_MAKE_STR(HPDF_COUNTRY_LY)")) ;; LIBYAN ARAB JAMAHIRIYA
+(define-constant HPDF_COUNTRY_LI (c "SCM_MAKE_STR(HPDF_COUNTRY_LI)")) ;; LIECHTENSTEIN
+(define-constant HPDF_COUNTRY_LT (c "SCM_MAKE_STR(HPDF_COUNTRY_LT)")) ;; LITHUANIA
+(define-constant HPDF_COUNTRY_LU (c "SCM_MAKE_STR(HPDF_COUNTRY_LU)")) ;; LUXEMBOURG
+(define-constant HPDF_COUNTRY_MO (c "SCM_MAKE_STR(HPDF_COUNTRY_MO)")) ;; MACAU
+(define-constant HPDF_COUNTRY_MK (c "SCM_MAKE_STR(HPDF_COUNTRY_MK)")) ;; MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF
+(define-constant HPDF_COUNTRY_MG (c "SCM_MAKE_STR(HPDF_COUNTRY_MG)")) ;; MADAGASCAR
+(define-constant HPDF_COUNTRY_MW (c "SCM_MAKE_STR(HPDF_COUNTRY_MW)")) ;; MALAWI
+(define-constant HPDF_COUNTRY_MY (c "SCM_MAKE_STR(HPDF_COUNTRY_MY)")) ;; MALAYSIA
+(define-constant HPDF_COUNTRY_MV (c "SCM_MAKE_STR(HPDF_COUNTRY_MV)")) ;; MALDIVES
+(define-constant HPDF_COUNTRY_ML (c "SCM_MAKE_STR(HPDF_COUNTRY_ML)")) ;; MALI
+(define-constant HPDF_COUNTRY_MT (c "SCM_MAKE_STR(HPDF_COUNTRY_MT)")) ;; MALTA
+(define-constant HPDF_COUNTRY_MH (c "SCM_MAKE_STR(HPDF_COUNTRY_MH)")) ;; MARSHALL ISLANDS
+(define-constant HPDF_COUNTRY_MQ (c "SCM_MAKE_STR(HPDF_COUNTRY_MQ)")) ;; MARTINIQUE
+(define-constant HPDF_COUNTRY_MR (c "SCM_MAKE_STR(HPDF_COUNTRY_MR)")) ;; MAURITANIA
+(define-constant HPDF_COUNTRY_MU (c "SCM_MAKE_STR(HPDF_COUNTRY_MU)")) ;; MAURITIUS
+(define-constant HPDF_COUNTRY_YT (c "SCM_MAKE_STR(HPDF_COUNTRY_YT)")) ;; MAYOTTE
+(define-constant HPDF_COUNTRY_MX (c "SCM_MAKE_STR(HPDF_COUNTRY_MX)")) ;; MEXICO
+(define-constant HPDF_COUNTRY_FM (c "SCM_MAKE_STR(HPDF_COUNTRY_FM)")) ;; MICRONESIA, FEDERATED STATES OF
+(define-constant HPDF_COUNTRY_MD (c "SCM_MAKE_STR(HPDF_COUNTRY_MD)")) ;; MOLDOVA, REPUBLIC OF
+(define-constant HPDF_COUNTRY_MC (c "SCM_MAKE_STR(HPDF_COUNTRY_MC)")) ;; MONACO
+(define-constant HPDF_COUNTRY_MN (c "SCM_MAKE_STR(HPDF_COUNTRY_MN)")) ;; MONGOLIA
+(define-constant HPDF_COUNTRY_MS (c "SCM_MAKE_STR(HPDF_COUNTRY_MS)")) ;; MONTSERRAT
+(define-constant HPDF_COUNTRY_MA (c "SCM_MAKE_STR(HPDF_COUNTRY_MA)")) ;; MOROCCO
+(define-constant HPDF_COUNTRY_MZ (c "SCM_MAKE_STR(HPDF_COUNTRY_MZ)")) ;; MOZAMBIQUE
+(define-constant HPDF_COUNTRY_MM (c "SCM_MAKE_STR(HPDF_COUNTRY_MM)")) ;; MYANMAR
+(define-constant HPDF_COUNTRY_NA (c "SCM_MAKE_STR(HPDF_COUNTRY_NA)")) ;; NAMIBIA
+(define-constant HPDF_COUNTRY_NR (c "SCM_MAKE_STR(HPDF_COUNTRY_NR)")) ;; NAURU
+(define-constant HPDF_COUNTRY_NP (c "SCM_MAKE_STR(HPDF_COUNTRY_NP)")) ;; NEPAL
+(define-constant HPDF_COUNTRY_NL (c "SCM_MAKE_STR(HPDF_COUNTRY_NL)")) ;; NETHERLANDS
+(define-constant HPDF_COUNTRY_AN (c "SCM_MAKE_STR(HPDF_COUNTRY_AN)")) ;; NETHERLANDS ANTILLES
+(define-constant HPDF_COUNTRY_NC (c "SCM_MAKE_STR(HPDF_COUNTRY_NC)")) ;; NEW CALEDONIA
+(define-constant HPDF_COUNTRY_NZ (c "SCM_MAKE_STR(HPDF_COUNTRY_NZ)")) ;; NEW ZEALAND
+(define-constant HPDF_COUNTRY_NI (c "SCM_MAKE_STR(HPDF_COUNTRY_NI)")) ;; NICARAGUA
+(define-constant HPDF_COUNTRY_NE (c "SCM_MAKE_STR(HPDF_COUNTRY_NE)")) ;; NIGER
+(define-constant HPDF_COUNTRY_NG (c "SCM_MAKE_STR(HPDF_COUNTRY_NG)")) ;; NIGERIA
+(define-constant HPDF_COUNTRY_NU (c "SCM_MAKE_STR(HPDF_COUNTRY_NU)")) ;; NIUE
+(define-constant HPDF_COUNTRY_NF (c "SCM_MAKE_STR(HPDF_COUNTRY_NF)")) ;; NORFOLK ISLAND
+(define-constant HPDF_COUNTRY_MP (c "SCM_MAKE_STR(HPDF_COUNTRY_MP)")) ;; NORTHERN MARIANA ISLANDS
+(define-constant HPDF_COUNTRY_NO (c "SCM_MAKE_STR(HPDF_COUNTRY_NO)")) ;; NORWAY
+(define-constant HPDF_COUNTRY_OM (c "SCM_MAKE_STR(HPDF_COUNTRY_OM)")) ;; OMAN
+(define-constant HPDF_COUNTRY_PK (c "SCM_MAKE_STR(HPDF_COUNTRY_PK)")) ;; PAKISTAN
+(define-constant HPDF_COUNTRY_PW (c "SCM_MAKE_STR(HPDF_COUNTRY_PW)")) ;; PALAU
+(define-constant HPDF_COUNTRY_PA (c "SCM_MAKE_STR(HPDF_COUNTRY_PA)")) ;; PANAMA
+(define-constant HPDF_COUNTRY_PG (c "SCM_MAKE_STR(HPDF_COUNTRY_PG)")) ;; PAPUA NEW GUINEA
+(define-constant HPDF_COUNTRY_PY (c "SCM_MAKE_STR(HPDF_COUNTRY_PY)")) ;; PARAGUAY
+(define-constant HPDF_COUNTRY_PE (c "SCM_MAKE_STR(HPDF_COUNTRY_PE)")) ;; PERU
+(define-constant HPDF_COUNTRY_PH (c "SCM_MAKE_STR(HPDF_COUNTRY_PH)")) ;; PHILIPPINES
+(define-constant HPDF_COUNTRY_PN (c "SCM_MAKE_STR(HPDF_COUNTRY_PN)")) ;; PITCAIRN
+(define-constant HPDF_COUNTRY_PL (c "SCM_MAKE_STR(HPDF_COUNTRY_PL)")) ;; POLAND
+(define-constant HPDF_COUNTRY_PT (c "SCM_MAKE_STR(HPDF_COUNTRY_PT)")) ;; PORTUGAL
+(define-constant HPDF_COUNTRY_PR (c "SCM_MAKE_STR(HPDF_COUNTRY_PR)")) ;; PUERTO RICO
+(define-constant HPDF_COUNTRY_QA (c "SCM_MAKE_STR(HPDF_COUNTRY_QA)")) ;; QATAR
+(define-constant HPDF_COUNTRY_RE (c "SCM_MAKE_STR(HPDF_COUNTRY_RE)")) ;; REUNION
+(define-constant HPDF_COUNTRY_RO (c "SCM_MAKE_STR(HPDF_COUNTRY_RO)")) ;; ROMANIA
+(define-constant HPDF_COUNTRY_RU (c "SCM_MAKE_STR(HPDF_COUNTRY_RU)")) ;; RUSSIAN FEDERATION
+(define-constant HPDF_COUNTRY_RW (c "SCM_MAKE_STR(HPDF_COUNTRY_RW)")) ;; RWANDA
+(define-constant HPDF_COUNTRY_KN (c "SCM_MAKE_STR(HPDF_COUNTRY_KN)")) ;; SAINT KITTS AND NEVIS
+(define-constant HPDF_COUNTRY_LC (c "SCM_MAKE_STR(HPDF_COUNTRY_LC)")) ;; SAINT LUCIA
+(define-constant HPDF_COUNTRY_VC (c "SCM_MAKE_STR(HPDF_COUNTRY_VC)")) ;; SAINT VINCENT AND THE GRENADINES
+(define-constant HPDF_COUNTRY_WS (c "SCM_MAKE_STR(HPDF_COUNTRY_WS)")) ;; SAMOA
+(define-constant HPDF_COUNTRY_SM (c "SCM_MAKE_STR(HPDF_COUNTRY_SM)")) ;; SAN MARINO
+(define-constant HPDF_COUNTRY_ST (c "SCM_MAKE_STR(HPDF_COUNTRY_ST)")) ;; SAO TOME AND PRINCIPE
+(define-constant HPDF_COUNTRY_SA (c "SCM_MAKE_STR(HPDF_COUNTRY_SA)")) ;; SAUDI ARABIA
+(define-constant HPDF_COUNTRY_SN (c "SCM_MAKE_STR(HPDF_COUNTRY_SN)")) ;; SENEGAL
+(define-constant HPDF_COUNTRY_SC (c "SCM_MAKE_STR(HPDF_COUNTRY_SC)")) ;; SEYCHELLES
+(define-constant HPDF_COUNTRY_SL (c "SCM_MAKE_STR(HPDF_COUNTRY_SL)")) ;; SIERRA LEONE
+(define-constant HPDF_COUNTRY_SG (c "SCM_MAKE_STR(HPDF_COUNTRY_SG)")) ;; SINGAPORE
+(define-constant HPDF_COUNTRY_SK (c "SCM_MAKE_STR(HPDF_COUNTRY_SK)")) ;; SLOVAKIA (Slovak Republic)
+(define-constant HPDF_COUNTRY_SI (c "SCM_MAKE_STR(HPDF_COUNTRY_SI)")) ;; SLOVENIA
+(define-constant HPDF_COUNTRY_SB (c "SCM_MAKE_STR(HPDF_COUNTRY_SB)")) ;; SOLOMON ISLANDS
+(define-constant HPDF_COUNTRY_SO (c "SCM_MAKE_STR(HPDF_COUNTRY_SO)")) ;; SOMALIA
+(define-constant HPDF_COUNTRY_ZA (c "SCM_MAKE_STR(HPDF_COUNTRY_ZA)")) ;; SOUTH AFRICA
+(define-constant HPDF_COUNTRY_ES (c "SCM_MAKE_STR(HPDF_COUNTRY_ES)")) ;; SPAIN
+(define-constant HPDF_COUNTRY_LK (c "SCM_MAKE_STR(HPDF_COUNTRY_LK)")) ;; SRI LANKA
+(define-constant HPDF_COUNTRY_SH (c "SCM_MAKE_STR(HPDF_COUNTRY_SH)")) ;; ST. HELENA
+(define-constant HPDF_COUNTRY_PM (c "SCM_MAKE_STR(HPDF_COUNTRY_PM)")) ;; ST. PIERRE AND MIQUELON
+(define-constant HPDF_COUNTRY_SD (c "SCM_MAKE_STR(HPDF_COUNTRY_SD)")) ;; SUDAN
+(define-constant HPDF_COUNTRY_SR (c "SCM_MAKE_STR(HPDF_COUNTRY_SR)")) ;; SURINAME
+(define-constant HPDF_COUNTRY_SJ (c "SCM_MAKE_STR(HPDF_COUNTRY_SJ)")) ;; SVALBARD AND JAN MAYEN ISLANDS
+(define-constant HPDF_COUNTRY_SZ (c "SCM_MAKE_STR(HPDF_COUNTRY_SZ)")) ;; SWAZILAND
+(define-constant HPDF_COUNTRY_SE (c "SCM_MAKE_STR(HPDF_COUNTRY_SE)")) ;; SWEDEN
+(define-constant HPDF_COUNTRY_CH (c "SCM_MAKE_STR(HPDF_COUNTRY_CH)")) ;; SWITZERLAND
+(define-constant HPDF_COUNTRY_SY (c "SCM_MAKE_STR(HPDF_COUNTRY_SY)")) ;; SYRIAN ARAB REPUBLIC
+(define-constant HPDF_COUNTRY_TW (c "SCM_MAKE_STR(HPDF_COUNTRY_TW)")) ;; TAIWAN, PROVINCE OF CHINA
+(define-constant HPDF_COUNTRY_TJ (c "SCM_MAKE_STR(HPDF_COUNTRY_TJ)")) ;; TAJIKISTAN
+(define-constant HPDF_COUNTRY_TZ (c "SCM_MAKE_STR(HPDF_COUNTRY_TZ)")) ;; TANZANIA, UNITED REPUBLIC OF
+(define-constant HPDF_COUNTRY_TH (c "SCM_MAKE_STR(HPDF_COUNTRY_TH)")) ;; THAILAND
+(define-constant HPDF_COUNTRY_TG (c "SCM_MAKE_STR(HPDF_COUNTRY_TG)")) ;; TOGO
+(define-constant HPDF_COUNTRY_TK (c "SCM_MAKE_STR(HPDF_COUNTRY_TK)")) ;; TOKELAU
+(define-constant HPDF_COUNTRY_TO (c "SCM_MAKE_STR(HPDF_COUNTRY_TO)")) ;; TONGA
+(define-constant HPDF_COUNTRY_TT (c "SCM_MAKE_STR(HPDF_COUNTRY_TT)")) ;; TRINIDAD AND TOBAGO
+(define-constant HPDF_COUNTRY_TN (c "SCM_MAKE_STR(HPDF_COUNTRY_TN)")) ;; TUNISIA
+(define-constant HPDF_COUNTRY_TR (c "SCM_MAKE_STR(HPDF_COUNTRY_TR)")) ;; TURKEY
+(define-constant HPDF_COUNTRY_TM (c "SCM_MAKE_STR(HPDF_COUNTRY_TM)")) ;; TURKMENISTAN
+(define-constant HPDF_COUNTRY_TC (c "SCM_MAKE_STR(HPDF_COUNTRY_TC)")) ;; TURKS AND CAICOS ISLANDS
+(define-constant HPDF_COUNTRY_TV (c "SCM_MAKE_STR(HPDF_COUNTRY_TV)")) ;; TUVALU
+(define-constant HPDF_COUNTRY_UG (c "SCM_MAKE_STR(HPDF_COUNTRY_UG)")) ;; UGANDA
+(define-constant HPDF_COUNTRY_UA (c "SCM_MAKE_STR(HPDF_COUNTRY_UA)")) ;; UKRAINE
+(define-constant HPDF_COUNTRY_AE (c "SCM_MAKE_STR(HPDF_COUNTRY_AE)")) ;; UNITED ARAB EMIRATES
+(define-constant HPDF_COUNTRY_GB (c "SCM_MAKE_STR(HPDF_COUNTRY_GB)")) ;; UNITED KINGDOM
+(define-constant HPDF_COUNTRY_US (c "SCM_MAKE_STR(HPDF_COUNTRY_US)")) ;; UNITED STATES
+(define-constant HPDF_COUNTRY_UM (c "SCM_MAKE_STR(HPDF_COUNTRY_UM)")) ;; UNITED STATES MINOR OUTLYING ISLANDS
+(define-constant HPDF_COUNTRY_UY (c "SCM_MAKE_STR(HPDF_COUNTRY_UY)")) ;; URUGUAY
+(define-constant HPDF_COUNTRY_UZ (c "SCM_MAKE_STR(HPDF_COUNTRY_UZ)")) ;; UZBEKISTAN
+(define-constant HPDF_COUNTRY_VU (c "SCM_MAKE_STR(HPDF_COUNTRY_VU)")) ;; VANUATU
+(define-constant HPDF_COUNTRY_VA (c "SCM_MAKE_STR(HPDF_COUNTRY_VA)")) ;; VATICAN CITY STATE (HOLY SEE)
+(define-constant HPDF_COUNTRY_VE (c "SCM_MAKE_STR(HPDF_COUNTRY_VE)")) ;; VENEZUELA
+(define-constant HPDF_COUNTRY_VN (c "SCM_MAKE_STR(HPDF_COUNTRY_VN)")) ;; VIET NAM
+(define-constant HPDF_COUNTRY_VG (c "SCM_MAKE_STR(HPDF_COUNTRY_VG)")) ;; VIRGIN ISLANDS (BRITISH)
+(define-constant HPDF_COUNTRY_VI (c "SCM_MAKE_STR(HPDF_COUNTRY_VI)")) ;; VIRGIN ISLANDS (U.S.)
+(define-constant HPDF_COUNTRY_WF (c "SCM_MAKE_STR(HPDF_COUNTRY_WF)")) ;; WALLIS AND FUTUNA ISLANDS
+(define-constant HPDF_COUNTRY_EH (c "SCM_MAKE_STR(HPDF_COUNTRY_EH)")) ;; WESTERN SAHARA
+(define-constant HPDF_COUNTRY_YE (c "SCM_MAKE_STR(HPDF_COUNTRY_YE)")) ;; YEMEN
+(define-constant HPDF_COUNTRY_YU (c "SCM_MAKE_STR(HPDF_COUNTRY_YU)")) ;; YUGOSLAVIA
+(define-constant HPDF_COUNTRY_ZR (c "SCM_MAKE_STR(HPDF_COUNTRY_ZR)")) ;; ZAIRE
+(define-constant HPDF_COUNTRY_ZM (c "SCM_MAKE_STR(HPDF_COUNTRY_ZM)")) ;; ZAMBIA
+(define-constant HPDF_COUNTRY_ZW (c "SCM_MAKE_STR(HPDF_COUNTRY_ZW)")) ;; ZIMBABWE
+
+;; lang code definition
+(define-constant HPDF_LANG_AA (c "SCM_MAKE_STR(HPDF_LANG_AA)")) ;; Afar 
+(define-constant HPDF_LANG_AB (c "SCM_MAKE_STR(HPDF_LANG_AB)")) ;; Abkhazian 
+(define-constant HPDF_LANG_AF (c "SCM_MAKE_STR(HPDF_LANG_AF)")) ;; Afrikaans 
+(define-constant HPDF_LANG_AM (c "SCM_MAKE_STR(HPDF_LANG_AM)")) ;; Amharic 
+(define-constant HPDF_LANG_AR (c "SCM_MAKE_STR(HPDF_LANG_AR)")) ;; Arabic 
+(define-constant HPDF_LANG_AS (c "SCM_MAKE_STR(HPDF_LANG_AS)")) ;; Assamese 
+(define-constant HPDF_LANG_AY (c "SCM_MAKE_STR(HPDF_LANG_AY)")) ;; Aymara 
+(define-constant HPDF_LANG_AZ (c "SCM_MAKE_STR(HPDF_LANG_AZ)")) ;; Azerbaijani 
+(define-constant HPDF_LANG_BA (c "SCM_MAKE_STR(HPDF_LANG_BA)")) ;; Bashkir 
+(define-constant HPDF_LANG_BE (c "SCM_MAKE_STR(HPDF_LANG_BE)")) ;; Byelorussian 
+(define-constant HPDF_LANG_BG (c "SCM_MAKE_STR(HPDF_LANG_BG)")) ;; Bulgarian 
+(define-constant HPDF_LANG_BH (c "SCM_MAKE_STR(HPDF_LANG_BH)")) ;; Bihari 
+(define-constant HPDF_LANG_BI (c "SCM_MAKE_STR(HPDF_LANG_BI)")) ;; Bislama 
+(define-constant HPDF_LANG_BN (c "SCM_MAKE_STR(HPDF_LANG_BN)")) ;; Bengali Bangla 
+(define-constant HPDF_LANG_BO (c "SCM_MAKE_STR(HPDF_LANG_BO)")) ;; Tibetan 
+(define-constant HPDF_LANG_BR (c "SCM_MAKE_STR(HPDF_LANG_BR)")) ;; Breton 
+(define-constant HPDF_LANG_CA (c "SCM_MAKE_STR(HPDF_LANG_CA)")) ;; Catalan 
+(define-constant HPDF_LANG_CO (c "SCM_MAKE_STR(HPDF_LANG_CO)")) ;; Corsican 
+(define-constant HPDF_LANG_CS (c "SCM_MAKE_STR(HPDF_LANG_CS)")) ;; Czech 
+(define-constant HPDF_LANG_CY (c "SCM_MAKE_STR(HPDF_LANG_CY)")) ;; Welsh 
+(define-constant HPDF_LANG_DA (c "SCM_MAKE_STR(HPDF_LANG_DA)")) ;; Danish 
+(define-constant HPDF_LANG_DE (c "SCM_MAKE_STR(HPDF_LANG_DE)")) ;; German 
+(define-constant HPDF_LANG_DZ (c "SCM_MAKE_STR(HPDF_LANG_DZ)")) ;; Bhutani 
+(define-constant HPDF_LANG_EL (c "SCM_MAKE_STR(HPDF_LANG_EL)")) ;; Greek 
+(define-constant HPDF_LANG_EN (c "SCM_MAKE_STR(HPDF_LANG_EN)")) ;; English 
+(define-constant HPDF_LANG_EO (c "SCM_MAKE_STR(HPDF_LANG_EO)")) ;; Esperanto 
+(define-constant HPDF_LANG_ES (c "SCM_MAKE_STR(HPDF_LANG_ES)")) ;; Spanish 
+(define-constant HPDF_LANG_ET (c "SCM_MAKE_STR(HPDF_LANG_ET)")) ;; Estonian 
+(define-constant HPDF_LANG_EU (c "SCM_MAKE_STR(HPDF_LANG_EU)")) ;; Basque 
+(define-constant HPDF_LANG_FA (c "SCM_MAKE_STR(HPDF_LANG_FA)")) ;; Persian 
+(define-constant HPDF_LANG_FI (c "SCM_MAKE_STR(HPDF_LANG_FI)")) ;; Finnish 
+(define-constant HPDF_LANG_FJ (c "SCM_MAKE_STR(HPDF_LANG_FJ)")) ;; Fiji 
+(define-constant HPDF_LANG_FO (c "SCM_MAKE_STR(HPDF_LANG_FO)")) ;; Faeroese 
+(define-constant HPDF_LANG_FR (c "SCM_MAKE_STR(HPDF_LANG_FR)")) ;; French 
+(define-constant HPDF_LANG_FY (c "SCM_MAKE_STR(HPDF_LANG_FY)")) ;; Frisian 
+(define-constant HPDF_LANG_GA (c "SCM_MAKE_STR(HPDF_LANG_GA)")) ;; Irish 
+(define-constant HPDF_LANG_GD (c "SCM_MAKE_STR(HPDF_LANG_GD)")) ;; Scots Gaelic 
+(define-constant HPDF_LANG_GL (c "SCM_MAKE_STR(HPDF_LANG_GL)")) ;; Galician 
+(define-constant HPDF_LANG_GN (c "SCM_MAKE_STR(HPDF_LANG_GN)")) ;; Guarani 
+(define-constant HPDF_LANG_GU (c "SCM_MAKE_STR(HPDF_LANG_GU)")) ;; Gujarati 
+(define-constant HPDF_LANG_HA (c "SCM_MAKE_STR(HPDF_LANG_HA)")) ;; Hausa 
+(define-constant HPDF_LANG_HI (c "SCM_MAKE_STR(HPDF_LANG_HI)")) ;; Hindi 
+(define-constant HPDF_LANG_HR (c "SCM_MAKE_STR(HPDF_LANG_HR)")) ;; Croatian 
+(define-constant HPDF_LANG_HU (c "SCM_MAKE_STR(HPDF_LANG_HU)")) ;; Hungarian 
+(define-constant HPDF_LANG_HY (c "SCM_MAKE_STR(HPDF_LANG_HY)")) ;; Armenian 
+(define-constant HPDF_LANG_IA (c "SCM_MAKE_STR(HPDF_LANG_IA)")) ;; Interlingua 
+(define-constant HPDF_LANG_IE (c "SCM_MAKE_STR(HPDF_LANG_IE)")) ;; Interlingue 
+(define-constant HPDF_LANG_IK (c "SCM_MAKE_STR(HPDF_LANG_IK)")) ;; Inupiak 
+(define-constant HPDF_LANG_IN (c "SCM_MAKE_STR(HPDF_LANG_IN)")) ;; Indonesian 
+(define-constant HPDF_LANG_IS (c "SCM_MAKE_STR(HPDF_LANG_IS)")) ;; Icelandic 
+(define-constant HPDF_LANG_IT (c "SCM_MAKE_STR(HPDF_LANG_IT)")) ;; Italian 
+(define-constant HPDF_LANG_IW (c "SCM_MAKE_STR(HPDF_LANG_IW)")) ;; Hebrew 
+(define-constant HPDF_LANG_JA (c "SCM_MAKE_STR(HPDF_LANG_JA)")) ;; Japanese 
+(define-constant HPDF_LANG_JI (c "SCM_MAKE_STR(HPDF_LANG_JI)")) ;; Yiddish 
+(define-constant HPDF_LANG_JW (c "SCM_MAKE_STR(HPDF_LANG_JW)")) ;; Javanese 
+(define-constant HPDF_LANG_KA (c "SCM_MAKE_STR(HPDF_LANG_KA)")) ;; Georgian 
+(define-constant HPDF_LANG_KK (c "SCM_MAKE_STR(HPDF_LANG_KK)")) ;; Kazakh 
+(define-constant HPDF_LANG_KL (c "SCM_MAKE_STR(HPDF_LANG_KL)")) ;; Greenlandic 
+(define-constant HPDF_LANG_KM (c "SCM_MAKE_STR(HPDF_LANG_KM)")) ;; Cambodian 
+(define-constant HPDF_LANG_KN (c "SCM_MAKE_STR(HPDF_LANG_KN)")) ;; Kannada 
+(define-constant HPDF_LANG_KO (c "SCM_MAKE_STR(HPDF_LANG_KO)")) ;; Korean 
+(define-constant HPDF_LANG_KS (c "SCM_MAKE_STR(HPDF_LANG_KS)")) ;; Kashmiri 
+(define-constant HPDF_LANG_KU (c "SCM_MAKE_STR(HPDF_LANG_KU)")) ;; Kurdish 
+(define-constant HPDF_LANG_KY (c "SCM_MAKE_STR(HPDF_LANG_KY)")) ;; Kirghiz 
+(define-constant HPDF_LANG_LA (c "SCM_MAKE_STR(HPDF_LANG_LA)")) ;; Latin 
+(define-constant HPDF_LANG_LN (c "SCM_MAKE_STR(HPDF_LANG_LN)")) ;; Lingala 
+(define-constant HPDF_LANG_LO (c "SCM_MAKE_STR(HPDF_LANG_LO)")) ;; Laothian 
+(define-constant HPDF_LANG_LT (c "SCM_MAKE_STR(HPDF_LANG_LT)")) ;; Lithuanian 
+(define-constant HPDF_LANG_LV (c "SCM_MAKE_STR(HPDF_LANG_LV)")) ;; Latvian,Lettish 
+(define-constant HPDF_LANG_MG (c "SCM_MAKE_STR(HPDF_LANG_MG)")) ;; Malagasy 
+(define-constant HPDF_LANG_MI (c "SCM_MAKE_STR(HPDF_LANG_MI)")) ;; Maori 
+(define-constant HPDF_LANG_MK (c "SCM_MAKE_STR(HPDF_LANG_MK)")) ;; Macedonian 
+(define-constant HPDF_LANG_ML (c "SCM_MAKE_STR(HPDF_LANG_ML)")) ;; Malayalam 
+(define-constant HPDF_LANG_MN (c "SCM_MAKE_STR(HPDF_LANG_MN)")) ;; Mongolian 
+(define-constant HPDF_LANG_MO (c "SCM_MAKE_STR(HPDF_LANG_MO)")) ;; Moldavian 
+(define-constant HPDF_LANG_MR (c "SCM_MAKE_STR(HPDF_LANG_MR)")) ;; Marathi 
+(define-constant HPDF_LANG_MS (c "SCM_MAKE_STR(HPDF_LANG_MS)")) ;; Malay 
+(define-constant HPDF_LANG_MT (c "SCM_MAKE_STR(HPDF_LANG_MT)")) ;; Maltese 
+(define-constant HPDF_LANG_MY (c "SCM_MAKE_STR(HPDF_LANG_MY)")) ;; Burmese 
+(define-constant HPDF_LANG_NA (c "SCM_MAKE_STR(HPDF_LANG_NA)")) ;; Nauru 
+(define-constant HPDF_LANG_NE (c "SCM_MAKE_STR(HPDF_LANG_NE)")) ;; Nepali 
+(define-constant HPDF_LANG_NL (c "SCM_MAKE_STR(HPDF_LANG_NL)")) ;; Dutch 
+(define-constant HPDF_LANG_NO (c "SCM_MAKE_STR(HPDF_LANG_NO)")) ;; Norwegian 
+(define-constant HPDF_LANG_OC (c "SCM_MAKE_STR(HPDF_LANG_OC)")) ;; Occitan 
+(define-constant HPDF_LANG_OM (c "SCM_MAKE_STR(HPDF_LANG_OM)")) ;; (Afan)Oromo 
+(define-constant HPDF_LANG_OR (c "SCM_MAKE_STR(HPDF_LANG_OR)")) ;; Oriya 
+(define-constant HPDF_LANG_PA (c "SCM_MAKE_STR(HPDF_LANG_PA)")) ;; Punjabi 
+(define-constant HPDF_LANG_PL (c "SCM_MAKE_STR(HPDF_LANG_PL)")) ;; Polish 
+(define-constant HPDF_LANG_PS (c "SCM_MAKE_STR(HPDF_LANG_PS)")) ;; Pashto,Pushto 
+(define-constant HPDF_LANG_PT (c "SCM_MAKE_STR(HPDF_LANG_PT)")) ;; Portuguese  
+(define-constant HPDF_LANG_QU (c "SCM_MAKE_STR(HPDF_LANG_QU)")) ;; Quechua 
+(define-constant HPDF_LANG_RM (c "SCM_MAKE_STR(HPDF_LANG_RM)")) ;; Rhaeto-Romance 
+(define-constant HPDF_LANG_RN (c "SCM_MAKE_STR(HPDF_LANG_RN)")) ;; Kirundi 
+(define-constant HPDF_LANG_RO (c "SCM_MAKE_STR(HPDF_LANG_RO)")) ;; Romanian 
+(define-constant HPDF_LANG_RU (c "SCM_MAKE_STR(HPDF_LANG_RU)")) ;; Russian 
+(define-constant HPDF_LANG_RW (c "SCM_MAKE_STR(HPDF_LANG_RW)")) ;; Kinyarwanda 
+(define-constant HPDF_LANG_SA (c "SCM_MAKE_STR(HPDF_LANG_SA)")) ;; Sanskrit 
+(define-constant HPDF_LANG_SD (c "SCM_MAKE_STR(HPDF_LANG_SD)")) ;; Sindhi 
+(define-constant HPDF_LANG_SG (c "SCM_MAKE_STR(HPDF_LANG_SG)")) ;; Sangro 
+(define-constant HPDF_LANG_SH (c "SCM_MAKE_STR(HPDF_LANG_SH)")) ;; Serbo-Croatian 
+(define-constant HPDF_LANG_SI (c "SCM_MAKE_STR(HPDF_LANG_SI)")) ;; Singhalese 
+(define-constant HPDF_LANG_SK (c "SCM_MAKE_STR(HPDF_LANG_SK)")) ;; Slovak 
+(define-constant HPDF_LANG_SL (c "SCM_MAKE_STR(HPDF_LANG_SL)")) ;; Slovenian 
+(define-constant HPDF_LANG_SM (c "SCM_MAKE_STR(HPDF_LANG_SM)")) ;; Samoan 
+(define-constant HPDF_LANG_SN (c "SCM_MAKE_STR(HPDF_LANG_SN)")) ;; Shona 
+(define-constant HPDF_LANG_SO (c "SCM_MAKE_STR(HPDF_LANG_SO)")) ;; Somali 
+(define-constant HPDF_LANG_SQ (c "SCM_MAKE_STR(HPDF_LANG_SQ)")) ;; Albanian 
+(define-constant HPDF_LANG_SR (c "SCM_MAKE_STR(HPDF_LANG_SR)")) ;; Serbian 
+(define-constant HPDF_LANG_SS (c "SCM_MAKE_STR(HPDF_LANG_SS)")) ;; Siswati 
+(define-constant HPDF_LANG_ST (c "SCM_MAKE_STR(HPDF_LANG_ST)")) ;; Sesotho 
+(define-constant HPDF_LANG_SU (c "SCM_MAKE_STR(HPDF_LANG_SU)")) ;; Sundanese 
+(define-constant HPDF_LANG_SV (c "SCM_MAKE_STR(HPDF_LANG_SV)")) ;; Swedish 
+(define-constant HPDF_LANG_SW (c "SCM_MAKE_STR(HPDF_LANG_SW)")) ;; Swahili 
+(define-constant HPDF_LANG_TA (c "SCM_MAKE_STR(HPDF_LANG_TA)")) ;; Tamil 
+(define-constant HPDF_LANG_TE (c "SCM_MAKE_STR(HPDF_LANG_TE)")) ;; Tegulu 
+(define-constant HPDF_LANG_TG (c "SCM_MAKE_STR(HPDF_LANG_TG)")) ;; Tajik 
+(define-constant HPDF_LANG_TH (c "SCM_MAKE_STR(HPDF_LANG_TH)")) ;; Thai 
+(define-constant HPDF_LANG_TI (c "SCM_MAKE_STR(HPDF_LANG_TI)")) ;; Tigrinya 
+(define-constant HPDF_LANG_TK (c "SCM_MAKE_STR(HPDF_LANG_TK)")) ;; Turkmen 
+(define-constant HPDF_LANG_TL (c "SCM_MAKE_STR(HPDF_LANG_TL)")) ;; Tagalog 
+(define-constant HPDF_LANG_TN (c "SCM_MAKE_STR(HPDF_LANG_TN)")) ;; Setswanato Tonga 
+(define-constant HPDF_LANG_TR (c "SCM_MAKE_STR(HPDF_LANG_TR)")) ;; Turkish 
+(define-constant HPDF_LANG_TS (c "SCM_MAKE_STR(HPDF_LANG_TS)")) ;; Tsonga 
+(define-constant HPDF_LANG_TT (c "SCM_MAKE_STR(HPDF_LANG_TT)")) ;; Tatar 
+(define-constant HPDF_LANG_TW (c "SCM_MAKE_STR(HPDF_LANG_TW)")) ;; Twi 
+(define-constant HPDF_LANG_UK (c "SCM_MAKE_STR(HPDF_LANG_UK)")) ;; Ukrainian 
+(define-constant HPDF_LANG_UR (c "SCM_MAKE_STR(HPDF_LANG_UR)")) ;; Urdu 
+(define-constant HPDF_LANG_UZ (c "SCM_MAKE_STR(HPDF_LANG_UZ)")) ;; Uzbek 
+(define-constant HPDF_LANG_VI (c "SCM_MAKE_STR(HPDF_LANG_VI)")) ;; Vietnamese 
+(define-constant HPDF_LANG_VO (c "SCM_MAKE_STR(HPDF_LANG_VO)")) ;; Volapuk 
+(define-constant HPDF_LANG_WO (c "SCM_MAKE_STR(HPDF_LANG_WO)")) ;; Wolof 
+(define-constant HPDF_LANG_XH (c "SCM_MAKE_STR(HPDF_LANG_XH)")) ;; Xhosa 
+(define-constant HPDF_LANG_YO (c "SCM_MAKE_STR(HPDF_LANG_YO)")) ;; Yoruba 
+(define-constant HPDF_LANG_ZH (c "SCM_MAKE_STR(HPDF_LANG_ZH)")) ;; Chinese
+(define-constant HPDF_LANG_ZU (c "SCM_MAKE_STR(HPDF_LANG_ZU)")) ;; Zulu
+
+;; Graphic mode
+(define-enum HPDF_GMODE_PAGE_DESCRIPTION)
+(define-enum HPDF_GMODE_PATH_OBJECT)
+(define-enum HPDF_GMODE_TEXT_OBJECT)
+(define-enum HPDF_GMODE_CLIPPING_PATH)
+(define-enum HPDF_GMODE_SHADING)
+(define-enum HPDF_GMODE_INLINE_IMAGE)
+(define-enum HPDF_GMODE_EXTERNAL_OBJECT)
+
+;; Local variables:
+;; mode: scheme
+;; end:
