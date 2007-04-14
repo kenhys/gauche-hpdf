@@ -89,7 +89,7 @@
     hpdf-page-concat
     hpdf-page-moveto
     hpdf-page-lineto
-    ;;hpdf-page-curveto
+    hpdf-page-curveto
     hpdf-page-curveto2
     hpdf-page-curveto3
     hpdf-page-closepath

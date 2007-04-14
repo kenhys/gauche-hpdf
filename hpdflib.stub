@@ -356,11 +356,15 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-getversion () 
   (body <const-cstring> "SCM_RESULT = HPDF_GetVersion();"))
 
-(define-cproc hpdf-new (c::<closure>) 
+(define-cproc hpdf-new (&optional callback)
   (body <hDoc>
   "  ScmHpdfDoc *h = SCM_NEW(ScmHpdfDoc);
   SCM_SET_CLASS(h, SCM_CLASS_HDOC);
-  h->h = HPDF_New(hpdf_error_handler, (void *)c);
+  if (callback) {
+    h->h = HPDF_New(hpdf_error_handler, (void *)callback);
+  } else {
+    h->h = HPDF_New(hpdf_error_handler, NULL);
+  }
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-free (c::<hDoc>)

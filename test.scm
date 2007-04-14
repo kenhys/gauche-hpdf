@@ -398,19 +398,19 @@
 (test* "HPDF_LANG_ZH" "zh" HPDF_LANG_ZH) ;; Chinese
 (test* "HPDF_LANG_ZU" "zu" HPDF_LANG_ZU) ;; Zulu
 
-(let* ((doc (hpdf-new (lambda p (print 'a)))))
+(let* ((doc (hpdf-new)))
   (hpdf-savetofile doc "test/page_0.pdf"))
 
-(let* ((doc (hpdf-new (lambda p (print 'a))))
+(let* ((doc (hpdf-new))
        (page_1 (hpdf-addpage doc)))
   (hpdf-savetofile doc "test/page_1.pdf"))
 
-(let* ((doc (hpdf-new (lambda p (print 'a))))
+(let* ((doc (hpdf-new))
        (page_1 (hpdf-addpage doc))
        (page_1 (hpdf-addpage doc)))
   (hpdf-savetofile doc "test/page_2.pdf"))
 
-(let* ((doc (hpdf-new (lambda p (print 'a))))
+(let* ((doc (hpdf-new))
        (page_1 (hpdf-addpage doc))
        (dummy (hpdf-savetofile doc "test/page1_1.pdf"))
        (page_1 (hpdf-addpage doc))
@@ -418,7 +418,7 @@
        )
   (hpdf-savetofile doc "test/page1.pdf"))
 
-(let* ((doc (hpdf-new (lambda p (print 'a))))
+(let* ((doc (hpdf-new))
        (font (hpdf-getfont doc "Helvetica" ""))
        (page_1 (hpdf-addpage doc))
        (font (hpdf-page-setfontandsize page_1 font 14))
