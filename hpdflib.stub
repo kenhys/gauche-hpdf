@@ -339,6 +339,20 @@ SCM_CLASS_DECL(Scm_HpdfDashModeClass);
 ()
 ())
 
+"
+typedef struct ScmHpdfDateRec {
+SCM_HEADER;
+HPDF_Date h;
+} ScmHpdfDate;
+
+SCM_CLASS_DECL(Scm_HpdfDateClass);
+ #define SCM_CLASS_HPDFDATE (&Scm_HpdfDateClass)
+ #define SCM_HPDFDATE(obj) ((ScmHpdfDate*)(obj))
+ #define SCM_HPDFDATEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDATE))
+"
+(define-cclass <hPdfDate> "ScmHpdfDate*" "Scm_HpdfDateClass"
+()
+())
 ;;
 ;; The following entry is a procedure
 ;;
@@ -1031,6 +1045,17 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 
 (define-cproc hpdf-image-set-mask-image (image::<hImage> mask_image::<hImage>)
   (body <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h);"))
+
+
+;; Info Dictionary
+(define-cproc hpdf-set-info-attr (doc::<hDoc> type::<fixnum> value::<const-cstring>)
+  (body <ulong> "SCM_RESULT = HPDF_SetInfoAttr(doc->h, type, value);"))
+
+(define-cproc hpdf-get-info-attr (doc::<hDoc> type::<fixnum>)
+  (body <const-cstring> "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type);"))
+
+(define-cproc hpdf-set-info-date-attr (doc::<hDoc> type::<fixnum> date::<hPdfDate>)
+  (body <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h);"))
 
 ;;
 ;; Constants

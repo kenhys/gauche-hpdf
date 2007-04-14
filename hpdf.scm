@@ -105,6 +105,11 @@
     hpdf-image-set-color-mask
     hpdf-image-set-mask-image
     
+    ;; Info Dictionary
+    hpdf-set-info-attr
+    hpdf-get-info-attr
+    hpdf-set-info-date-attr
+
     hpdf-page-textwidth
     ;;hpdf-page-measuretext
     hpdf-page-getgmode
