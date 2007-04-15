@@ -222,7 +222,7 @@ SCM_CLASS_DECL(Scm_HpdfRectClass);
 "
 typedef struct ScmHpdfBoxRec {
 SCM_HEADER;
-HPDF_Box h;
+HPDF_Rect h;
 } ScmHpdfBox;
 
 SCM_CLASS_DECL(Scm_HpdfBoxClass);
@@ -230,7 +230,7 @@ SCM_CLASS_DECL(Scm_HpdfBoxClass);
  #define SCM_HPDFBOX(obj) ((ScmHpdfBox*)(obj))
  #define SCM_HPDFBOXP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFBOX))
 "
-(define-cclass <hPdfBox> "ScmHpdfBox*" "Scm_HpdfBoxClass"
+(define-cclass <hpdf-box> "ScmHpdfBox*" "Scm_HpdfBoxClass"
 ()
 ())
 
@@ -353,6 +353,22 @@ SCM_CLASS_DECL(Scm_HpdfDateClass);
 (define-cclass <hPdfDate> "ScmHpdfDate*" "Scm_HpdfDateClass"
 ()
 ())
+
+"
+typedef struct ScmHpdfTextWidthRec {
+SCM_HEADER;
+HPDF_TextWidth h;
+} ScmHpdfTextWidth;
+
+SCM_CLASS_DECL(Scm_HpdfTextWidthClass);
+ #define SCM_CLASS_HPDFTEXTWIDTH (&Scm_HpdfTextWidthClass)
+ #define SCM_HPDFTEXTWIDTH(obj) ((ScmHpdfTextWidth*)(obj))
+ #define SCM_HPDFTEXTWIDTHP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTEXTWIDTH))
+"
+(define-cclass <hpdf-textwidth> "ScmHpdfTextWidth*" "Scm_HpdfTextWidthClass"
+()
+())
+
 ;;
 ;; The following entry is a procedure
 ;;
@@ -1057,6 +1073,71 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-set-info-date-attr (doc::<hDoc> type::<fixnum> date::<hPdfDate>)
   (body <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h);"))
 
+;; encryption
+(define-cproc hpdf-set-password (doc::<hDoc> owner_passwd::<const-cstring> user_passwd::<const-cstring>)
+  (body <ulong> "SCM_RESULT = HPDF_SetPassword(doc->h, owner_passwd, user_passwd);"))
+
+(define-cproc hpdf-set-permission (doc::<hDoc> permission::<uint>)
+  (body <ulong> "SCM_RESULT = HPDF_SetPermission(doc->h, permission);"))
+
+(define-cproc hpdf-set-encryption-mode (doc::<hDoc> mode::<fixnum> key_len::<uint>)
+  (body <ulong> "SCM_RESULT = HPDF_SetEncryptionMode(doc->h, mode, key_len);"))
+
+;; compression
+(define-cproc hpdf-set-compression-mode (doc::<hDoc> mode::<uint>)
+  (body <ulong> "SCM_RESULT = HPDF_SetCompressionMode(doc->h, mode);"))
+
+;; font
+(define-cproc hpdf-font-get-font-name (font::<hFont>)
+  (body <const-cstring> "SCM_RESULT = HPDF_Font_GetFontName(font->h);"))
+
+(define-cproc hpdf-font-get-encoding-name (font::<hFont>)
+  (body <const-cstring> "SCM_RESULT = HPDF_Font_GetEncodingName(font->h);"))
+
+(define-cproc hpdf-font-get-unicode-width (font::<hFont> code::<uint16>)
+  (body <int> "SCM_RESULT = HPDF_Font_GetUnicodeWidth(font->h, code);"))
+
+(define-cproc hpdf-font-get-bbox (font::<hFont>)
+  (body <hpdf-box>
+        "  ScmHpdfBox *h = SCM_NEW(ScmHpdfBox);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFBOX);
+  h->h = HPDF_Font_GetBBox(font->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-font-get-ascent (font::<hFont>)
+  (body <int> "SCM_RESULT = HPDF_Font_GetAscent(font->h);"))
+
+(define-cproc hpdf-font-get-descent (font::<hFont>)
+  (body <int> "SCM_RESULT = HPDF_Font_GetDescent(font->h);"))
+
+(define-cproc hpdf-font-get-xheight (font::<hFont>)
+  (body <uint> "SCM_RESULT = HPDF_Font_GetXHeight(font->h);"))
+
+(define-cproc hpdf-font-get-cap-height (font::<hFont>)
+  (body <uint> "SCM_RESULT = HPDF_Font_GetCapHeight(font->h);"))
+
+(define-cproc hpdf-font-text-width (font::<hFont> text::<const-cstring> len::<uint>)
+  (body <hpdf-textwidth>
+        "  ScmHpdfTextWidth *h = SCM_NEW(ScmHpdfTextWidth);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFTEXTWIDTH);
+  h->h = HPDF_Font_TextWidth(font->h, text, len);
+  SCM_RESULT = h;"))
+
+"
+/*
+HPDF_EXPORT(HPDF_UINT)
+HPDF_Font_MeasureText (HPDF_Font          font,
+                       const HPDF_BYTE   *text,
+                       HPDF_UINT          len,
+                       HPDF_REAL          width,
+                       HPDF_REAL          font_size,
+                       HPDF_REAL          char_space,
+                       HPDF_REAL          word_space,
+                       HPDF_BOOL          wordwrap,
+                       HPDF_REAL         *real_width);
+
+*/
+"
 ;;
 ;; Constants
 ;;

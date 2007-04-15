@@ -19,7 +19,7 @@
 
     ;; primitive class
     <hPdfPoint>
-    <hPdfBox>
+    <hpdf-box>
     <hPdfRect>
     <hPdfRGBColor>
     <hPdfCMYKColor>
@@ -110,6 +110,26 @@
     hpdf-get-info-attr
     hpdf-set-info-date-attr
 
+    ;; encryption
+    hpdf-set-password
+    hpdf-set-permission
+    hpdf-set-encryption-mode
+
+    ;; compression
+    hpdf-set-compression-mode
+
+    ;; font
+    hpdf-font-get-font-name
+    hpdf-font-get-encoding-name
+    hpdf-font-get-unicode-width
+    hpdf-font-get-bbox
+    hpdf-font-get-ascent
+    hpdf-font-get-descent
+    hpdf-font-get-xheight
+    hpdf-font-get-cap-height
+    hpdf-font-text-width
+    
+    
     hpdf-page-textwidth
     ;;hpdf-page-measuretext
     hpdf-page-getgmode
