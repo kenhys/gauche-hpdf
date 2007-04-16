@@ -4,25 +4,25 @@
 
 (define-module hpdf
   (export
-    <hDoc>
-    <hPage>
-    <hPages>
-    <hStream>
-    <hImage>
-    <hFont>
-    <hOutline>
-    <hEncoder>
-    <hDestination>
-    <hXObject>
-    <hAnnotation>
-    <hExtGState>
+    <hpdf-doc>
+    <hpdf-page>
+    <hpdf-pages>
+    <hpdf-stream>
+    <hpdf-image>
+    <hpdf-font>
+    <hpdf-outline>
+    <hpdf-encoder>
+    <hpdf-destination>
+    <hpdf-xobject>
+    <hpdf-annotation>
+    <hpdf-extgstate>
 
     ;; primitive class
-    <hPdfPoint>
+    <hpdf-point>
     <hpdf-box>
-    <hPdfRect>
-    <hPdfRGBColor>
-    <hPdfCMYKColor>
+    <hpdf-rect>
+    <hpdf-rgbcolor>
+    <hpdf-cmykcolor>
 
     hpdf-getversion
     hpdf-new
