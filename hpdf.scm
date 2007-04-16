@@ -23,7 +23,8 @@
     <hpdf-rect>
     <hpdf-rgbcolor>
     <hpdf-cmykcolor>
-
+    <hpdf-transmatrix>
+    
     hpdf-getversion
     hpdf-new
     hpdf-free
@@ -129,39 +130,48 @@
     hpdf-font-get-cap-height
     hpdf-font-text-width
     
-    
-    hpdf-page-textwidth
-    ;;hpdf-page-measuretext
-    hpdf-page-getgmode
-    hpdf-page-getcurrentpos
-    hpdf-page-getcurrenttextpos
-    hpdf-page-getcurrentfont
-    hpdf-page-getcurrentfontsize
-    hpdf-page-gettransmatrix
-    hpdf-page-getlinewidth
-    hpdf-page-getlinecap
-    hpdf-page-getlinejoin
-    hpdf-page-getmiterlimit
-    hpdf-page-getdash
-    hpdf-page-getflat
-    hpdf-page-getcharspace
-    hpdf-page-getwordspace
-    hpdf-page-gethorizontalscalling
-    hpdf-page-gettextleading
-    hpdf-page-gettextrenderingmode
-    hpdf-page-gettextrise
-    hpdf-page-getrgbfill
-    hpdf-page-getrgbstroke
-    hpdf-page-getcmykfill
-    hpdf-page-getcmykstroke
-    hpdf-page-getgrayfill
-    hpdf-page-getgraystroke
-    hpdf-page-getstrokingcolorspace
-    hpdf-page-getfillingcolorspace
-    hpdf-page-gettextmatrix
-    hpdf-page-getgstatedepth
-    hpdf-page-setslideshow
+    ;; extended graphics state
+    hpdf-create-ext-gstate
+    hpdf-ext-gstate-set-alpha-stroke
+    hpdf-ext-gstate-set-alpha-fill
+    hpdf-ext-gstate-set-blend-mode
 
+    hpdf-page-text-width  
+    ;;hpdf-page-measuretext  
+    hpdf-page-get-width
+    hpdf-page-get-height
+    hpdf-page-get-gmode
+    hpdf-page-get-current-pos
+    ;;hpdf-page-get-current-pos2  
+    hpdf-page-get-current-text-pos
+    ;;hpdf-page-get-current-text-pos2  
+    hpdf-page-get-current-font
+    hpdf-page-get-current-font-size
+    hpdf-page-get-transmatrix
+    hpdf-page-get-line-width
+    hpdf-page-get-line-cap
+    hpdf-page-get-line-join
+    hpdf-page-get-miter-limit
+    hpdf-page-get-dash
+    hpdf-page-get-flat
+    hpdf-page-get-char-space
+    hpdf-page-get-word-space
+    hpdf-page-get-horizontal-scalling
+    hpdf-page-get-text-leading
+    hpdf-page-get-text-rendering-mode
+    hpdf-page-get-text-rise
+    hpdf-page-get-rgb-fill
+    hpdf-page-get-rgb-stroke
+    hpdf-page-get-cmyk-fill
+    hpdf-page-get-cmyk-stroke
+    hpdf-page-get-gray-fill
+    hpdf-page-get-gray-stroke
+    hpdf-page-get-stroking-color-space
+    hpdf-page-get-filling-color-space
+    hpdf-page-get-textmatrix
+    hpdf-page-get-gstate-depth
+    
+    
     ;;
     ;; Graphics API
     ;;

@@ -10,9 +10,11 @@
 
 ;; The following is a dummy test code.
 ;; Replace it for your tests.
+(test-section "hpdf version")
 (test* "hpdf-getversion" "2.0.8" (hpdf-getversion))
 
 ;; Test Constant
+(test-section "hpdf constant")
 (test* "HPDF_TRUE" 1 HPDF_TRUE)
 (test* "HPDF_FALSE" 0 HPDF_FALSE)
 (test* "HPDF_OK" 0 HPDF_OK)
@@ -397,6 +399,7 @@
 (test* "HPDF_LANG_ZH" "zh" HPDF_LANG_ZH) ;; Chinese
 (test* "HPDF_LANG_ZU" "zu" HPDF_LANG_ZU) ;; Zulu
 
+(test-section "hpdf document")
 (let* ((doc (hpdf-new)))
   (hpdf-savetofile doc "test/page_0.pdf"))
 
