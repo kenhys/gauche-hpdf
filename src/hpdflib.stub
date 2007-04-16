@@ -693,12 +693,25 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-page-set-gray-fill (page::<hpdf-page> gray::<float>)
   (expr <ulong> "HPDF_Page_SetGrayFill(page->h, gray)"))
 
-(define-cproc hpdf-page-setgraystroke (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-setrgbfill (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-setrgbstroke (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-setcmykfill (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-setcmykstroke (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-executexobject (page::<hpdf-page>) (body <float> ""))
+(define-cproc hpdf-page-set-gray-stroke (page::<hpdf-page> gray::<float>)
+  (expr <ulong> "HPDF_Page_SetGrayStroke(page->h, gray)"))
+
+(define-cproc hpdf-page-set-rgb-fill (page::<hpdf-page> r::<float> g::<float> b::<float>)
+  (expr <ulong> "HPDF_Page_SetRGBFill(page->h, r, g, b)"))
+
+(define-cproc hpdf-page-set-rgb-stroke (page::<hpdf-page> r::<float> g::<float> b::<float>)
+  (expr <ulong> "HPDF_Page_SetRGBStroke(page->h, r, g, b)"))
+
+(define-cproc hpdf-page-set-cmyk-fill (page::<hpdf-page> c::<float> m::<float> y::<float> k::<float>)
+  (expr <ulong> "HPDF_Page_SetCMYKFill(page->h, c, m, y, k)"))
+
+(define-cproc hpdf-page-set-cmyk-stroke (page::<hpdf-page> c::<float> m::<float> y::<float> k::<float>)
+  (expr <ulong> "HPDF_Page_SetCMYKStroke(page->h, c, m, y, k)"))
+
+;; XObjects
+(define-cproc hpdf-page-execute-xobject (page::<hpdf-page> obj::<hpdf-xobject>)
+  (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
+
 (define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
