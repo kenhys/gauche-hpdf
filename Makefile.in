@@ -55,20 +55,14 @@ all :
 
 check : all
 	cd src; $(MAKE) check
-	if test X$(ENABLE_CG) != X; then (cd cg; $(MAKE) check); fi
+#	if test X$(ENABLE_CG) != X; then (cd cg; $(MAKE) check); fi
 
 clean :
 	rm -rf core *~
 	cd src; $(MAKE) clean
-	cd lib; $(MAKE) clean
-	cd cg;  $(MAKE) clean
-	cd doc; $(MAKE) clean
 
 distclean : clean
 	cd src; $(MAKE) distclean
-	cd lib; $(MAKE) distclean
-	cd cg;  $(MAKE) distclean
-	cd doc; $(MAKE) distclean
 	rm -rf $(CONFIG_GENERATED)
 
 install :
