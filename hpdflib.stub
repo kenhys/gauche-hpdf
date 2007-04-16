@@ -531,13 +531,13 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;
 ;; Graphics
 ;;
-(define-cproc hpdf-page-setlinewidth (page::<hpdf-page> line_width::<float>)
+(define-cproc hpdf-page-set-line-width (page::<hpdf-page> line_width::<float>)
   (body <ulong> "  SCM_RESULT = HPDF_Page_SetLineWidth(page->h, line_width);"))
 
-(define-cproc hpdf-page-setlinecap (page::<hpdf-page> cap::<hpdf-linecap>)
+(define-cproc hpdf-page-set-line-cap (page::<hpdf-page> cap::<hpdf-linecap>)
   (body <ulong> "  SCM_RESULT = HPDF_Page_SetLineCap(page->h, cap->h);"))
 
-(define-cproc hpdf-page-setlinejoin (page::<hpdf-page> join::<uint>)
+(define-cproc hpdf-page-set-line-join (page::<hpdf-page> join::<uint>)
   (body <ulong>
         "  switch (join) {
   case HPDF_MITER_JOIN:
@@ -1123,7 +1123,9 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 
 ;; obsolete
 (define-cproc hpdf-page-get-text-raise (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetTextRaise(page->h);"))
+  (body <float>
+        "Scm_Printf(SCM_CURERR, \"Warning: hpdf-page-get-text-raise is obsolete. use hpdf-page-get-text-rise instead.\");"
+        "  SCM_RESULT = HPDF_Page_GetTextRaise(page->h);"))
 
 (define-cproc hpdf-page-get-text-rise (page::<hpdf-page>)
   (body <float> "  SCM_RESULT = HPDF_Page_GetTextRise(page->h);"))
@@ -1178,6 +1180,10 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 
 (define-cproc hpdf-page-get-gstate-depth (page::<hpdf-page>)
   (body <uint> "  SCM_RESULT = HPDF_Page_GetGStateDepth(page->h);"))
+
+;;
+;; GRAPHICS OPERATORS
+;;
 
 ;;
 ;; Constants
