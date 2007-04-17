@@ -10,24 +10,24 @@
 
 (test-section "hpdf document")
 (let* ((doc (hpdf-new)))
-  (hpdf-savetofile doc "test/page_0.pdf"))
+  (hpdf-savetofile doc "page_0.pdf"))
 
 (let* ((doc (hpdf-new))
        (page_1 (hpdf-addpage doc)))
-  (hpdf-savetofile doc "test/page_1.pdf"))
+  (hpdf-savetofile doc "page_1.pdf"))
 
 (let* ((doc (hpdf-new))
        (page_1 (hpdf-addpage doc))
        (page_1 (hpdf-addpage doc)))
-  (hpdf-savetofile doc "test/page_2.pdf"))
+  (hpdf-savetofile doc "page_2.pdf"))
 
 (let* ((doc (hpdf-new))
        (page_1 (hpdf-addpage doc))
-       (dummy (hpdf-savetofile doc "test/page1_1.pdf"))
+       (dummy (hpdf-savetofile doc "page1_1.pdf"))
        (page_1 (hpdf-addpage doc))
-       (dummy (hpdf-savetofile doc "test/page1_2.pdf"))
+       (dummy (hpdf-savetofile doc "page1_2.pdf"))
        )
-  (hpdf-savetofile doc "test/page1.pdf"))
+  (hpdf-savetofile doc "page1.pdf"))
 
 (let* ((doc (hpdf-new))
        (font (hpdf-get-font doc "Helvetica" ""))
@@ -38,7 +38,7 @@
        (dummy (hpdf-page-show-text page_1 "Hello, World"))
        (dummy (hpdf-page-end-text page_1))
        )
-  (hpdf-savetofile doc "test/hpdf_showtext.pdf"))
+  (hpdf-savetofile doc "hpdf_showtext.pdf"))
 
 ;; epilogue
 (test-end)

@@ -10,16 +10,20 @@
 
 (test-section "hpdf font")
 
-(let* ((doc (hpdf-new))
-       (font (hpdf-get-font doc "Helvetica" ""))
-       (page_1 (hpdf-addpage doc))
-       (font (hpdf-page-set-font-and-size page_1 font 14))
-       (s (hpdf-page-begin-text page_1))
-       (null (print s))
-       (dummy (hpdf-page-show-text page_1 "Hello, World"))
-       (dummy (hpdf-page-end-text page_1))
-       )
-  (hpdf-savetofile doc "hpdf_showtext.pdf"))
+(define (test-hpdf-load-ttf-font-from-file file flag)
+  (let ((pdf (hpdf-new)))
+    (hpdf-load-ttf-font-from-file pdf file flag)))
+
+(test* "ipag.ttf embed" "IPAGothic" (test-hpdf-load-ttf-font-from-file "ipag.ttf" HPDF_TRUE))
+(test* "ipag.ttf non-embed" "IPAGothic" (test-hpdf-load-ttf-font-from-file "ipag.ttf" HPDF_FALSE))
+(test* "ipagp.ttf embed" "IPAPGothic" (test-hpdf-load-ttf-font-from-file "ipagp.ttf" HPDF_TRUE))
+(test* "ipagp.ttf non-embed" "IPAPGothic" (test-hpdf-load-ttf-font-from-file "ipagp.ttf" HPDF_FALSE))
+(test* "ipagui.ttf embed" "IPAUIGothic" (test-hpdf-load-ttf-font-from-file "ipagui.ttf" HPDF_TRUE))
+(test* "ipagui.ttf non-embed" "IPAUIGothic" (test-hpdf-load-ttf-font-from-file "ipagui.ttf" HPDF_FALSE))
+(test* "ipam.ttf embed" "IPAMincho" (test-hpdf-load-ttf-font-from-file "ipam.ttf" HPDF_TRUE))
+(test* "ipam.ttf non-embed" "IPAMincho" (test-hpdf-load-ttf-font-from-file "ipam.ttf" HPDF_FALSE))
+(test* "ipamp.ttf embed" "IPAPMincho" (test-hpdf-load-ttf-font-from-file "ipamp.ttf" HPDF_TRUE))
+(test* "ipamp.ttf non-embed" "IPAPMincho" (test-hpdf-load-ttf-font-from-file "ipamp.ttf" HPDF_FALSE))
 
 ;; epilogue
 (test-end)
