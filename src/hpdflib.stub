@@ -553,8 +553,8 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   (expr <ulong> "HPDF_Page_SetMiterLimit(page->h, miter_limit)"))
 
 ;; FIXME
-(define-cproc hpdf-page-set-dash (page::<hpdf-page> dash num_param::<uint> phase::<uint>)
-  (body <ulong> "SCM_RESULT = HPDF_Page_SetDash(page->h, dash, num_param, phase);"))
+(define-cproc hpdf-page-set-dash (page::<hpdf-page> dash::<foreign-pointer> num_param::<uint> phase::<uint>)
+  (expr <ulong> "HPDF_Page_SetDash(page->h, SCM_FOREIGN_POINTER(dash)->ptr, num_param, phase)"))
 
 (define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
   (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))
@@ -1017,21 +1017,15 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   h->h = HPDF_Font_TextWidth(font->h, text, len);
   SCM_RESULT = h;"))
 
-"
-/*
-HPDF_EXPORT(HPDF_UINT)
-HPDF_Font_MeasureText (HPDF_Font          font,
-                       const HPDF_BYTE   *text,
-                       HPDF_UINT          len,
-                       HPDF_REAL          width,
-                       HPDF_REAL          font_size,
-                       HPDF_REAL          char_space,
-                       HPDF_REAL          word_space,
-                       HPDF_BOOL          wordwrap,
-                       HPDF_REAL         *real_width);
-
-*/
-"
+(define-cproc hpdf-font-measure-text (font::<hpdf-font>
+                                      text::<foreign-pointer>
+                                      len::<uint> width::<float> font_size::<float>
+                                      char_space::<float> word_space::<float> wordwrap::<float>
+                                      real_width::<foreign-pointer>)
+  (body <uint>
+        "HPDF_Font_MeasureText(font->h,"
+        "SCM_FOREIGN_POINTER(text)->ptr, len, width, font_size, char_space, word_space, wordwrap,"
+        "SCM_FOREIGN_POINTER(real_width)->ptr);"))
 
 ;; extended graphics state
 (define-cproc hpdf-create-ext-gstate (doc::<hpdf-doc>)
@@ -1134,7 +1128,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-page-get-miter-limit (page::<hpdf-page>)
-  (expr <float> "HPDF_Page_GetMiterLimit(page->h);"))
+  (expr <float> "HPDF_Page_GetMiterLimit(page->h)"))
 
 (define-cproc hpdf-page-get-dash (page::<hpdf-page>)
   (body <hpdf-dashmode>
