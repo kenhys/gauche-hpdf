@@ -49,7 +49,11 @@ GAUCHE_PKGARCHDIR = $(DESTDIR)@GAUCHE_PKGARCHDIR@
 
 check :
 	@rm -f test.log
-	$(GOSH) -I. -I../lib -I../src const.scm > ../test/test.log
+	$(GOSH) -I. -I../lib -I../src const.scm > const.log
+	$(GOSH) -I. -I../lib -I../src font.scm > font.log
+	$(GOSH) -I. -I../lib -I../src test.scm > test.log
+	$(GOSH) -I. -I../lib -I../src doc.scm > doc.log
+	$(GOSH) -I. -I../lib -I../src page.scm > page.log
 
 install : all
 	$(INSTALL) -m 444 -T $(GAUCHE_PKGINCDIR) $(HEADERS)
