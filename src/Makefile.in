@@ -58,10 +58,6 @@ hpdf.$(SOEXT): $(hpdf_SRCS)
 --libs="$(LIBS)" \
 hpdf $(hpdf_SRCS)
 
-check : all
-	@rm -f test.log
-	$(GOSH) -I. -I../lib ../test/test.scm > ../test/test.log
-
 install : all
 	$(INSTALL) -m 444 -T $(GAUCHE_PKGINCDIR) $(HEADERS)
 	$(INSTALL) -m 444 -T $(GAUCHE_PKGLIBDIR) $(SCMFILES) 
