@@ -488,13 +488,13 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   (body <ulong> "  SCM_RESULT = HPDF_Page_SetWidth(page->h, v);"))
 
 (define-cproc hpdf-page-set-height (page::<hpdf-page> v::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetHeight(page->h, v);"))
+  (body <ulong> "HPDF_Page_SetHeight(page->h, v);"))
 
 (define-cproc hpdf-page-set-size (page::<hpdf-page> psize::<uint> pdirect::<uint>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetSize(page->h, psize, pdirect);"))
+  (body <ulong> "HPDF_Page_SetSize(page->h, psize, pdirect);"))
 
 (define-cproc hpdf-page-set-rotate (page::<hpdf-page> angle::<uint16>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetRotate(page->h, angle);"))
+  (body <ulong> "HPDF_Page_SetRotate(page->h, angle);"))
 
 
 
@@ -524,7 +524,7 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;  (body <uint> "  SCM_RESULT = HPDF_Page_MeasureText(page->h, s, width, wordwrap, rwidth);"))
 
 (define-cproc hpdf-page-setslideshow (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetSlideShow(page->h, type, disp, trans);"))
+  (body <ulong> "HPDF_Page_SetSlideShow(page->h, type, disp, trans);"))
 
 
 
@@ -532,10 +532,10 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 ;; Graphics
 ;;
 (define-cproc hpdf-page-set-line-width (page::<hpdf-page> line_width::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetLineWidth(page->h, line_width);"))
+  (body <ulong> "HPDF_Page_SetLineWidth(page->h, line_width);"))
 
 (define-cproc hpdf-page-set-line-cap (page::<hpdf-page> cap::<hpdf-linecap>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetLineCap(page->h, cap->h);"))
+  (body <ulong> "HPDF_Page_SetLineCap(page->h, cap->h);"))
 
 (define-cproc hpdf-page-set-line-join (page::<hpdf-page> join::<uint>)
   (body <ulong>
@@ -550,24 +550,24 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   SCM_RESULT = HPDF_Page_SetLineJoin(page->h, join);"))
 
 (define-cproc hpdf-page-set-miter-limit (page::<hpdf-page> miter_limit::<float>)
-  (body <ulong> "SCM_RESULT = HPDF_Page_SetMiterLimit(page->h, miter_limit);"))
+  (expr <ulong> "HPDF_Page_SetMiterLimit(page->h, miter_limit)"))
 
 ;; FIXME
 (define-cproc hpdf-page-set-dash (page::<hpdf-page> dash num_param::<uint> phase::<uint>)
   (body <ulong> "SCM_RESULT = HPDF_Page_SetDash(page->h, dash, num_param, phase);"))
 
 (define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
-  (body <ulong> "SCM_RESULT = HPDF_Page_SetFlat(page->h, flatness);"))
+  (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))
 
 (define-cproc hpdf-page-setextgstate (page::<hpdf-page> ext_gstate::<hpdf-extgstate>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_SetExtGState(page->h, ext_gstate->h);"))
+  (expr <ulong> "HPDF_Page_SetExtGState(page->h, ext_gstate->h)"))
 
 ;; Special graphic state operator
 (define-cproc hpdf-page-gsave (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_GSave(page->h);"))
+  (body <ulong> "HPDF_Page_GSave(page->h);"))
 
 (define-cproc hpdf-page-grestore (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_GRestore(page->h);"))
+  (body <ulong> "HPDF_Page_GRestore(page->h);"))
 
 (define-cproc hpdf-page-concat (page::<hpdf-page>
                                 a::<float>
@@ -576,57 +576,57 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
                                 d::<float>
                                 x::<float>
                                 y::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_Concat(page->h, a, b, c, d, x, y);"))
+  (body <ulong> "HPDF_Page_Concat(page->h, a, b, c, d, x, y);"))
 
 ;; Path construction operator
 (define-cproc hpdf-page-moveto (page::<hpdf-page> x::<float> y::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_MoveTo(page->h, x, y);"))
+  (body <ulong> "HPDF_Page_MoveTo(page->h, x, y);"))
 
 (define-cproc hpdf-page-lineto (page::<hpdf-page> x::<float> y::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_LineTo(page->h, x, y);"))
+  (body <ulong> "HPDF_Page_LineTo(page->h, x, y);"))
 
 (define-cproc hpdf-page-curveto (page::<hpdf-page> x1::<float> y1::<float> x2::<float> y2::<float> x3::<float> y3::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_CurveTo(page->h, x1, y1, x2, y2, x3, y3);"))
+  (body <ulong> "HPDF_Page_CurveTo(page->h, x1, y1, x2, y2, x3, y3);"))
 
 (define-cproc hpdf-page-curveto2 (page::<hpdf-page> x2::<float> y2::<float> x3::<float> y3::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_CurveTo2(page->h, x2, y2, x3, y3);"))
+  (body <ulong> "HPDF_Page_CurveTo2(page->h, x2, y2, x3, y3);"))
 
 (define-cproc hpdf-page-curveto3 (page::<hpdf-page> x1::<float> y1::<float> x3::<float> y3::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_CurveTo2(page->h, x1, y1, x3, y3);"))
+  (body <ulong> "HPDF_Page_CurveTo2(page->h, x1, y1, x3, y3);"))
 
 (define-cproc hpdf-page-close-path (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePath(page->h);"))
+  (body <ulong> "HPDF_Page_ClosePath(page->h);"))
 
 (define-cproc hpdf-page-rectangle (page::<hpdf-page> x::<float> y::<float> width::<float> height::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_Rectangle(page->h, x, y, width, height);"))
+  (body <ulong> "HPDF_Page_Rectangle(page->h, x, y, width, height);"))
 
 ;; Path painting operator
 (define-cproc hpdf-page-stroke (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_Stroke(page->h);"))
+  (body <ulong> "HPDF_Page_Stroke(page->h);"))
 
 (define-cproc hpdf-page-close-path-stroke (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePathStroke(page->h);"))
+  (body <ulong> "HPDF_Page_ClosePathStroke(page->h);"))
 
 (define-cproc hpdf-page-fill (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_Fill(page->h);"))
+  (body <ulong> "HPDF_Page_Fill(page->h);"))
 
 (define-cproc hpdf-page-eo-fill (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_Eofill(page->h);"))
+  (body <ulong> "HPDF_Page_Eofill(page->h);"))
 
 (define-cproc hpdf-page-fill-stroke (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_FillStroke(page->h);"))
+  (body <ulong> "HPDF_Page_FillStroke(page->h);"))
 
 (define-cproc hpdf-page-eofill-stroke (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_EofillStroke(page->h);"))
+  (body <ulong> "HPDF_Page_EofillStroke(page->h);"))
 
 (define-cproc hpdf-page-close-path-fill-stroke (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePathFillStroke(page->h);"))
+  (body <ulong> "HPDF_Page_ClosePathFillStroke(page->h);"))
 
 (define-cproc hpdf-page-close-path-eofill-stroke (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_ClosePathEofillStroke(page->h);"))
+  (body <ulong> "HPDF_Page_ClosePathEofillStroke(page->h);"))
 
 (define-cproc hpdf-page-end-path (page::<hpdf-page>)
-  (body <ulong> "  SCM_RESULT = HPDF_Page_EndPath(page->h);"))
+  (body <ulong> "HPDF_Page_EndPath(page->h);"))
 
 ;; Clipping paths operator
 (define-cproc hpdf-page-clip (page::<hpdf-page>)
@@ -747,16 +747,16 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
         ""))
 
 (define-cproc hpdf-use-jp-fonts (doc::<hpdf-doc>)
-  (body <ulong> "  SCM_RESULT = HPDF_UseJPFonts(doc->h);"))
+  (body <ulong> "HPDF_UseJPFonts(doc->h);"))
 
 (define-cproc hpdf-use-kr-fonts (doc::<hpdf-doc>)
-  (body <ulong> "  SCM_RESULT = HPDF_UseKRFonts(doc->h);"))
+  (body <ulong> "HPDF_UseKRFonts(doc->h);"))
 
 (define-cproc hpdf-use-cns-fonts (doc::<hpdf-doc>)
-  (body <ulong> "  SCM_RESULT = HPDF_UseCNSFonts(doc->h);"))
+  (body <ulong> "HPDF_UseCNSFonts(doc->h);"))
 
 (define-cproc hpdf-use-cnt-fonts (doc::<hpdf-doc>)
-  (body <ulong> "  SCM_RESULT = HPDF_UseCNTFonts(doc->h);"))
+  (body <ulong> "HPDF_UseCNTFonts(doc->h);"))
 
 ;;
 ;; Outline
@@ -769,10 +769,10 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-set-opened (out::<hpdf-outline> opened::<boolean>)
-  (body <ulong> "  SCM_RESULT = HPDF_Outline_SetOpened(out->h, opened);"))
+  (body <ulong> "HPDF_Outline_SetOpened(out->h, opened);"))
 
 (define-cproc hpdf-set-destination (out::<hpdf-outline> dst::<hpdf-destination>)
-  (body <ulong> "  SCM_RESULT = HPDF_Outline_SetDestination(out->h, dst->h);"))
+  (body <ulong> "HPDF_Outline_SetDestination(out->h, dst->h);"))
 
 ;;
 ;; Destination
@@ -785,28 +785,28 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-destination-set-xyz (dst::<hpdf-destination> left::<float> top::<float> zoom::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetXYZ(dst->h, left, top, zoom);"))
+  (body <ulong> "HPDF_Destination_SetXYZ(dst->h, left, top, zoom);"))
 
 (define-cproc hpdf-destination-set-fit (dst::<hpdf-destination>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFit(dst->h);"))
+  (body <ulong> "HPDF_Destination_SetFit(dst->h);"))
 
 (define-cproc hpdf-destination-set-fith (dst::<hpdf-destination> top::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFitH(dst->h, top);"))
+  (body <ulong> "HPDF_Destination_SetFitH(dst->h, top);"))
 
 (define-cproc hpdf-destination-set-fitv (dst::<hpdf-destination> left::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFitV(dst->h, left);"))
+  (body <ulong> "HPDF_Destination_SetFitV(dst->h, left);"))
 
 (define-cproc hpdf-destination-set-fitr (dst::<hpdf-destination> left::<float> bottom::<float> right::<float> top::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFitR(dst->h, left, bottom, right, top);"))
+  (body <ulong> "HPDF_Destination_SetFitR(dst->h, left, bottom, right, top);"))
 
 (define-cproc hpdf-destination-set-fitb (dst::<hpdf-destination>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFitB(dst->h);"))
+  (body <ulong> "HPDF_Destination_SetFitB(dst->h);"))
 
 (define-cproc hpdf-destination-set-fitbh (dst::<hpdf-destination> top::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFitBH(dst->h, top);"))
+  (body <ulong> "HPDF_Destination_SetFitBH(dst->h, top);"))
 
 (define-cproc hpdf-destination-set-fitbv (dst::<hpdf-destination> left::<float>)
-  (body <ulong> "  SCM_RESULT = HPDF_Destination_SetFitBV(dst->h, left);"))
+  (body <ulong> "HPDF_Destination_SetFitBV(dst->h, left);"))
 
 ;;
 ;; Encoding Handler
@@ -939,57 +939,57 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;  (body <ulong> "SCM_RESULT = HPDF_Image_GetSize2 (image->h, size->h);"))
 
 (define-cproc hpdf-image-get-width (img::<hpdf-image>)
-  (body <uint> "SCM_RESULT = HPDF_Image_GetWidth(img->h);"))
+  (expr <uint> "SCM_RESULT = HPDF_Image_GetWidth(img->h)"))
 
 (define-cproc hpdf-image-get-height (image::<hpdf-image>)
-  (body <uint> "SCM_RESULT = HPDF_Image_GetHeight(image->h);"))
+  (expr <uint> "SCM_RESULT = HPDF_Image_GetHeight(image->h)"))
 
 (define-cproc hpdf-image-get-bits-per-component (image::<hpdf-image>)
-  (body <uint> "SCM_RESULT = HPDF_Image_GetBitsPerComponent(image->h);"))
+  (expr <uint> "SCM_RESULT = HPDF_Image_GetBitsPerComponent(image->h)"))
 
 (define-cproc hpdf-image-get-color-space (image::<hpdf-image>)
-  (body <const-cstring> "SCM_RESULT = HPDF_Image_GetColorSpace(image->h);"))
+  (expr <const-cstring> "SCM_RESULT = HPDF_Image_GetColorSpace(image->h)"))
 
 (define-cproc hpdf-image-set-color-mask (image::<hpdf-image> rmin::<uint> rmax::<uint> gmin::<uint> gmax::<uint> bmin::<uint> bmax::<uint>)
-  (body <ulong> "SCM_RESULT = HPDF_Image_SetColorMask(image->h, rmin, rmax, gmin, gmax, bmin, bmax);"))
+  (expr <ulong> "SCM_RESULT = HPDF_Image_SetColorMask(image->h, rmin, rmax, gmin, gmax, bmin, bmax)"))
 
 (define-cproc hpdf-image-set-mask-image (image::<hpdf-image> mask_image::<hpdf-image>)
-  (body <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h);"))
+  (expr <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h)"))
 
 
 ;; Info Dictionary
 (define-cproc hpdf-set-info-attr (doc::<hpdf-doc> type::<fixnum> value::<const-cstring>)
-  (body <ulong> "SCM_RESULT = HPDF_SetInfoAttr(doc->h, type, value);"))
+  (expr <ulong> "SCM_RESULT = HPDF_SetInfoAttr(doc->h, type, value)"))
 
 (define-cproc hpdf-get-info-attr (doc::<hpdf-doc> type::<fixnum>)
-  (body <const-cstring> "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type);"))
+  (expr <const-cstring> "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type)"))
 
 (define-cproc hpdf-set-info-date-attr (doc::<hpdf-doc> type::<fixnum> date::<hPdfDate>)
-  (body <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h);"))
+  (expr <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h)"))
 
 ;; encryption
 (define-cproc hpdf-set-password (doc::<hpdf-doc> owner_passwd::<const-cstring> user_passwd::<const-cstring>)
-  (body <ulong> "SCM_RESULT = HPDF_SetPassword(doc->h, owner_passwd, user_passwd);"))
+  (expr <ulong> "SCM_RESULT = HPDF_SetPassword(doc->h, owner_passwd, user_passwd)"))
 
 (define-cproc hpdf-set-permission (doc::<hpdf-doc> permission::<uint>)
-  (body <ulong> "SCM_RESULT = HPDF_SetPermission(doc->h, permission);"))
+  (expr <ulong> "SCM_RESULT = HPDF_SetPermission(doc->h, permission)"))
 
 (define-cproc hpdf-set-encryption-mode (doc::<hpdf-doc> mode::<fixnum> key_len::<uint>)
-  (body <ulong> "SCM_RESULT = HPDF_SetEncryptionMode(doc->h, mode, key_len);"))
+  (expr <ulong> "SCM_RESULT = HPDF_SetEncryptionMode(doc->h, mode, key_len)"))
 
 ;; compression
 (define-cproc hpdf-set-compression-mode (doc::<hpdf-doc> mode::<uint>)
-  (body <ulong> "SCM_RESULT = HPDF_SetCompressionMode(doc->h, mode);"))
+  (expr <ulong> "SCM_RESULT = HPDF_SetCompressionMode(doc->h, mode)"))
 
 ;; font
 (define-cproc hpdf-font-get-font-name (font::<hpdf-font>)
-  (body <const-cstring> "SCM_RESULT = HPDF_Font_GetFontName(font->h);"))
+  (expr <const-cstring> "SCM_RESULT = HPDF_Font_GetFontName(font->h)"))
 
 (define-cproc hpdf-font-get-encoding-name (font::<hpdf-font>)
-  (body <const-cstring> "SCM_RESULT = HPDF_Font_GetEncodingName(font->h);"))
+  (expr <const-cstring> "SCM_RESULT = HPDF_Font_GetEncodingName(font->h)"))
 
 (define-cproc hpdf-font-get-unicode-width (font::<hpdf-font> code::<uint16>)
-  (body <int> "SCM_RESULT = HPDF_Font_GetUnicodeWidth(font->h, code);"))
+  (expr <int> "SCM_RESULT = HPDF_Font_GetUnicodeWidth(font->h, code)"))
 
 (define-cproc hpdf-font-get-bbox (font::<hpdf-font>)
   (body <hpdf-box>
@@ -999,16 +999,16 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-font-get-ascent (font::<hpdf-font>)
-  (body <int> "SCM_RESULT = HPDF_Font_GetAscent(font->h);"))
+  (expr <int> "SCM_RESULT = HPDF_Font_GetAscent(font->h)"))
 
 (define-cproc hpdf-font-get-descent (font::<hpdf-font>)
-  (body <int> "SCM_RESULT = HPDF_Font_GetDescent(font->h);"))
+  (expr <int> "SCM_RESULT = HPDF_Font_GetDescent(font->h)"))
 
 (define-cproc hpdf-font-get-xheight (font::<hpdf-font>)
-  (body <uint> "SCM_RESULT = HPDF_Font_GetXHeight(font->h);"))
+  (expr <uint> "SCM_RESULT = HPDF_Font_GetXHeight(font->h)"))
 
 (define-cproc hpdf-font-get-cap-height (font::<hpdf-font>)
-  (body <uint> "SCM_RESULT = HPDF_Font_GetCapHeight(font->h);"))
+  (expr <uint> "SCM_RESULT = HPDF_Font_GetCapHeight(font->h)"))
 
 (define-cproc hpdf-font-text-width (font::<hpdf-font> text::<const-cstring> len::<uint>)
   (body <hpdf-textwidth>
@@ -1042,17 +1042,17 @@ HPDF_Font_MeasureText (HPDF_Font          font,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-ext-gstate-set-alpha-stroke (ext_gstate::<hpdf-extgstate> value::<float>)
-  (body <ulong> "SCM_RESULT = HPDF_ExtGState_SetAlphaStroke(ext_gstate->h, value);"))
+  (expr <ulong> "HPDF_ExtGState_SetAlphaStroke(ext_gstate->h, value)"))
 
 (define-cproc hpdf-ext-gstate-set-alpha-fill (ext_gstate::<hpdf-extgstate> value::<float>)
-  (body <ulong> "SCM_RESULT = HPDF_ExtGState_SetAlphaFill(ext_gstate->h, value);"))
+  (expr <ulong> "HPDF_ExtGState_SetAlphaFill(ext_gstate->h, value)"))
 
 (define-cproc hpdf-ext-gstate-set-blend-mode (ext_gstate::<hpdf-extgstate> mode::<fixnum>)
-  (body <ulong> "SCM_RESULT = HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode);"))
+  (expr <ulong> "HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode)"))
 
 ;;
 (define-cproc hpdf-page-text-width (page::<hpdf-page> text::<const-cstring>)
-  (body <float> "  SCM_RESULT = HPDF_Page_TextWidth(page->h, text);"))
+  (expr <float> "HPDF_Page_TextWidth(page->h, text)"))
 
 "
 /*
@@ -1068,13 +1068,13 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 "
 
 (define-cproc hpdf-page-get-width (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetWidth(page->h);"))
+  (expr <float> "HPDF_Page_GetWidth(page->h)"))
 
 (define-cproc hpdf-page-get-height (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetHeight(page->h);"))
+  (expr <float> "HPDF_Page_GetHeight(page->h)"))
 
 (define-cproc hpdf-page-get-gmode (page::<hpdf-page>)
-  (body <uint16> "  SCM_RESULT = HPDF_Page_GetGMode(page->h);"))
+  (expr <uint16> "HPDF_Page_GetGMode(page->h)"))
 
 (define-cproc hpdf-page-get-current-pos (page::<hpdf-page>)
   (body <hpdf-point>
@@ -1107,7 +1107,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 
 
 (define-cproc hpdf-page-get-current-font-size (page::<hpdf-page>)
-  (body <float>  "SCM_RESULT = HPDF_Page_GetCurrentFontSize(page->h);"))
+  (expr <float>  "HPDF_Page_GetCurrentFontSize(page->h)"))
 
 (define-cproc hpdf-page-get-transmatrix (page::<hpdf-page>)
   (body <hpdf-transmatrix>
@@ -1117,7 +1117,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
         "SCM_RESULT = h;"))
 
 (define-cproc hpdf-page-get-line-width (page::<hpdf-page>)
-  (body <float> "SCM_RESULT = HPDF_Page_GetLineWidth(page->h);"))
+  (expr <float> "HPDF_Page_GetLineWidth(page->h)"))
 
 (define-cproc hpdf-page-get-line-cap (page::<hpdf-page>)
   (body <hpdf-linecap>
@@ -1134,7 +1134,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-page-get-miter-limit (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetMiterLimit(page->h);"))
+  (expr <float> "HPDF_Page_GetMiterLimit(page->h);"))
 
 (define-cproc hpdf-page-get-dash (page::<hpdf-page>)
   (body <hpdf-dashmode>
@@ -1144,22 +1144,22 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-page-get-flat (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetFlat(page->h);"))
+  (expr <float> "HPDF_Page_GetFlat(page->h)"))
 
 (define-cproc hpdf-page-get-char-space (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetCharSpace(page->h);"))
+  (expr <float> "HPDF_Page_GetCharSpace(page->h)"))
 
 (define-cproc hpdf-page-get-word-space (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetWordSpace(page->h);"))
+  (expr <float> "HPDF_Page_GetWordSpace(page->h)"))
 
 (define-cproc hpdf-page-get-horizontal-scalling (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetHorizontalScalling(page->h);"))
+  (expr <float> "HPDF_Page_GetHorizontalScalling(page->h)"))
 
 (define-cproc hpdf-page-get-text-leading (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetTextLeading(page->h);"))
+  (expr <float> "HPDF_Page_GetTextLeading(page->h)"))
 
 (define-cproc hpdf-page-get-text-rendering-mode (page::<hpdf-page>)
-  (body <fixnum> "  SCM_RESULT = HPDF_Page_GetTextRenderingMode(page->h);"))
+  (expr <fixnum> "HPDF_Page_GetTextRenderingMode(page->h)"))
 
 ;; obsolete
 (define-cproc hpdf-page-get-text-raise (page::<hpdf-page>)
@@ -1168,7 +1168,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
         "  SCM_RESULT = HPDF_Page_GetTextRaise(page->h);"))
 
 (define-cproc hpdf-page-get-text-rise (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetTextRise(page->h);"))
+  (expr <float> "HPDF_Page_GetTextRise(page->h)"))
 
 (define-cproc hpdf-page-get-rgb-fill (page::<hpdf-page>)
   (body <hpdf-rgbcolor>
@@ -1200,16 +1200,16 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 
 
 (define-cproc hpdf-page-get-gray-fill (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetGrayFill(page->h);"))
+  (expr <float> "HPDF_Page_GetGrayFill(page->h)"))
 
 (define-cproc hpdf-page-get-gray-stroke (page::<hpdf-page>)
-  (body <float> "  SCM_RESULT = HPDF_Page_GetGrayStroke(page->h);"))
+  (expr <float> "HPDF_Page_GetGrayStroke(page->h)"))
 
 (define-cproc hpdf-page-get-stroking-color-space (page::<hpdf-page>)
-  (body <fixnum> "  SCM_RESULT = HPDF_Page_GetStrokingColorSpace(page->h);"))
+  (expr <fixnum> "HPDF_Page_GetStrokingColorSpace(page->h)"))
 
 (define-cproc hpdf-page-get-filling-color-space (page::<hpdf-page>)
-  (body <fixnum> "  SCM_RESULT = HPDF_Page_GetFillingColorSpace(page->h);"))
+  (expr <fixnum> "HPDF_Page_GetFillingColorSpace(page->h)"))
 
 (define-cproc hpdf-page-get-textmatrix (page::<hpdf-page>)
   (body <hpdf-transmatrix>
@@ -1219,7 +1219,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
   SCM_RESULT = h;"))
 
 (define-cproc hpdf-page-get-gstate-depth (page::<hpdf-page>)
-  (body <uint> "  SCM_RESULT = HPDF_Page_GetGStateDepth(page->h);"))
+  (expr <uint> "HPDF_Page_GetGStateDepth(page->h)"))
 
 ;;
 ;; GRAPHICS OPERATORS
