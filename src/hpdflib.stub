@@ -839,23 +839,35 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;
 ;; Outline
 ;;
-(define-cproc hpdf-create-outline (doc::<hpdf-doc> parent::<hpdf-outline> title::<const-cstring> encoder::<hpdf-encoder>)
-  (body <hpdf-outline>
+(define-cproc hpdf-create-outline (doc::<hpdf-doc> parent::<hpdf-outline>? title::<const-cstring> encoder::<hpdf-encoder>?)
+  (body <hpdf-outline>?
         "GAUCHE_HPDF_FUNC(\"hpdf-create-outline\");"
         "ScmHpdfOutline *h = SCM_NEW(ScmHpdfOutline);"
         "SCM_SET_CLASS(h, SCM_CLASS_HPDF_OUTLINE);"
-        "h->h = HPDF_CreateOutline(doc->h, parent->h, title, encoder->h);"
+        "if (parent) {"
+        "  if (encoder) {"
+        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, encoder->h);"
+        "  } else {"
+        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, NULL);"
+        "  }"
+        "} else {"
+        "  if (encoder) {"
+        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, encoder->h);"
+        "  } else {"
+        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, NULL);"
+        "  }"
+        "}"
         "SCM_RESULT = h;"))
 
-(define-cproc hpdf-set-opened (out::<hpdf-outline> opened::<boolean>)
+(define-cproc hpdf-outline-set-opened (out::<hpdf-outline> opened::<boolean>)
   (body <ulong>
         "GAUCHE_HPDF_FUNC(\"hpdf-set-opened\");"
-        "HPDF_Outline_SetOpened(out->h, opened);"))
+        "SCM_RESULT = HPDF_Outline_SetOpened(out->h, opened);"))
 
-(define-cproc hpdf-set-destination (out::<hpdf-outline> dst::<hpdf-destination>)
+(define-cproc hpdf-outline-set-destination (out::<hpdf-outline> dst::<hpdf-destination>)
   (body <ulong>
         "GAUCHE_HPDF_FUNC(\"hpdf-set-destination\");"
-        "HPDF_Outline_SetDestination(out->h, dst->h);"))
+        "SCM_RESULT = HPDF_Outline_SetDestination(out->h, dst->h);"))
 
 ;;
 ;; Destination
@@ -1948,6 +1960,13 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 (define-enum HPDF_EXT_GSTATE_OUT_OF_RANGE)
 (define-enum HPDF_INVALID_EXT_GSTATE)
 (define-enum HPDF_EXT_GSTATE_READ_ONLY)
+
+;; enum HPDF_PageMode
+(define-enum HPDF_PAGE_MODE_USE_NONE)
+(define-enum HPDF_PAGE_MODE_USE_OUTLINE)
+(define-enum HPDF_PAGE_MODE_USE_THUMBS)
+(define-enum HPDF_PAGE_MODE_FULL_SCREEN)
+(define-enum HPDF_PAGE_MODE_EOF)
 
 ;; enum HPDF_PageSizes
 (define-enum HPDF_PAGE_SIZE_LETTER)

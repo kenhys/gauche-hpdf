@@ -67,7 +67,11 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
     case HPDF_INVALID_ENCRYPT_KEY_LEN:
     case HPDF_INVALID_FONTDEF_DATA:
     case HPDF_INVALID_FONTDEF_TYPE:
+        Scm_Error("error_no:0x%x detail_no:%d\n", error_no, detail_no);
+        break;
     case HPDF_INVALID_FONT_NAME:
+        Scm_Error("HPDF_INVALID_FONT_NAME error_no:0x%x detail_no:%d A font which has the specified name is not found.\n", error_no, detail_no);
+        break;
     case HPDF_INVALID_IMAGE:
     case HPDF_INVALID_JPEG_DATA:
     case HPDF_INVALID_N_DATA:
