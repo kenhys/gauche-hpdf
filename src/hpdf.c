@@ -43,6 +43,9 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
         Scm_Error("HPDF_FILE_OPEN_ERROR error_no:0x%x detail_no:%d\n", error_no, detail_no);
         break;
     case HPDF_FONT_EXISTS:
+        Scm_Error("HPDF_FONT_EXISTS error_no:0x%x detail_no:%d Tried to load a font that has been registered.\n", error_no, detail_no);
+        break;
+        
     case HPDF_FONT_INVALID_WIDTHS_TABLE:
     case HPDF_INVALID_AFM_HEADER:
     case HPDF_INVALID_ANNOTATION:
@@ -52,7 +55,11 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
     case HPDF_INVALID_COMPRESSION_MODE:
     case HPDF_INVALID_DATE_TIME:
     case HPDF_INVALID_DESTINATION:
+        Scm_Error("HPDF_INVALID_DESTINATION error_no:0x%x detail_no:%d\n", error_no, detail_no);
+        break;
     case HPDF_INVALID_DOCUMENT:
+        Scm_Error("HPDF_INVALID_DOCUMENT error_no:0x%x detail_no:%d An invalid document handle is set.\n", error_no, detail_no);
+        break;
     case HPDF_INVALID_DOCUMENT_STATE:
     case HPDF_INVALID_ENCODER:
     case HPDF_INVALID_ENCODER_TYPE:
@@ -104,7 +111,11 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
     case HPDF_TTF_CANNOT_EMBEDDING_FONT:
     case HPDF_TTF_INVALID_CMAP:
     case HPDF_TTF_INVALID_FOMAT:
+        Scm_Error("error_no:0x%x detail_no:%d\n", error_no, detail_no);
+        break;
     case HPDF_TTF_MISSING_TABLE:
+        Scm_Error("error_no:0x%x detail_no:%d Unsupported ttf format. (cannot find a necessary table)\n", error_no, detail_no);
+        break;
     case HPDF_UNSUPPORTED_FONT_TYPE:
     case HPDF_UNSUPPORTED_FUNC:
     case HPDF_UNSUPPORTED_JPEG_FORMAT:
@@ -128,7 +139,7 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
     case HPDF_INVALID_EXT_GSTATE:
     case HPDF_EXT_GSTATE_READ_ONLY:
     default:
-        Scm_Error("error_no:%x detail_no:%d\n", error_no, detail_no);
+        Scm_Error("error_no:0x%x detail_no:%d\n", error_no, detail_no);
         break;
     }
 }

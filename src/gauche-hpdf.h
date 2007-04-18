@@ -24,12 +24,14 @@ extern ScmObj test_hpdf(void);
 #define GAUCHE_HPDF_STR(key, value) Scm_Printf(SCM_CURERR, "%s => %s\n", (key), (value))
 #define GAUCHE_HPDF_INT(key, value) Scm_Printf(SCM_CURERR, "%s => %d\n", (key), (value))
 #define GAUCHE_HPDF_HEX(key, value) Scm_Printf(SCM_CURERR, "%s => %x\n", (key), (value))
+#define GAUCHE_HPDF_PTR(key, value) Scm_Printf(SCM_CURERR, "%s => %p\n", (key), (value))
 #else
 #define GAUCHE_HPDF_FUNC(func)
 #define GAUCHE_HPDF_WARN(msg)
 #define GAUCHE_HPDF_STR(key, value)
 #define GAUCHE_HPDF_INT(key, value)
 #define GAUCHE_HPDF_HEX(key, value)
+#define GAUCHE_HPDF_PTR(key, value)
 #endif
 
 /* Epilogue */
