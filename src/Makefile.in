@@ -21,7 +21,7 @@ GAUCHE_PACKAGE = @GAUCHE_PACKAGE@
 INSTALL        = @GAUCHE_INSTALL@
 
 # add 2007/04/12
-CPPFLAGS       = -I. -I@HPDF_INCDIR@ # @CPPFLAGS@
+CPPFLAGS       = -I. @HPDF_INCDIR@ @GAUCHE_HPDF_DEBUG@ # @CPPFLAGS@
 LDFLAGS        = -lpng -lz # @LDFLAGS@
 LIBS           = -L@HPDF_LIBDIR@ -lhpdf # @LIBS@
 
@@ -57,6 +57,10 @@ hpdf.$(SOEXT): $(hpdf_SRCS)
 --ldflags="$(LDFLAGS)" \
 --libs="$(LIBS)" \
 hpdf $(hpdf_SRCS)
+
+check:
+	make
+	cd ../test; make check
 
 install : all
 	$(INSTALL) -m 444 -T $(GAUCHE_PKGINCDIR) $(HEADERS)

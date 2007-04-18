@@ -47,6 +47,12 @@ dnl Check for libraries
 dnl Add your macro calls to check required libraries, if you have any.
 
 # options for configure scripts
+AC_ARG_ENABLE(debug,
+   AC_HELP_STRING([--enable-debug], [Enable Gauche-hpdf debug mode.]), [
+   GAUCHE_HPDF_DEBUG=-DGAUCHE_HPDF_DEBUG
+])
+AC_SUBST(GAUCHE_HPDF_DEBUG)
+
 HPDF_LIB="-lhpdf"
 AC_ARG_WITH(libharu, [  --with-libharu[=PATH]:      Use Haru Free PDF library installed under PATH.
                           By default, Gauche-hpdf assumes Haru is installed in
@@ -55,7 +61,7 @@ AC_ARG_WITH(libharu, [  --with-libharu[=PATH]:      Use Haru Free PDF library in
     no)  HPDF_LIB= ;;
     yes) HPDF_LIB="-lhpdf";;
     *)   HPDF_LIB="-lhpdf"
-         HPDF_INCDIR="$with_libharu/include"
+         HPDF_INCDIR="-I$with_libharu/include"
          HPDF_LIBDIR="$with_libharu/lib"
          ;;
          

@@ -626,6 +626,7 @@ EXEEXT
 GAUCHE_PKGINCDIR
 GAUCHE_PKGLIBDIR
 GAUCHE_PKGARCHDIR
+GAUCHE_HPDF_DEBUG
 HPDF_INCDIR
 HPDF_LIBDIR
 LIBOBJS
@@ -1200,6 +1201,11 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of Gauche-hpdf 0.2.0:";;
    esac
   cat <<\_ACEOF
+
+Optional Features:
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-debug          Enable Gauche-hpdf debug mode.
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -1858,6 +1864,15 @@ GAUCHE_PKGARCHDIR=`$GAUCHE_CONFIG --pkgarchdir`
 
 
 # options for configure scripts
+# Check whether --enable-debug was given.
+if test "${enable_debug+set}" = set; then
+  enableval=$enable_debug;
+   GAUCHE_HPDF_DEBUG=-DGAUCHE_HPDF_DEBUG
+
+fi
+
+
+
 HPDF_LIB="-lhpdf"
 
 # Check whether --with-libharu was given.
@@ -1867,7 +1882,7 @@ if test "${with_libharu+set}" = set; then
     no)  HPDF_LIB= ;;
     yes) HPDF_LIB="-lhpdf";;
     *)   HPDF_LIB="-lhpdf"
-         HPDF_INCDIR="$with_libharu/include"
+         HPDF_INCDIR="-I$with_libharu/include"
          HPDF_LIBDIR="$with_libharu/lib"
          ;;
 
@@ -2566,13 +2581,14 @@ EXEEXT!$EXEEXT$ac_delim
 GAUCHE_PKGINCDIR!$GAUCHE_PKGINCDIR$ac_delim
 GAUCHE_PKGLIBDIR!$GAUCHE_PKGLIBDIR$ac_delim
 GAUCHE_PKGARCHDIR!$GAUCHE_PKGARCHDIR$ac_delim
+GAUCHE_HPDF_DEBUG!$GAUCHE_HPDF_DEBUG$ac_delim
 HPDF_INCDIR!$HPDF_INCDIR$ac_delim
 HPDF_LIBDIR!$HPDF_LIBDIR$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 52; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 53; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
