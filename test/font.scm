@@ -25,10 +25,12 @@
 (test* "ipamp.ttf embed" "IPAPMincho" (test-hpdf-load-ttf-font-from-file "ipamp.ttf" HPDF_TRUE))
 (test* "ipamp.ttf non-embed" "IPAPMincho" (test-hpdf-load-ttf-font-from-file "ipamp.ttf" HPDF_FALSE))
 
+(test* "jp fonts" HPDF_OK (hpdf-use-jp-fonts (hpdf-new)))
+
+(test* "jp encodings" HPDF_OK (hpdf-use-jp-encodings (hpdf-new)))
+(test* "kr encodings" HPDF_OK (hpdf-use-kr-encodings (hpdf-new)))
+(test* "cnt encodings" HPDF_OK (hpdf-use-cnt-encodings (hpdf-new)))
+(test* "cns encodings" HPDF_OK (hpdf-use-cns-encodings (hpdf-new)))
 ;; epilogue
 (test-end)
-
-
-
-
 
