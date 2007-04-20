@@ -48,11 +48,11 @@ GAUCHE_PKGARCHDIR = $(DESTDIR)@GAUCHE_PKGARCHDIR@
 
 check :
 	@rm -f log/*.log
-#	$(GOSH) -I. -I../lib -I../src const.scm > log/const.log
+	$(GOSH) -I. -I../lib -I../src const.scm > log/const.log
 	$(GOSH) -I. -I../lib -I../src font.scm > log/font.log
-#	$(GOSH) -I. -I../lib -I../src test.scm > log/test.log
-#	$(GOSH) -I. -I../lib -I../src doc.scm > log/doc.log
-#	$(GOSH) -I. -I../lib -I../src page.scm > log/page.log
+	$(GOSH) -I. -I../lib -I../src test.scm > log/test.log
+	$(GOSH) -I. -I../lib -I../src doc.scm > log/doc.log
+	$(GOSH) -I. -I../lib -I../src page.scm > log/page.log
 
 
 clean :
