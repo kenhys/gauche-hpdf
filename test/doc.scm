@@ -19,7 +19,7 @@
        (dummy (hpdf-page-show-text page_1 "Hello, World"))
        (dummy (hpdf-page-end-text page_1))
        )
-  (hpdf-save-to-file doc "hpdf_showtext.pdf"))
+  (hpdf-save-to-file doc "data/hpdf_showtext.pdf"))
 
 ;; epilogue
 (test-end)

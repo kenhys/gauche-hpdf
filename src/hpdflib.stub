@@ -740,7 +740,36 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-page-show-text (page::<hpdf-page> text::<const-cstring>)
   (body <ulong>
         "GAUCHE_HPDF_FUNC(\"hpdf-page-show-text\");"
-        "fprintf(stderr, \"%s\", text);"
+        "#ifdef GAUCHE_HPDF_DEBUG"
+        "char dummy[20];"
+        "int i = 0;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x41;i++;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x81;i++;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x93;i++;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x7b;i++;"
+        "dummy[i] = 0x90;i++;"
+        "dummy[i] = 0xd4;i++;"
+        "dummy[i] = 0;i++;"
+        "dummy[i] = 0;i++;"
+        "dummy[i] = 0;i++;"
+        "i = 0;"
+        "char *p = text;"
+        "fprintf(stderr, \"text entry:\", text);"
+        "while (i < 20) {"
+        "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", text[i], text[i]);"
+        "  i++;"
+        "}"
+        "i = 0;"
+        "fprintf(stderr, \"dummy entry:\", dummy);"
+        "while (i < 20) {"
+        "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", dummy[i], dummy[i]);"
+        "  i++;"
+        "}"
+        "#endif"
         "SCM_RESULT = HPDF_Page_ShowText(page->h, text);"))
 
 (define-cproc hpdf-page-show-text-nextline (page::<hpdf-page> text::<const-cstring>)
@@ -783,12 +812,17 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;; Font Handling
 ;;
 (define-cproc hpdf-get-font (doc::<hpdf-doc> font::<const-cstring> enc::<const-cstring>)
-  (body <hpdf-font>
-        "  ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);
-  h->h = HPDF_GetFont(doc->h, font, NULL);
-  SCM_RESULT = h;"))
-
+  (body <hpdf-font>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-font\");"
+        "ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);"
+        "h->h = HPDF_GetFont(doc->h, font, enc);"
+        "if (h->h) {"
+        "  SCM_RESULT = h;"
+        "} else {"
+        "  GAUCHE_HPDF_WARN(\"error in HPDF_GetFont\");"
+        "  SCM_RESULT = SCM_NIL;"
+        "}"))
 
 (define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm::<const-cstring> data::<const-cstring>)
   (body <const-cstring>
