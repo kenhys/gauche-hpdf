@@ -121,6 +121,7 @@
 
 (test-section "XANO fonts")
 (test* "Kandata embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Kandata.ttf" #t))
+(test* "Oradano embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Oradano.ttf" #t))
 (test* "QANO mincho embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/QANO-mincho.ttf" #t))
 (test* "QuiMi mincho embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/QuiMi-mincho.ttf" #t))
 (test* "XANO-mincho embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/XANO-mincho.ttf" #t))
