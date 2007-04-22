@@ -207,6 +207,7 @@
 
 (test-section "Other fonts")
 ;; (test* "akubin embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AKUBIN.TTF" #t))
+;; (test* "japonesque embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Japonesque1.45.TTF" #t))
 (test* "cinecaption embed" "cinecaption" (test-hpdf-load-ttf-font-from-file "font/cinecaption226.ttf" #t))
 (test* "elmer monospace embed" "ElmerFont" (test-hpdf-load-ttf-font-from-file "font/elmer.ttf" #t))
 (test* "elmer proportional embed" "ElmerPFont" (test-hpdf-load-ttf-font-from-file "font/elmerp.ttf" #t))
@@ -215,6 +216,11 @@
 (test* "Dosei embed" "DOSEI SAN (Mr.Saturn)" (test-hpdf-load-ttf-font-from-file "font/Dosei.ttf" #t))
 (test* "TA Bimyou embed" "TAbimyou_Add" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add.TTF" #t))
 (test* "TA Bimyou proportional embed" "TAbimyou_Add_p" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add_p.TTF" #t))
+
+(test-section "Zetuei fonts")
+;; (test* "Zetsuei mincho embed" "ZeueiMinchoSample" (test-hpdf-load-ttf-font-from-file "font/ZEUEMS__.TTF" #t))
+;; (test* "Zetsuei mincho HIR embed" "ZetueiMinchoHIR,HIR" (test-hpdf-load-ttf-font-from-file "font/ZETUMH__.TTF" #t))
+;; (test* "Zestuei HRKT rev embed" "HRKTKAI" (test-hpdf-load-ttf-font-from-file "font/HRKT-KAI.TTF" #t))
 
 (test-section "hpdf text")
 
@@ -361,7 +367,52 @@
                   ((= index 28)
                    (list "data/Dosei.pdf"
                          (hpdf-load-ttf-font-from-file pdf "font/Dosei.ttf" #t)))
-                   ))
+                  ((= index 29)
+                   (list "data/umi.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/umi.ttf" #t)))
+                  ((= index 30)
+                   (list "data/sea.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/sea.ttf" #t)))
+                  ((= index 31)
+                   (list "data/seap.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/seap.ttf" #t)))
+                  ((= index 32)
+                   (list "data/uni.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/uni.ttf" #t)))
+                  ((= index 33)
+                   (list "data/unip.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/unip.ttf" #t)))
+                  ((= index 34)
+                   (list "data/tsuki.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/tsuki.ttf" #t)))
+                  ((= index 35)
+                   (list "data/tsukip.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/tsukip.ttf" #t)))
+                  ((= index 36)
+                   (list "data/naguri.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/naguri.ttf" #t)))
+                  ((= index 37)
+                   (list "data/nagurip.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/nagurip.ttf" #t)))
+                  ((= index 38)
+                   (list "data/memo.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/memo.ttf" #t)))
+                  ((= index 39)
+                   (list "data/love.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/love.ttf" #t)))
+                  ((= index 40)
+                   (list "data/elmer.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/elmer.ttf" #t)))
+                  ((= index 41)
+                   (list "data/elmerp.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/elmerp.ttf" #t)))
+                  ((= index 42)
+                   (list "data/TABimyou.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/tabimyou_add.TTF" #t)))
+                  ((= index 43)
+                   (list "data/TABimyouP.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/tabimyou_add_p.TTF" #t)))
+                  ))
          (null (display f))
          (font (hpdf-get-font pdf (list-ref f 1) "90ms-RKSJ-H"))
          (page_1 (hpdf-add-page pdf))
@@ -406,6 +457,21 @@
 (test-jpfonts-embed 26)
 (test-jpfonts-embed 27)
 (test-jpfonts-embed 28)
+(test-jpfonts-embed 29)
+(test-jpfonts-embed 30)
+(test-jpfonts-embed 31)
+(test-jpfonts-embed 32)
+(test-jpfonts-embed 33)
+(test-jpfonts-embed 34)
+(test-jpfonts-embed 35)
+(test-jpfonts-embed 36)
+(test-jpfonts-embed 37)
+(test-jpfonts-embed 38)
+(test-jpfonts-embed 39)
+(test-jpfonts-embed 40)
+(test-jpfonts-embed 41)
+(test-jpfonts-embed 42)
+(test-jpfonts-embed 43)
 
 ;; epilogue
 (test-end)
