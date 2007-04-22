@@ -518,7 +518,8 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "  SCM_RESULT = HPDF_SetPageLayout(doc->h, layout);"
         "  break;"
         "default:"
-        " /* error */"
+        "  /* error */"
+        "  Scm_Error(\"\");"
         "  break;"
         "}"
         ))
@@ -802,12 +803,17 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "  i++;"
         "}"
         "#endif"
-        "SCM_RESULT = HPDF_Page_ShowText(page->h, text);"))
+        "if (strlen(text) > 0) {"
+        "  SCM_RESULT = HPDF_Page_ShowText(page->h, text);"
+        "} else {"
+        "  SCM_RESULT = 0;"
+        "}"
+        ))
 
-(define-cproc hpdf-page-show-text-nextline (page::<hpdf-page> text::<const-cstring>)
+(define-cproc hpdf-page-show-text-next-line (page::<hpdf-page> text::<const-cstring>)
   (expr <ulong> "HPDF_Page_ShowTextNextLine(page->h, text)"))
 
-(define-cproc hpdf-page-show-text-nextline-ex (page::<hpdf-page> word_space::<float> char_space::<float> text::<const-cstring>)
+(define-cproc hpdf-page-show-text-next-line-ex (page::<hpdf-page> word_space::<float> char_space::<float> text::<const-cstring>)
   (expr <ulong> "HPDF_Page_ShowTextNextLineEx(page->h, word_space, char_space, text)"))
 
 ;; Color showing
@@ -860,9 +866,11 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "  SCM_RESULT = SCM_NIL;"
         "}"))
 
-(define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm::<const-cstring> data::<const-cstring>)
-  (body <const-cstring>
-        "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm, data);"))
+(define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-type1-font-from-file\");"
+        "/* afm, pfb*/"
+        "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm_file_name, data_file_name);"))
 
 (define-cproc hpdf-load-ttf-font-from-file (doc::<hpdf-doc> file::<const-cstring> embedding::<boolean>)
   (body <const-cstring>?
@@ -2055,6 +2063,19 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 (define-enum HPDF_PAGE_SIZE_US5x7)
 (define-enum HPDF_PAGE_SIZE_COMM10)
 (define-enum HPDF_PAGE_SIZE_EOF)
+
+(define-enum LETTER)
+(define-enum LEGAL)
+(define-enum A3)
+(define-enum A4)
+(define-enum A5)
+(define-enum B4)
+(define-enum B5)
+(define-enum EXECUTIVE)
+(define-enum US4x6)
+(define-enum US4x8)
+(define-enum US5x7)
+(define-enum COMM10)
 
 (define-enum HPDF_PAGE_PORTRAIT)
 (define-enum HPDF_PAGE_LANDSCAPE)
