@@ -216,6 +216,7 @@
 (test* "Dosei embed" "DOSEI SAN (Mr.Saturn)" (test-hpdf-load-ttf-font-from-file "font/Dosei.ttf" #t))
 (test* "TA Bimyou embed" "TAbimyou_Add" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add.TTF" #t))
 (test* "TA Bimyou proportional embed" "TAbimyou_Add_p" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add_p.TTF" #t))
+(test* "dejima-mincho embed" "dejima-mincho,mincho" (test-hpdf-load-ttf-font-from-file "font/dejima-mincho-r21.ttf" #t))
 
 (test-section "Zetuei fonts")
 ;; (test* "Zetsuei mincho embed" "ZeueiMinchoSample" (test-hpdf-load-ttf-font-from-file "font/ZEUEMS__.TTF" #t))
@@ -413,14 +414,12 @@
                    (list "data/TABimyouP.pdf"
                          (hpdf-load-ttf-font-from-file pdf "font/tabimyou_add_p.TTF" #t)))
                   ))
-         (null (display f))
          (font (hpdf-get-font pdf (list-ref f 1) "90ms-RKSJ-H"))
          (page_1 (hpdf-add-page pdf))
          (font (hpdf-page-set-font-and-size page_1 font 14))
          (st (hpdf-page-begin-text page_1))
          (w (hpdf-page-get-width page_1))
          (h (hpdf-page-get-height page_1))
-         (null (display f))
          (st (hpdf-page-move-text-pos page_1 28 (- h 28)))
          (null (hpdf-page-set-text-leading page_1 14))
          (null (show-test-text page_1 "data/sjis.txt"))
