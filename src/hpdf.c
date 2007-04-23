@@ -28,11 +28,19 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
     case HPDF_DICT_ITEM_NOT_FOUND:
     case HPDF_DICT_ITEM_UNEXPECTED_TYPE:
     case HPDF_DICT_STREAM_LENGTH_NOT_FOUND:
+        Scm_Error("error_no:0x%x detail_no:%d\n", error_no, detail_no);
+        break;
     case HPDF_DOC_ENCRYPTDICT_NOT_FOUND:
+        Scm_Error("HPDF_DOC_ENCRYPTDICT_NOT_FOUND error_no:0x%x detail_no:%d HPDF_SetPermission() or HPDF_SetEncryptMode() was called before a password is set.\n", error_no, detail_no);
+        break;
     case HPDF_DOC_INVALID_OBJECT:
     case HPDF_DUPLICATE_REGISTRATION:
     case HPDF_EXCEED_JWW_CODE_NUM_LIMIT:
+        Scm_Error("error_no:0x%x detail_no:%d\n", error_no, detail_no);
+        break;
     case HPDF_ENCRYPT_INVALID_PASSWORD:
+        Scm_Error("HPDF_ENCRYPT_INVALID_PASSWORD error_no:0x%x detail_no:%d\n", error_no, detail_no);
+        break;
     case HPDF_ERR_UNKNOWN_CLASS:
     case HPDF_EXCEED_GSTATE_LIMIT:
     case HPDF_FAILD_TO_ALLOC_MEM:

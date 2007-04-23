@@ -81,6 +81,34 @@
 ;; owner password must be non zero length
 (test* "#f, #f" *test-error* (test-hpdf-set-password #f #f))
 
+(test-subsection "hpdf-set-info-date")
+;; (define (test-hpdf-set-info-date)
+;;   (let* ((pdf (hpdf-new))
+;;          (date (make <hpdf-date>))
+;;          (date)
+;;     (
+
+(define (test-hpdf-set-permission permission filename password)
+  (let* ((pdf (hpdf-new))
+         (st (if password
+                 ;; need to call before set-permission
+                 (hpdf-set-password pdf "owner" "")
+                 #f))
+         (st (hpdf-set-permission pdf permission))
+         ;; dummy
+         (page (hpdf-add-page pdf))
+         )
+    (hpdf-save-to-file pdf filename)))
+
+(test-subsection "hpdf-set-permission")
+(test* "read only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_READ "data/hpdf-set-permission-read.pdf" #t))
+(test* "print only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_PRINT "data/hpdf-set-permission-print.pdf" #t))
+(test* "edit-all only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_EDIT_ALL "data/hpdf-set-permission-editall.pdf" #t))
+(test* "copy only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_COPY "data/hpdf-set-permission-copy.pdf" #t))
+(test* "edit only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_EDIT "data/hpdf-set-permission-edit.pdf" #t))
+(test* "all" HPDF_OK (test-hpdf-set-permission (logior READ PRINT EDIT_ALL COPY EDIT) "data/hpdf-set-permission-all.pdf" #t))
+(test* "read only" *test-error* (test-hpdf-set-permission HPDF_ENABLE_READ "data/hpdf-set-permission-read.pdf" #f))
+
 ;; epilogue
 (test-end)
 

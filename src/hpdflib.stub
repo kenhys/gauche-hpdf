@@ -368,10 +368,11 @@ HPDF_Date h;
 
 SCM_CLASS_DECL(Scm_HpdfDateClass);
  #define SCM_CLASS_HPDFDATE (&Scm_HpdfDateClass)
- #define SCM_HPDFDATE(obj) ((ScmHpdfDate*)(obj))
- #define SCM_HPDFDATEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDATE))
+ #define SCM_HPDF_DATE(obj) ((ScmHpdfDate*)(obj))
+ #define SCM_HPDF_DATE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDATE))
 "
-(define-cclass <hPdfDate> "ScmHpdfDate*" "Scm_HpdfDateClass"
+
+(define-cclass <hpdf-date> "ScmHpdfDate*" "Scm_HpdfDateClass"
 ()
 ())
 
@@ -1202,7 +1203,7 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "}"
         "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type);"))
 
-(define-cproc hpdf-set-info-date-attr (doc::<hpdf-doc> type::<fixnum> date::<hPdfDate>)
+(define-cproc hpdf-set-info-date-attr (doc::<hpdf-doc> type::<fixnum> date::<hpdf-date>)
   (expr <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h)"))
 
 ;; encryption
@@ -1210,7 +1211,18 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
   (expr <ulong> "SCM_RESULT = HPDF_SetPassword(doc->h, owner_passwd, user_passwd)"))
 
 (define-cproc hpdf-set-permission (doc::<hpdf-doc> permission::<uint>)
-  (expr <ulong> "SCM_RESULT = HPDF_SetPermission(doc->h, permission)"))
+  (body <ulong>
+        "switch(permission) {"
+        "case HPDF_ENABLE_READ:"
+        "case HPDF_ENABLE_PRINT:"
+        "case HPDF_ENABLE_EDIT_ALL:"
+        "case HPDF_ENABLE_COPY:"
+        "case HPDF_ENABLE_EDIT:"
+        "  break;"
+        "default:"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_SetPermission(doc->h, permission);"))
 
 (define-cproc hpdf-set-encryption-mode (doc::<hpdf-doc> mode::<fixnum> key_len::<uint>)
   (expr <ulong> "SCM_RESULT = HPDF_SetEncryptionMode(doc->h, mode, key_len)"))
@@ -1525,6 +1537,12 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 (define-enum HPDF_ENABLE_EDIT_ALL)
 (define-enum HPDF_ENABLE_COPY)
 (define-enum HPDF_ENABLE_EDIT)
+;; alias 
+(define-enum READ)
+(define-enum PRINT)
+(define-enum EDIT_ALL)
+(define-enum COPY)
+(define-enum EDIT)
 
 
 ;; viewer preferences definitions
