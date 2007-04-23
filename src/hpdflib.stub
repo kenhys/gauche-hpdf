@@ -1170,10 +1170,37 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 
 ;; Info Dictionary
 (define-cproc hpdf-set-info-attr (doc::<hpdf-doc> type::<fixnum> value::<const-cstring>)
-  (expr <ulong> "SCM_RESULT = HPDF_SetInfoAttr(doc->h, type, value)"))
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-set-info-attr\");"
+        "switch (type) {"
+        "case HPDF_INFO_AUTHOR:"
+        "case HPDF_INFO_CREATOR:"
+        "case HPDF_INFO_TITLE:"
+        "case HPDF_INFO_SUBJECT:"
+        "case HPDF_INFO_KEYWORDS:"
+        "  break;"
+        "default:"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_SetInfoAttr(doc->h, type, value);"))
 
 (define-cproc hpdf-get-info-attr (doc::<hpdf-doc> type::<fixnum>)
-  (expr <const-cstring> "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type)"))
+  (body <const-cstring>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-info-attr\");"
+        "switch (type) {"
+        "case HPDF_INFO_CREATION_DATE:"
+        "case HPDF_INFO_MOD_DATE:"
+        "case HPDF_INFO_AUTHOR:"
+        "case HPDF_INFO_CREATOR:"
+        "case HPDF_INFO_TITLE:"
+        "case HPDF_INFO_SUBJECT:"
+        "case HPDF_INFO_KEYWORDS:"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"Invalid 2nd argument.\");"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type);"))
 
 (define-cproc hpdf-set-info-date-attr (doc::<hpdf-doc> type::<fixnum> date::<hPdfDate>)
   (expr <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h)"))
@@ -2063,7 +2090,7 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 (define-enum HPDF_PAGE_SIZE_US5x7)
 (define-enum HPDF_PAGE_SIZE_COMM10)
 (define-enum HPDF_PAGE_SIZE_EOF)
-
+;; alias
 (define-enum LETTER)
 (define-enum LEGAL)
 (define-enum A3)
@@ -2079,6 +2106,26 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 
 (define-enum HPDF_PAGE_PORTRAIT)
 (define-enum HPDF_PAGE_LANDSCAPE)
+
+;; enum HPDF_InfoType
+(define-enum HPDF_INFO_CREATION_DATE)
+(define-enum HPDF_INFO_MOD_DATE)
+(define-enum HPDF_INFO_AUTHOR)
+(define-enum HPDF_INFO_CREATOR)
+(define-enum HPDF_INFO_PRODUCER)
+(define-enum HPDF_INFO_TITLE)
+(define-enum HPDF_INFO_SUBJECT)
+(define-enum HPDF_INFO_KEYWORDS)
+;; alias
+(define-enum CREATION_DATE)
+(define-enum MOD_DATE)
+(define-enum AUTHOR)
+(define-enum CREATOR)
+(define-enum PRODUCER)
+(define-enum TITLE)
+(define-enum SUBJECT)
+(define-enum KEYWORDS)
+
 
 ;; Local variables:
 ;; mode: scheme
