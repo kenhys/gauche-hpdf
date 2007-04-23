@@ -212,7 +212,7 @@
 (test* "elmer monospace embed" "ElmerFont" (test-hpdf-load-ttf-font-from-file "font/elmer.ttf" #t))
 (test* "elmer proportional embed" "ElmerPFont" (test-hpdf-load-ttf-font-from-file "font/elmerp.ttf" #t))
 (test* "dameji proportional embed" "dameji" (test-hpdf-load-ttf-font-from-file "font/dameji.ttf" #t))
-(test* "dasaji monospace embed" "HabaDasa" (test-hpdf-load-ttf-font-from-file "font/dasajitohaba.ttf" #t))
+(test* "habadasa embed" "HabaDasa" (test-hpdf-load-ttf-font-from-file "font/habadasa.ttf" #t))
 (test* "Dosei embed" "DOSEI SAN (Mr.Saturn)" (test-hpdf-load-ttf-font-from-file "font/Dosei.ttf" #t))
 (test* "TA Bimyou embed" "TAbimyou_Add" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add.TTF" #t))
 (test* "TA Bimyou proportional embed" "TAbimyou_Add_p" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add_p.TTF" #t))
@@ -362,8 +362,8 @@
                    (list "data/dameji.pdf"
                          (hpdf-load-ttf-font-from-file pdf "font/dameji.ttf" #t)))
                   ((= index 27)
-                   (list "data/dasajitohaba.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/dasajitohaba.ttf" #t)))
+                   (list "data/habadasa.pdf"
+                         (hpdf-load-ttf-font-from-file pdf "font/habadasa.ttf" #t)))
                   ((= index 28)
                    (list "data/Dosei.pdf"
                          (hpdf-load-ttf-font-from-file pdf "font/Dosei.ttf" #t)))
