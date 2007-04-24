@@ -534,7 +534,17 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-set-page-mode (doc::<hpdf-doc> mode::<fixnum>)
   (body <ulong>
         "GAUCHE_HPDF_FUNC(\"hpdf-set-page-mode\");"
-        "SCM_RESULT = HPDF_SetPageMode(doc->h, mode);"))
+        "switch(mode) {"
+        "case HPDF_PAGE_MODE_USE_NONE:"
+        "case HPDF_PAGE_MODE_USE_OUTLINE:"
+        "case HPDF_PAGE_MODE_USE_THUMBS:"
+        "case HPDF_PAGE_MODE_FULL_SCREEN:"
+        "  SCM_RESULT = HPDF_SetPageMode(doc->h, mode);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"\");"
+        "  break;"
+        "}"))
 
 (define-cproc hpdf-get-viewer-preference (doc::<hpdf-doc>)
   (body <uint>
@@ -604,10 +614,32 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;(define-cproc hpdf-page-measuretext (page::<hpdf-page> s::<const-cstring> width::<float> wordwrapage::<int> rwidth::<float>?)
 ;;  (body <uint> "  SCM_RESULT = HPDF_Page_MeasureText(page->h, s, width, wordwrap, rwidth);"))
 
-(define-cproc hpdf-page-setslideshow (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)
-  (body <ulong> "HPDF_Page_SetSlideShow(page->h, type, disp, trans);"))
-
-
+(define-cproc hpdf-page-set-slide-show (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)
+  (body <ulong>
+        "switch(type) {"
+        "case HPDF_TS_WIPE_RIGHT:"
+        "case HPDF_TS_WIPE_UP:"
+        "case HPDF_TS_WIPE_LEFT:"
+        "case HPDF_TS_WIPE_DOWN:"
+        "case HPDF_TS_BARN_DOORS_HORIZONTAL_OUT:"
+        "case HPDF_TS_BARN_DOORS_HORIZONTAL_IN:"
+        "case HPDF_TS_BARN_DOORS_VERTICAL_OUT:"
+        "case HPDF_TS_BARN_DOORS_VERTICAL_IN:"
+        "case HPDF_TS_BOX_OUT:"
+        "case HPDF_TS_BOX_IN:"
+        "case HPDF_TS_BLINDS_HORIZONTAL:"
+        "case HPDF_TS_BLINDS_VERTICAL:"
+        "case HPDF_TS_DISSOLVE:"
+        "case HPDF_TS_GLITTER_RIGHT:"
+        "case HPDF_TS_GLITTER_DOWN:"
+        "case HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT:"
+        "case HPDF_TS_REPLACE:"
+        "  SCM_RESULT = HPDF_Page_SetSlideShow(page->h, type, disp, trans);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"\");"
+        "  break;"
+        "}"))
 
 ;;
 ;; Graphics
@@ -2144,6 +2176,24 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 (define-enum SUBJECT)
 (define-enum KEYWORDS)
 
+;; enum HPDF_PageSlideShow
+(define-enum HPDF_TS_WIPE_RIGHT)
+(define-enum HPDF_TS_WIPE_UP)
+(define-enum HPDF_TS_WIPE_LEFT)
+(define-enum HPDF_TS_WIPE_DOWN)
+(define-enum HPDF_TS_BARN_DOORS_HORIZONTAL_OUT)
+(define-enum HPDF_TS_BARN_DOORS_HORIZONTAL_IN)
+(define-enum HPDF_TS_BARN_DOORS_VERTICAL_OUT)
+(define-enum HPDF_TS_BARN_DOORS_VERTICAL_IN)
+(define-enum HPDF_TS_BOX_OUT)
+(define-enum HPDF_TS_BOX_IN)
+(define-enum HPDF_TS_BLINDS_HORIZONTAL)
+(define-enum HPDF_TS_BLINDS_VERTICAL)
+(define-enum HPDF_TS_DISSOLVE)
+(define-enum HPDF_TS_GLITTER_RIGHT)
+(define-enum HPDF_TS_GLITTER_DOWN)
+(define-enum HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT)
+(define-enum HPDF_TS_REPLACE)
 
 ;; Local variables:
 ;; mode: scheme

@@ -12,8 +12,10 @@
   (format #t "~a()\n" msg))
 
 (test-section "hpdf doc")
-(test-subsection "hpdf-set-info-attr")
+(test-subsection "hpdf doc")
+(test* "hpdf-free" (undefined) (hpdf-free (hpdf-new)))
 
+(test-subsection "hpdf-set-info-attr")
 (test* "HPDF_INFO_AUTHOR" HPDF_OK (hpdf-set-info-attr (hpdf-new) AUTHOR "author"))
 (test* "HPDF_INFO_CREATOR" HPDF_OK (hpdf-set-info-attr (hpdf-new) CREATOR "creator"))
 (test* "HPDF_INFO_TITLE" HPDF_OK (hpdf-set-info-attr (hpdf-new) TITLE "title"))
