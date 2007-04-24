@@ -85,6 +85,25 @@
 (test* "HPDF_PAGE_SIZE_US5x7" #t (test-hpdf-page-get-size US5x7 HPDF_PAGE_LANDSCAPE 504 360))
 (test* "HPDF_PAGE_SIZE_COMM10" #t (test-hpdf-page-get-size COMM10 HPDF_PAGE_LANDSCAPE 684 297))
 
+(define (test-hpdf-page-set-width width)
+  (let* ((page (hpdf-add-page (hpdf-new))))
+    (hpdf-page-set-width page width)))
+
+(define (test-hpdf-page-set-height height)
+  (let* ((page (hpdf-add-page (hpdf-new))))
+    (hpdf-page-set-height page height)))
+
+(test-subsection "hpdf-page-set-width/height")
+(test* "page width under 3" *test-error* (test-hpdf-page-set-width 2))
+(test* "page width 3" HPDF_OK (test-hpdf-page-set-width 3))
+(test* "page width 14400" HPDF_OK (test-hpdf-page-set-width 14400))
+(test* "page width over 14400" *test-error* (test-hpdf-page-set-width 14401))
+(test* "page height under 3" *test-error* (test-hpdf-page-set-height 2))
+(test* "page height 3" HPDF_OK (test-hpdf-page-set-height 3))
+(test* "page height 14400" HPDF_OK (test-hpdf-page-set-height 14400))
+(test* "page height over 14400" *test-error* (test-hpdf-page-set-height 14401))
+
+
 ;; error
 (test* "-1" *test-error* (hpdf-page-set-size (hpdf-add-page (hpdf-new)) -1 HPDF_PAGE_PORTRAIT))
 (test* "HPDF_PAGE_SIZE_EOF" *test-error* (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_EOF HPDF_PAGE_PORTRAIT))

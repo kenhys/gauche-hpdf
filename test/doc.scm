@@ -111,6 +111,19 @@
 (test* "all" HPDF_OK (test-hpdf-set-permission (logior READ PRINT EDIT_ALL COPY EDIT) "data/hpdf-set-permission-all.pdf" #t))
 (test* "read only" *test-error* (test-hpdf-set-permission HPDF_ENABLE_READ "data/hpdf-set-permission-read.pdf" #f))
 
+(define (test-hpdf-set-compression-mode file mode)
+  (let* ((pdf (hpdf-new))
+         (s (hpdf-set-compression-mode pdf mode))
+         (page (hpdf-add-page pdf))
+         (null (hpdf-save-to-file pdf file)))
+    s))
+         
+(test* "compress none" HPDF_OK (test-hpdf-set-compression-mode "data/hpdf-set-compression-mode-none.pdf" HPDF_COMP_NONE))
+(test* "compress text" HPDF_OK (test-hpdf-set-compression-mode "data/hpdf-set-compression-mode-text.pdf" HPDF_COMP_TEXT))
+(test* "compress image" HPDF_OK (test-hpdf-set-compression-mode "data/hpdf-set-compression-mode-image.pdf" HPDF_COMP_IMAGE))
+(test* "compress metadata" HPDF_OK (test-hpdf-set-compression-mode "data/hpdf-set-compression-mode-meta.pdf" HPDF_COMP_METADATA))
+(test* "compress all" HPDF_OK (test-hpdf-set-compression-mode "data/hpdf-set-compression-mode-all.pdf" HPDF_COMP_ALL))
+
 ;; epilogue
 (test-end)
 

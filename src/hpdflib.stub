@@ -377,6 +377,35 @@ SCM_CLASS_DECL(Scm_HpdfDateClass);
 ())
 
 "
+typedef struct ScmHpdfDictRec {
+SCM_HEADER;
+HPDF_Dict h;
+} ScmHpdfDict;
+
+SCM_CLASS_DECL(Scm_HpdfDictClass);
+ #define SCM_CLASS_HPDFDICT (&Scm_HpdfDictClass)
+ #define SCM_HPDF_DICT(obj) ((ScmHpdfDict*)(obj))
+ #define SCM_HPDF_DICT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDICT))
+"
+
+(define-cclass <hpdf-dict> "ScmHpdfDict*" "Scm_HpdfDictClass"
+()
+())
+
+(define-cproc hpdf-info-set-info-date-attr (dict::<hpdf-dict> type::<fixnum>
+                                                              year::<int>
+                                                              month::<int>
+                                                              day::<int>
+                                                              hour::<int>
+                                                              minutes::<int>
+                                                              seconds::<int>
+                                                              ind::<char>
+                                                              off_hour::<int>
+                                                              off_minutes::<int>)
+  (body <ulong>
+        ""))
+
+"
 typedef struct ScmHpdfTextWidthRec {
 SCM_HEADER;
 HPDF_TextWidth h;
@@ -1261,7 +1290,19 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 
 ;; compression
 (define-cproc hpdf-set-compression-mode (doc::<hpdf-doc> mode::<uint>)
-  (expr <ulong> "SCM_RESULT = HPDF_SetCompressionMode(doc->h, mode)"))
+  (body <ulong>
+        "switch (mode) {"
+        "case HPDF_COMP_NONE:"
+        "case HPDF_COMP_TEXT:"
+        "case HPDF_COMP_IMAGE:"
+        "case HPDF_COMP_METADATA:"
+        "case HPDF_COMP_ALL:"
+        "  SCM_RESULT = HPDF_SetCompressionMode(doc->h, mode);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"\");"
+        "  break;"
+        "}"))
 
 ;; font
 (define-cproc hpdf-font-get-font-name (font::<hpdf-font>)
