@@ -34,6 +34,7 @@
 
 #include <gauche.h>
 #include <gauche/extend.h>
+#include <hpdf.h>
 
 SCM_DECL_BEGIN
 
@@ -87,6 +88,252 @@ extern ScmObj test_hpdf(void);
 #define EDIT_ALL HPDF_ENABLE_EDIT_ALL
 #define COPY HPDF_ENABLE_COPY
 #define EDIT HPDF_ENABLE_EDIT
+
+typedef struct ScmHpdfDocRec {
+SCM_HEADER;
+HPDF_Doc h;
+} ScmHpdfDoc;
+
+SCM_CLASS_DECL(Scm_HpdfDocClass);
+ #define SCM_CLASS_HPDF_DOC (&Scm_HpdfDocClass)
+ #define SCM_HPDF_DOC(obj) ((ScmHpdfDoc*)(obj))
+ #define SCM_HPDF_DOC_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_DOC))
+
+typedef struct ScmHpdfPageRec {
+SCM_HEADER;
+HPDF_Page h;
+} ScmHpdfPage;
+
+SCM_CLASS_DECL(Scm_HpdfPageClass);
+ #define SCM_CLASS_HPDF_PAGE (&Scm_HpdfPageClass)
+ #define SCM_HPDF_PAGE(obj) ((ScmHpdfPage*)(obj))
+ #define SCM_HPDF_PAGE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_PAGE))
+
+typedef struct ScmHpdfPagesRec {
+SCM_HEADER;
+HPDF_Pages h;
+} ScmHpdfPages;
+
+SCM_CLASS_DECL(Scm_HpdfPagesClass);
+ #define SCM_CLASS_HPDF_PAGES (&Scm_HpdfPagesClass)
+ #define SCM_HPDF_PAGES(obj) ((ScmHPages*)(obj))
+ #define SCM_HPDF_PAGES_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_PAGES))
+
+typedef struct ScmHpdfStreamRec {
+SCM_HEADER;
+HPDF_Stream h;
+} ScmHpdfStream;
+
+SCM_CLASS_DECL(Scm_HpdfStreamClass);
+ #define SCM_CLASS_HPDF_STREAM (&Scm_HpdfStreamClass)
+ #define SCM_HPDF_STREAM(obj) ((ScmHpdfStream*)(obj))
+ #define SCM_HPDF_STREAM_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_STREAM))
+
+typedef struct ScmHpdfImageRec {
+SCM_HEADER;
+HPDF_Image h;
+} ScmHpdfImage;
+
+SCM_CLASS_DECL(Scm_HpdfImageClass);
+ #define SCM_CLASS_HPDF_IMAGE (&Scm_HpdfImageClass)
+ #define SCM_HPDF_IMAGE(obj) ((ScmHpdfImage*)(obj))
+ #define SCM_HPDF_IMAGEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_IMAGE))
+ #define SCM_HPDF_IMAGE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_IMAGE))
+
+typedef struct ScmHpdfFontRec {
+SCM_HEADER;
+HPDF_Font h;
+} ScmHpdfFont;
+
+SCM_CLASS_DECL(Scm_HpdfFontClass);
+ #define SCM_CLASS_HPDF_FONT (&Scm_HpdfFontClass)
+ #define SCM_HPDF_FONT(obj) ((ScmHpdfFont*)(obj))
+ #define SCM_HPDF_FONTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_FONT))
+ #define SCM_HPDF_FONT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_FONT))
+
+typedef struct ScmHpdfOutlineRec {
+SCM_HEADER;
+HPDF_Outline h;
+} ScmHpdfOutline;
+
+SCM_CLASS_DECL(Scm_HpdfOutlineClass);
+ #define SCM_CLASS_HPDF_OUTLINE (&Scm_HpdfOutlineClass)
+ #define SCM_HPDF_OUTLINE(obj) ((ScmHpdfOutline*)(obj))
+ #define SCM_HPDF_OUTLINE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_OUTLINE))
+
+typedef struct ScmHpdfEncoderRec {
+SCM_HEADER;
+HPDF_Encoder h;
+} ScmHpdfEncoder;
+
+SCM_CLASS_DECL(Scm_HpdfEncoderClass);
+ #define SCM_CLASS_HPDF_ENCODER (&Scm_HpdfEncoderClass)
+ #define SCM_HPDF_ENCODER(obj) ((ScmHpdfEncoder*)(obj))
+ #define SCM_HPDF_ENCODER_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_ENCODER))
+
+typedef struct ScmHpdfDestinationRec {
+SCM_HEADER;
+HPDF_Destination h;
+} ScmHpdfDestination;
+
+SCM_CLASS_DECL(Scm_HpdfDestinationClass);
+ #define SCM_CLASS_HPDF_DESTINATION (&Scm_HpdfDestinationClass)
+ #define SCM_HPDF_DESTINATION(obj) ((ScmHpdfDestination*)(obj))
+ #define SCM_HPDF_DESTINATION_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_DESTINATION))
+
+typedef struct ScmHpdfXObjectRec {
+SCM_HEADER;
+HPDF_XObject h;
+} ScmHpdfXObject;
+
+SCM_CLASS_DECL(Scm_HpdfXObjectClass);
+ #define SCM_CLASS_HPDF_XOBJECT (&Scm_HpdfXObjectClass)
+ #define SCM_HPDF_XOBJECT(obj) ((ScmHpdfXObject*)(obj))
+ #define SCM_HPDF_XOBJECT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_XOBJECT))
+
+typedef struct ScmHpdfAnnotationRec {
+SCM_HEADER;
+HPDF_Annotation h;
+} ScmHpdfAnnotation;
+
+SCM_CLASS_DECL(Scm_HpdfAnnotationClass);
+ #define SCM_CLASS_HPDF_ANNOTATION (&Scm_HpdfAnnotationClass)
+ #define SCM_HPDF_ANNOTATION(obj) ((ScmHpdfAnnotation*)(obj))
+ #define SCM_HPDF_ANNOTATION_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_ANNOTATION))
+
+typedef struct ScmHpdfExtGStateRec {
+SCM_HEADER;
+HPDF_ExtGState h;
+} ScmHpdfExtGState;
+
+SCM_CLASS_DECL(Scm_HpdfExtGStateClass);
+ #define SCM_CLASS_HPDF_EXTGSTATE (&Scm_HpdfExtGStateClass)
+ #define SCM_HPDF_EXTGSTATE(obj) ((ScmHpdfExtGState*)(obj))
+ #define SCM_HPDF_EXTGSTATE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_EXTGSTATE))
+
+typedef struct ScmHpdfPointRec {
+SCM_HEADER;
+HPDF_Point h;
+} ScmHpdfPoint;
+
+SCM_CLASS_DECL(Scm_HpdfPointClass);
+ #define SCM_CLASS_HPDF_POINT (&Scm_HpdfPointClass)
+ #define SCM_HPDF_POINT(obj) ((ScmHpdfPoint*)(obj))
+ #define SCM_HPDF_POINTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT))
+
+typedef struct ScmHpdfRectRec {
+SCM_HEADER;
+HPDF_Rect h;
+} ScmHpdfRect;
+
+SCM_CLASS_DECL(Scm_HpdfRectClass);
+ #define SCM_CLASS_HPDF_RECT (&Scm_HpdfRectClass)
+ #define SCM_HPDF_RECT(obj) ((ScmHpdfRect*)(obj))
+ #define SCM_HPDF_RECT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_RECT))
+
+typedef struct ScmHpdfBoxRec {
+SCM_HEADER;
+HPDF_Rect h;
+} ScmHpdfBox;
+
+SCM_CLASS_DECL(Scm_HpdfBoxClass);
+ #define SCM_CLASS_HPDFBOX (&Scm_HpdfBoxClass)
+ #define SCM_HPDFBOX(obj) ((ScmHpdfBox*)(obj))
+ #define SCM_HPDFBOXP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFBOX))
+
+typedef struct ScmHpdfTransMatrixRec {
+SCM_HEADER;
+HPDF_TransMatrix h;
+} ScmHpdfTransMatrix;
+
+SCM_CLASS_DECL(Scm_HpdfTransMatrixClass);
+ #define SCM_CLASS_HPDF_TRANSMATRIX (&Scm_HpdfTransMatrixClass)
+ #define SCM_HPDF_TRANSMATRIX(obj) ((ScmHpdfTransMatrix*)(obj))
+ #define SCM_HPDF_TRANSMATRIX_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_TRANSMATRIX))
+
+typedef struct ScmHpdfRGBColorRec {
+SCM_HEADER;
+HPDF_RGBColor h;
+} ScmHpdfRGBColor;
+
+SCM_CLASS_DECL(Scm_HpdfRGBColorClass);
+ #define SCM_CLASS_HPDF_RGBCOLOR (&Scm_HpdfRGBColorClass)
+ #define SCM_HPDF_RGBCOLOR(obj) ((ScmHpdfRGBColor*)(obj))
+ #define SCM_HPDF_RGBCOLOR_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_RGBCOLOR))
+
+typedef struct ScmHpdfCMYKColorRec {
+SCM_HEADER;
+HPDF_CMYKColor h;
+} ScmHpdfCMYKColor;
+
+SCM_CLASS_DECL(Scm_HpdfCMYKColorClass);
+ #define SCM_CLASS_HPDF_CMYKCOLOR (&Scm_HpdfCMYKColorClass)
+ #define SCM_HPDF_CMYKCOLOR(obj) ((ScmHpdfCMYKColor*)(obj))
+ #define SCM_HPDF_CMYKCOLOR_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_COLOR))
+
+typedef struct ScmHpdfLineCapRec {
+SCM_HEADER;
+HPDF_LineCap h;
+} ScmHpdfLineCap;
+
+SCM_CLASS_DECL(Scm_HpdfLineCapClass);
+ #define SCM_CLASS_HPDF_LINECAP (&Scm_HpdfLineCapClass)
+ #define SCM_HPDF_LINECAP(obj) ((ScmHpdfLineCap*)(obj))
+ #define SCM_HPDF_LINECAP_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_LINECAP))
+
+typedef struct ScmHpdfLineJoinRec {
+SCM_HEADER;
+HPDF_LineJoin h;
+} ScmHpdfLineJoin;
+
+SCM_CLASS_DECL(Scm_HpdfLineJoinClass);
+ #define SCM_CLASS_HPDF_LINEJOIN (&Scm_HpdfLineJoinClass)
+ #define SCM_HPDF_LINEJOIN(obj) ((ScmHpdfLineJoin*)(obj))
+ #define SCM_HPDF_LINEJOIN_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFLINEJOIN))
+
+typedef struct ScmHpdfDashModeRec {
+SCM_HEADER;
+HPDF_DashMode h;
+} ScmHpdfDashMode;
+
+SCM_CLASS_DECL(Scm_HpdfDashModeClass);
+ #define SCM_CLASS_HPDF_DASHMODE (&Scm_HpdfDashModeClass)
+ #define SCM_HPDF_DASHMODE(obj) ((ScmHpdfDashMode*)(obj))
+ #define SCM_HPDF_DASHMODE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_DASHMODE))
+
+typedef struct ScmHpdfDateRec {
+SCM_HEADER;
+HPDF_Date h;
+} ScmHpdfDate;
+
+SCM_CLASS_DECL(Scm_HpdfDateClass);
+ #define SCM_CLASS_HPDFDATE (&Scm_HpdfDateClass)
+ #define SCM_HPDF_DATE(obj) ((ScmHpdfDate*)(obj))
+ #define SCM_HPDF_DATE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDATE))
+
+typedef struct ScmHpdfDictRec {
+SCM_HEADER;
+HPDF_Dict h;
+} ScmHpdfDict;
+
+SCM_CLASS_DECL(Scm_HpdfDictClass);
+ #define SCM_CLASS_HPDFDICT (&Scm_HpdfDictClass)
+ #define SCM_HPDF_DICT(obj) ((ScmHpdfDict*)(obj))
+ #define SCM_HPDF_DICT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDICT))
+
+typedef struct ScmHpdfTextWidthRec {
+SCM_HEADER;
+HPDF_TextWidth h;
+} ScmHpdfTextWidth;
+
+SCM_CLASS_DECL(Scm_HpdfTextWidthClass);
+ #define SCM_CLASS_HPDFTEXTWIDTH (&Scm_HpdfTextWidthClass)
+ #define SCM_HPDFTEXTWIDTH(obj) ((ScmHpdfTextWidth*)(obj))
+ #define SCM_HPDFTEXTWIDTHP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTEXTWIDTH))
+
+extern void hpdf_error_handler(HPDF_STATUS   error_no,
+                        HPDF_STATUS   detail_no,
+                        void         *user_data);
 
 /* Epilogue */
 SCM_DECL_END
