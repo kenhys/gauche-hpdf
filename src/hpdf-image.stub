@@ -1,0 +1,116 @@
+;;;
+;;; hpdf-image.stub
+;;;
+
+"
+/*
+ * $Id$
+
+ Copyright (c) 2007, HAYASHI Kentaro <kenhys@gigo-ice.org> All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+    * Neither the name of the GIGO-ICE.ORG nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+"
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+"
+
+(include "gauche-hpdf.types")
+
+
+;;
+;; Image Data
+;;
+(define-cproc hpdf-load-png-image-from-file (doc::<hpdf-doc> filename::<const-cstring>)
+  (body <hpdf-image>
+        "ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);"
+        "h->h = HPDF_LoadPngImageFromFile(doc->h, filename);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-load-png-image-from-file2 (doc::<hpdf-doc> filename::<const-cstring>)
+  (body <hpdf-image>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
+  h->h = HPDF_LoadPngImageFromFile2(doc->h, filename);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-load-jpeg-image-from-file (doc::<hpdf-doc> filename::<const-cstring>)
+  (body <hpdf-image>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
+  h->h = HPDF_LoadJpegImageFromFile(doc->h, filename);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-load-raw-image-from-file (doc::<hpdf-doc> filename::<const-cstring> width::<uint> height::<uint> color_space::<fixnum>)
+  (body <hpdf-image>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
+  h->h = HPDF_LoadRawImageFromFile(doc->h, filename, width, height, color_space);
+  SCM_RESULT = h;"))
+
+;; FIXME
+(define-cproc hpdf-load-raw-image-from-mem (doc::<hpdf-doc> buf::<const-cstring> width::<uint> height::<uint> color_space::<fixnum> bits_per_component::<uint>)
+  (body <hpdf-image>
+        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
+  h->h = HPDF_LoadRawImageFromMem(doc->h, buf, width, height, color_space, bits_per_component);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-image-get-size (image::<hpdf-image>)
+  (body <hpdf-point>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_POINT);
+  h->h = HPDF_Image_GetSize(image->h);
+  SCM_RESULT = h;"))
+
+;; FIXME
+;;(define-cproc hpdf-image-get-size2 (image::<hpdf-image> size::<hpdf-point>)
+;;  (body <ulong> "SCM_RESULT = HPDF_Image_GetSize2 (image->h, size->h);"))
+
+(define-cproc hpdf-image-get-width (img::<hpdf-image>)
+  (expr <uint> "SCM_RESULT = HPDF_Image_GetWidth(img->h)"))
+
+(define-cproc hpdf-image-get-height (image::<hpdf-image>)
+  (expr <uint> "SCM_RESULT = HPDF_Image_GetHeight(image->h)"))
+
+(define-cproc hpdf-image-get-bits-per-component (image::<hpdf-image>)
+  (expr <uint> "SCM_RESULT = HPDF_Image_GetBitsPerComponent(image->h)"))
+
+(define-cproc hpdf-image-get-color-space (image::<hpdf-image>)
+  (expr <const-cstring> "SCM_RESULT = HPDF_Image_GetColorSpace(image->h)"))
+
+(define-cproc hpdf-image-set-color-mask (image::<hpdf-image> rmin::<uint> rmax::<uint> gmin::<uint> gmax::<uint> bmin::<uint> bmax::<uint>)
+  (expr <ulong> "SCM_RESULT = HPDF_Image_SetColorMask(image->h, rmin, rmax, gmin, gmax, bmin, bmax)"))
+
+(define-cproc hpdf-image-set-mask-image (image::<hpdf-image> mask_image::<hpdf-image>)
+  (expr <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h)"))
+
+
+;; Local variables:
+;; mode: scheme
+;; end:
