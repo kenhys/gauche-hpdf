@@ -1,0 +1,958 @@
+;;;
+;;; hpdf-page.stub
+;;;
+
+"
+/*
+ * $Id$
+
+ Copyright (c) 2007, HAYASHI Kentaro <kenhys@gigo-ice.org> All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+    * Neither the name of the GIGO-ICE.ORG nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+"
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+"
+
+(include "gauche-hpdf.types")
+
+;;
+;; The following entry is a procedure
+;;
+
+
+(define-cproc hpdf-add-page (doc::<hpdf-doc>)
+  (body <hpdf-page>
+        "GAUCHE_HPDF_FUNC(\"hpdf-add-page\");"
+        "ScmHpdfPage *h = SCM_NEW(ScmHpdfPage);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_PAGE);"
+        "h->h = HPDF_AddPage(doc->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-get-page-by-index (doc::<hpdf-doc> index::<uint>)
+  (body <hpdf-page>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-page-by-index\");"
+        "  ScmHpdfPage *h = SCM_NEW(ScmHpdfPage);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_PAGE);
+  h->h = HPDF_GetPageByIndex(doc->h, index);
+  SCM_RESULT = h;"))
+
+;;
+;;
+;;
+(define-cproc hpdf-page-set-width (page::<hpdf-page> v::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-width\");"
+        "SCM_RESULT = HPDF_Page_SetWidth(page->h, v);"))
+
+(define-cproc hpdf-page-set-height (page::<hpdf-page> v::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-height\");"
+        "HPDF_Page_SetHeight(page->h, v);"))
+
+(define-cproc hpdf-page-set-size (page::<hpdf-page> size::<fixnum> direction::<fixnum>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-size\");"
+        "switch (size) {"
+        "case HPDF_PAGE_SIZE_LETTER:"
+        "case HPDF_PAGE_SIZE_LEGAL:"
+        "case HPDF_PAGE_SIZE_A3:"
+        "case HPDF_PAGE_SIZE_A4:"
+        "case HPDF_PAGE_SIZE_A5:"
+        "case HPDF_PAGE_SIZE_B4:"
+        "case HPDF_PAGE_SIZE_B5:"
+        "case HPDF_PAGE_SIZE_EXECUTIVE:"
+        "case HPDF_PAGE_SIZE_US4x6:"
+        "case HPDF_PAGE_SIZE_US4x8:"
+        "case HPDF_PAGE_SIZE_US5x7:"
+        "case HPDF_PAGE_SIZE_COMM10:"
+        "  GAUCHE_HPDF_INT(\"size\", size);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"Invalid 2nd argument. it needs HPDF_PAGE_SIZE_LETTER or HPDF_PAGE_SIZE_LEGAL or HPDF_PAGE_SIZE_A3 or HPDF_PAGE_SIZE_A4 or HPDF_PAGE_SIZE_A5 or HPDF_PAGE_SIZE_B4 or HPDF_PAGE_SIZE_B5 or HPDF_PAGE_SIZE_EXECUTIVE or HPDF_PAGE_SIZE_US4x6 or HPDF_PAGE_SIZE_US4x8 or HPDF_PAGE_SIZE_US5x7 or HPDF_PAGE_SIZE_COMM10.\\n\");"
+        "  break;"
+        "}"
+        "switch (direction) {"
+        "case HPDF_PAGE_PORTRAIT:"
+        "case HPDF_PAGE_LANDSCAPE:"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"Invalid 3rd argument. it needs HPDF_PAGE_LANDSCAPE or HPDF_PAGE_PORTRAIT.\\n\");"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_Page_SetSize(page->h, size, direction);"))
+
+(define-cproc hpdf-page-set-rotate (page::<hpdf-page> angle::<uint16>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-rotate\");"
+        "HPDF_Page_SetRotate(page->h, angle);"))
+
+;;(define-cproc hpdf-page-measuretext (page::<hpdf-page> s::<const-cstring> width::<float> wordwrapage::<int> rwidth::<float>?)
+;;  (body <uint> "  SCM_RESULT = HPDF_Page_MeasureText(page->h, s, width, wordwrap, rwidth);"))
+
+(define-cproc hpdf-page-set-slide-show (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)
+  (body <ulong>
+        "switch(type) {"
+        "case HPDF_TS_WIPE_RIGHT:"
+        "case HPDF_TS_WIPE_UP:"
+        "case HPDF_TS_WIPE_LEFT:"
+        "case HPDF_TS_WIPE_DOWN:"
+        "case HPDF_TS_BARN_DOORS_HORIZONTAL_OUT:"
+        "case HPDF_TS_BARN_DOORS_HORIZONTAL_IN:"
+        "case HPDF_TS_BARN_DOORS_VERTICAL_OUT:"
+        "case HPDF_TS_BARN_DOORS_VERTICAL_IN:"
+        "case HPDF_TS_BOX_OUT:"
+        "case HPDF_TS_BOX_IN:"
+        "case HPDF_TS_BLINDS_HORIZONTAL:"
+        "case HPDF_TS_BLINDS_VERTICAL:"
+        "case HPDF_TS_DISSOLVE:"
+        "case HPDF_TS_GLITTER_RIGHT:"
+        "case HPDF_TS_GLITTER_DOWN:"
+        "case HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT:"
+        "case HPDF_TS_REPLACE:"
+        "  SCM_RESULT = HPDF_Page_SetSlideShow(page->h, type, disp, trans);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"\");"
+        "  break;"
+        "}"))
+
+;;
+;; Graphics
+;;
+(define-cproc hpdf-page-set-line-width (page::<hpdf-page> line_width::<float>)
+  (body <ulong> "HPDF_Page_SetLineWidth(page->h, line_width);"))
+
+(define-cproc hpdf-page-set-line-cap (page::<hpdf-page> cap::<hpdf-linecap>)
+  (body <ulong> "HPDF_Page_SetLineCap(page->h, cap->h);"))
+
+(define-cproc hpdf-page-set-line-join (page::<hpdf-page> join::<uint>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-stream-size\");"
+        "switch (join) {"
+        "case HPDF_MITER_JOIN:"
+        "case HPDF_ROUND_JOIN:"
+        "case HPDF_BEVEL_JOIN:"
+        "  SCM_RESULT = HPDF_Page_SetLineJoin(page->h, join);"
+        "  break;"
+        "default:"
+        "  /* error */"
+        "  SCM_RESULT = 0;"
+        "  Scm_Error(\"Invalid 2nd argument. it needs HPDF_MITER_JOIN or HPDF_ROUND_JOIN or HPDF_BEVEL_JOIN.\\n\");"
+        "  break;"
+        "}"))
+
+(define-cproc hpdf-page-set-miter-limit (page::<hpdf-page> miter_limit::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-miter-limit\");"
+        "SCM_RESULT = HPDF_Page_SetMiterLimit(page->h, miter_limit);"))
+
+;; FIXME
+(define-cproc hpdf-page-set-dash (page::<hpdf-page> dash::<foreign-pointer> num_param::<uint> phase::<uint>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-dash\");"
+        "SCM_RESULT = HPDF_Page_SetDash(page->h, SCM_FOREIGN_POINTER(dash)->ptr, num_param, phase);"))
+
+(define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
+  (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))
+
+(define-cproc hpdf-page-setextgstate (page::<hpdf-page> ext_gstate::<hpdf-extgstate>)
+  (expr <ulong> "HPDF_Page_SetExtGState(page->h, ext_gstate->h)"))
+
+;; Special graphic state operator
+(define-cproc hpdf-page-gsave (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_GSave(page->h);"))
+
+(define-cproc hpdf-page-grestore (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_GRestore(page->h);"))
+
+(define-cproc hpdf-page-concat (page::<hpdf-page>
+                                a::<float>
+                                b::<float>
+                                c::<float>
+                                d::<float>
+                                x::<float>
+                                y::<float>)
+  (body <ulong> "HPDF_Page_Concat(page->h, a, b, c, d, x, y);"))
+
+;; Path construction operator
+(define-cproc hpdf-page-moveto (page::<hpdf-page> x::<float> y::<float>)
+  (body <ulong> "HPDF_Page_MoveTo(page->h, x, y);"))
+
+(define-cproc hpdf-page-lineto (page::<hpdf-page> x::<float> y::<float>)
+  (body <ulong> "HPDF_Page_LineTo(page->h, x, y);"))
+
+(define-cproc hpdf-page-curveto (page::<hpdf-page> x1::<float> y1::<float> x2::<float> y2::<float> x3::<float> y3::<float>)
+  (body <ulong> "HPDF_Page_CurveTo(page->h, x1, y1, x2, y2, x3, y3);"))
+
+(define-cproc hpdf-page-curveto2 (page::<hpdf-page> x2::<float> y2::<float> x3::<float> y3::<float>)
+  (body <ulong> "HPDF_Page_CurveTo2(page->h, x2, y2, x3, y3);"))
+
+(define-cproc hpdf-page-curveto3 (page::<hpdf-page> x1::<float> y1::<float> x3::<float> y3::<float>)
+  (body <ulong> "HPDF_Page_CurveTo2(page->h, x1, y1, x3, y3);"))
+
+(define-cproc hpdf-page-close-path (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePath(page->h);"))
+
+(define-cproc hpdf-page-rectangle (page::<hpdf-page> x::<float> y::<float> width::<float> height::<float>)
+  (body <ulong> "HPDF_Page_Rectangle(page->h, x, y, width, height);"))
+
+;; Path painting operator
+(define-cproc hpdf-page-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_Stroke(page->h);"))
+
+(define-cproc hpdf-page-close-path-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePathStroke(page->h);"))
+
+(define-cproc hpdf-page-fill (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_Fill(page->h);"))
+
+(define-cproc hpdf-page-eo-fill (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_Eofill(page->h);"))
+
+(define-cproc hpdf-page-fill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_FillStroke(page->h);"))
+
+(define-cproc hpdf-page-eofill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_EofillStroke(page->h);"))
+
+(define-cproc hpdf-page-close-path-fill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePathFillStroke(page->h);"))
+
+(define-cproc hpdf-page-close-path-eofill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePathEofillStroke(page->h);"))
+
+(define-cproc hpdf-page-end-path (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_EndPath(page->h);"))
+
+;; Clipping paths operator
+(define-cproc hpdf-page-clip (page::<hpdf-page>)
+  (body <ulong> "SCM_RESULT = HPDF_Page_Clip(page->h);"))
+
+(define-cproc hpdf-page-eoclip (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_Eoclip(page->h)"))
+
+;; Text object operator
+;; BT
+(define-cproc hpdf-page-begin-text (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_BeginText(page->h)"))
+
+;; ET
+(define-cproc hpdf-page-end-text (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_EndText(page->h)"))
+
+;; Text state
+(define-cproc hpdf-page-set-char-space (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetCharSpace(page->h, value)"))
+
+(define-cproc hpdf-page-setwordspace (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
+
+(define-cproc hpdf-page-set-horizontal-scalling (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
+
+(define-cproc hpdf-page-set-text-leading (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetTextLeading(page->h, value)"))
+
+(define-cproc hpdf-page-set-font-and-size (page::<hpdf-page> font::<hpdf-font> size::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
+        "SCM_RESULT = HPDF_Page_SetFontAndSize(page->h, font->h, size);"))
+
+(define-cproc hpdf-page-set-text-rendering-mode (page::<hpdf-page> mode::<uint>)
+  (expr <ulong> "HPDF_Page_SetTextRenderingMode(page->h, mode)"))
+
+(define-cproc hpdf-page-set-text-rise (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetTextRise(page->h, value)"))
+
+;; Text positioning 
+(define-cproc hpdf-page-move-text-pos (page::<hpdf-page> x::<float> y::<float>)
+  (expr <ulong> "HPDF_Page_MoveTextPos(page->h, x, y)"))
+
+(define-cproc hpdf-page-move-text-pos2 (page::<hpdf-page> x::<float> y::<float>)
+  (expr <ulong> "HPDF_Page_MoveTextPos2(page->h, x, y)"))
+
+(define-cproc hpdf-page-set-text-matrix (page::<hpdf-page> a::<float> b::<float> c::<float> d::<float> x::<float> y::<float>)
+  (expr <ulong> "HPDF_Page_SetTextMatrix(page->h, a, b, c, d, x, y)"))
+
+(define-cproc hpdf-page-move-to-nextline (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_MoveToNextLine(page->h)"))
+  
+;; Text showing
+(define-cproc hpdf-page-show-text (page::<hpdf-page> text::<const-cstring>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-show-text\");"
+        "#ifdef GAUCHE_HPDF_DEBUG"
+        "char dummy[20];"
+        "int i = 0;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x41;i++;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x81;i++;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x93;i++;"
+        "dummy[i] = 0x83;i++;"
+        "dummy[i] = 0x7b;i++;"
+        "dummy[i] = 0x90;i++;"
+        "dummy[i] = 0xd4;i++;"
+        "dummy[i] = 0;i++;"
+        "dummy[i] = 0;i++;"
+        "dummy[i] = 0;i++;"
+        "i = 0;"
+        "char *p = text;"
+        "fprintf(stderr, \"text entry:\", text);"
+        "while (i < 20) {"
+        "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", text[i], text[i]);"
+        "  i++;"
+        "}"
+        "i = 0;"
+        "fprintf(stderr, \"dummy entry:\", dummy);"
+        "while (i < 20) {"
+        "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", dummy[i], dummy[i]);"
+        "  i++;"
+        "}"
+        "#endif"
+        "if (strlen(text) > 0) {"
+        "  SCM_RESULT = HPDF_Page_ShowText(page->h, text);"
+        "} else {"
+        "  SCM_RESULT = 0;"
+        "}"
+        ))
+
+(define-cproc hpdf-page-show-text-next-line (page::<hpdf-page> text::<const-cstring>)
+  (expr <ulong> "HPDF_Page_ShowTextNextLine(page->h, text)"))
+
+(define-cproc hpdf-page-show-text-next-line-ex (page::<hpdf-page> word_space::<float> char_space::<float> text::<const-cstring>)
+  (expr <ulong> "HPDF_Page_ShowTextNextLineEx(page->h, word_space, char_space, text)"))
+
+;; Color showing
+(define-cproc hpdf-page-set-gray-fill (page::<hpdf-page> gray::<float>)
+  (expr <ulong> "HPDF_Page_SetGrayFill(page->h, gray)"))
+
+(define-cproc hpdf-page-set-gray-stroke (page::<hpdf-page> gray::<float>)
+  (expr <ulong> "HPDF_Page_SetGrayStroke(page->h, gray)"))
+
+(define-cproc hpdf-page-set-rgb-fill (page::<hpdf-page> r::<float> g::<float> b::<float>)
+  (expr <ulong> "HPDF_Page_SetRGBFill(page->h, r, g, b)"))
+
+(define-cproc hpdf-page-set-rgb-stroke (page::<hpdf-page> r::<float> g::<float> b::<float>)
+  (expr <ulong> "HPDF_Page_SetRGBStroke(page->h, r, g, b)"))
+
+(define-cproc hpdf-page-set-cmyk-fill (page::<hpdf-page> c::<float> m::<float> y::<float> k::<float>)
+  (expr <ulong> "HPDF_Page_SetCMYKFill(page->h, c, m, y, k)"))
+
+(define-cproc hpdf-page-set-cmyk-stroke (page::<hpdf-page> c::<float> m::<float> y::<float> k::<float>)
+  (expr <ulong> "HPDF_Page_SetCMYKStroke(page->h, c, m, y, k)"))
+
+;; XObjects
+(define-cproc hpdf-page-execute-xobject (page::<hpdf-page> obj::<hpdf-xobject>)
+  (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
+
+(define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
+(define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
+(define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
+(define-cproc hpdf-page-textout (page::<hpdf-page>) (body <float> ""))
+(define-cproc hpdf-page-textrect (page::<hpdf-page>) (body <float> ""))
+
+
+;;
+;; Font Handling
+;;
+(define-cproc hpdf-get-font (doc::<hpdf-doc> font::<const-cstring> enc::<const-cstring>)
+  (body <hpdf-font>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-font\");"
+        "ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);"
+        "if (strlen(enc) > 0) {"
+        "  h->h = HPDF_GetFont(doc->h, font, enc);"
+        "} else {"
+        "  h->h = HPDF_GetFont(doc->h, font, NULL);"
+        "}"
+        "if (h->h) {"
+        "  SCM_RESULT = h;"
+        "} else {"
+        "  GAUCHE_HPDF_WARN(\"error in HPDF_GetFont\");"
+        "  SCM_RESULT = SCM_NIL;"
+        "}"))
+
+(define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-type1-font-from-file\");"
+        "/* afm, pfb*/"
+        "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm_file_name, data_file_name);"))
+
+(define-cproc hpdf-load-ttf-font-from-file (doc::<hpdf-doc> file::<const-cstring> embedding::<boolean>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file\");"
+        "const char *p = HPDF_LoadTTFontFromFile(doc->h, file, embedding);"
+        "/* GAUCHE_HPDF_HEX('funcp', p);*/"
+        "SCM_RESULT = p;"
+        "if (p) {"
+        "} else {"
+        "  if (embedding) {"
+        "     Scm_Error(\"can't load True Type Font(embedding %s) into PDF.\", file);"
+        "  } else {"
+        "     Scm_Error(\"can't load True Type Font(%s) into PDF.\", file);"
+        "  }"
+        "}"))
+
+(define-cproc hpdf-load-ttf-font-from-file2 (doc::<hpdf-doc> file::<const-cstring> index::<uint> embedding::<boolean>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file2\");"
+        "SCM_RESULT = HPDF_LoadTTFontFromFile2(doc->h, file, index, embedding);"))
+
+(define-cproc hpdf-add-page-label (doc::<hpdf-doc> page-num::<uint> page-style::<uint> first-page::<uint> prefix::<const-cstring>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-add-page-label\");"
+        ""))
+
+(define-cproc hpdf-use-jp-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-jp-fonts\");"
+        "SCM_RESULT = HPDF_UseJPFonts(doc->h);"))
+
+(define-cproc hpdf-use-kr-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-kr-fonts\");"
+        "SCM_RESULT = HPDF_UseKRFonts(doc->h);"))
+
+(define-cproc hpdf-use-cns-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-cns-fonts\");"
+        "SCM_RESULT = HPDF_UseCNSFonts(doc->h);"))
+
+(define-cproc hpdf-use-cnt-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-cnt-fonts\");"
+        "SCM_RESULT = HPDF_UseCNTFonts(doc->h);"))
+
+;;
+;; Outline
+;;
+(define-cproc hpdf-create-outline (doc::<hpdf-doc> parent::<hpdf-outline>? title::<const-cstring> encoder::<hpdf-encoder>?)
+  (body <hpdf-outline>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-create-outline\");"
+        "ScmHpdfOutline *h = SCM_NEW(ScmHpdfOutline);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_OUTLINE);"
+        "if (parent) {"
+        "  if (encoder) {"
+        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, encoder->h);"
+        "  } else {"
+        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, NULL);"
+        "  }"
+        "} else {"
+        "  if (encoder) {"
+        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, encoder->h);"
+        "  } else {"
+        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, NULL);"
+        "  }"
+        "}"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-outline-set-opened (out::<hpdf-outline> opened::<boolean>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-set-opened\");"
+        "SCM_RESULT = HPDF_Outline_SetOpened(out->h, opened);"))
+
+(define-cproc hpdf-outline-set-destination (out::<hpdf-outline> dst::<hpdf-destination>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-set-destination\");"
+        "SCM_RESULT = HPDF_Outline_SetDestination(out->h, dst->h);"))
+
+;;
+;; Destination
+;;
+(define-cproc hpdf-page-create-destination (page::<hpdf-page>)
+  (body <hpdf-destination>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-destination\");"
+        "ScmHpdfDestination *h = SCM_NEW(ScmHpdfDestination);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_DESTINATION);"
+        "h->h = HPDF_Page_CreateDestination(page->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-destination-set-xyz (dst::<hpdf-destination> left::<float> top::<float> zoom::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-xyz\");"
+        "SCM_RESULT = HPDF_Destination_SetXYZ(dst->h, left, top, zoom);"))
+
+(define-cproc hpdf-destination-set-fit (dst::<hpdf-destination>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fit\");"
+        "SCM_RESULT = HPDF_Destination_SetFit(dst->h);"))
+
+(define-cproc hpdf-destination-set-fith (dst::<hpdf-destination> top::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fith\");"
+        "SCM_RESULT = HPDF_Destination_SetFitH(dst->h, top);"))
+
+(define-cproc hpdf-destination-set-fitv (dst::<hpdf-destination> left::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fitv\");"
+        "SCM_RESULT = HPDF_Destination_SetFitV(dst->h, left);"))
+
+(define-cproc hpdf-destination-set-fitr (dst::<hpdf-destination> left::<float> bottom::<float> right::<float> top::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fitr\");"
+        "SCM_RESULT = HPDF_Destination_SetFitR(dst->h, left, bottom, right, top);"))
+
+(define-cproc hpdf-destination-set-fitb (dst::<hpdf-destination>)
+  (body <ulong> "HPDF_Destination_SetFitB(dst->h);"))
+
+(define-cproc hpdf-destination-set-fitbh (dst::<hpdf-destination> top::<float>)
+  (body <ulong> "HPDF_Destination_SetFitBH(dst->h, top);"))
+
+(define-cproc hpdf-destination-set-fitbv (dst::<hpdf-destination> left::<float>)
+  (body <ulong> "HPDF_Destination_SetFitBV(dst->h, left);"))
+
+;;
+;; Encoding Handler
+;;
+(define-cproc hpdf-get-encoder (doc::<hpdf-doc> encoding_name::<const-cstring>)
+  (body <hpdf-encoder>
+        "  ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);
+  h->h = HPDF_GetEncoder(doc->h, encoding_name);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-get-current-encoder (doc::<hpdf-doc>)
+  (body <hpdf-encoder>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-current-encoder\");"
+        "ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);"
+        "h->h = HPDF_GetCurrentEncoder(doc->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-set-current-encoder (doc::<hpdf-doc> encoding_name::<const-cstring>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-set-current-encoder\");"
+        "SCM_RESULT = HPDF_SetCurrentEncoder(doc->h, encoding_name);"))
+
+(define-cproc hpdf-encoder-get-type (enc::<hpdf-encoder>)
+  (body <fixnum>
+        "GAUCHE_HPDF_FUNC(\"hpdf-encoder-get-type\");"
+        "SCM_RESULT = HPDF_Encoder_GetType(enc->h);"))
+
+(define-cproc hpdf-encoder-get-byte-type (enc::<hpdf-encoder> text::<const-cstring> index::<uint>)
+  (body <fixnum>
+        "GAUCHE_HPDF_FUNC(\"hpdf-encoder-get-byte-type\");"
+        "SCM_RESULT = HPDF_Encoder_GetByteType(enc->h, text, index);"))
+
+(define-cproc hpdf-encoder-get-unicode (enc::<hpdf-encoder> code::<uint16>)
+  (body <uint16> "SCM_RESULT = HPDF_Encoder_GetUnicode(enc->h, code);"))
+
+(define-cproc hpdf-encoder-get-writing-mode (enc::<hpdf-encoder>)
+  (body <fixnum> "SCM_RESULT = HPDF_Encoder_GetWritingMode(enc->h);"))
+
+(define-cproc hpdf-use-jp-encodings (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-jp-encodings\");"
+        "SCM_RESULT = HPDF_UseJPEncodings(doc->h);"))
+
+(define-cproc hpdf-use-kr-encodings (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-kr-encodings\");"
+        "SCM_RESULT = HPDF_UseKREncodings(doc->h);"))
+
+(define-cproc hpdf-use-cns-encodings (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-cns-encodings\");"
+        "SCM_RESULT = HPDF_UseCNSEncodings(doc->h);"))
+
+(define-cproc hpdf-use-cnt-encodings (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-cnt-encodings\");"
+        "SCM_RESULT = HPDF_UseCNTEncodings(doc->h);"))
+
+;;
+;; Annotation
+;;
+(define-cproc hpdf-page-create-text-annot (page::<hpdf-page> rect::<hpdf-rect> text::<const-cstring> encoder::<hpdf-encoder>)
+  (body <hpdf-annotation>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-text-annot\");"
+        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
+        "h->h = HPDF_Page_CreateTextAnnot(page->h, rect->h, text, encoder->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-link-annot (page::<hpdf-page> rect::<hpdf-rect> dst::<hpdf-destination>)
+  (body <hpdf-annotation>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-link-annot\");"
+        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
+        "h->h = HPDF_Page_CreateLinkAnnot(page->h, rect->h, dst->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-uri-link-annot (page::<hpdf-page> rect::<hpdf-rect> uri::<const-cstring>)
+  (body <hpdf-annotation>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-uri-link-annot\");"
+        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
+        "h->h = HPDF_Page_CreateURILinkAnnot(page->h, rect->h, uri);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-link-annot-set-highlight-mode (annot::<hpdf-annotation> mode::<fixnum>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-link-annot-set-highlight-mode\");"
+        "SCM_RESULT = HPDF_LinkAnnot_SetHighlightMode (annot->h, mode);"))
+
+(define-cproc hpdf-link-annot-set-border-style (annot::<hpdf-annotation> width::<float> dash_on::<uint16> dash_off::<uint16>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-link-annot-set-border-style\");"
+        "SCM_RESULT = HPDF_LinkAnnot_SetBorderStyle (annot->h, width, dash_on, dash_off);"))
+
+(define-cproc hpdf-text-annot-set-icon (annot::<hpdf-annotation> icon::<fixnum>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-text-annot-set-icon\");"
+        "SCM_RESULT = HPDF_TextAnnot_SetIcon (annot->h, icon);"))
+
+(define-cproc hpdf-text-annot-set-opened (annot::<hpdf-annotation> opened::<boolean>)
+  (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetOpened (annot->h, opened);"))
+
+;; Info Dictionary
+(define-cproc hpdf-set-info-attr (doc::<hpdf-doc> type::<fixnum> value::<const-cstring>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-set-info-attr\");"
+        "switch (type) {"
+        "case HPDF_INFO_AUTHOR:"
+        "case HPDF_INFO_CREATOR:"
+        "case HPDF_INFO_TITLE:"
+        "case HPDF_INFO_SUBJECT:"
+        "case HPDF_INFO_KEYWORDS:"
+        "  break;"
+        "default:"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_SetInfoAttr(doc->h, type, value);"))
+
+(define-cproc hpdf-get-info-attr (doc::<hpdf-doc> type::<fixnum>)
+  (body <const-cstring>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-info-attr\");"
+        "switch (type) {"
+        "case HPDF_INFO_CREATION_DATE:"
+        "case HPDF_INFO_MOD_DATE:"
+        "case HPDF_INFO_AUTHOR:"
+        "case HPDF_INFO_CREATOR:"
+        "case HPDF_INFO_TITLE:"
+        "case HPDF_INFO_SUBJECT:"
+        "case HPDF_INFO_KEYWORDS:"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"Invalid 2nd argument.\");"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_GetInfoAttr(doc->h, type);"))
+
+(define-cproc hpdf-set-info-date-attr (doc::<hpdf-doc> type::<fixnum> date::<hpdf-date>)
+  (expr <ulong> "SCM_RESULT = HPDF_SetInfoDateAttr(doc->h, type, date->h)"))
+
+;; encryption
+(define-cproc hpdf-set-password (doc::<hpdf-doc> owner_passwd::<const-cstring> user_passwd::<const-cstring>)
+  (expr <ulong> "SCM_RESULT = HPDF_SetPassword(doc->h, owner_passwd, user_passwd)"))
+
+(define-cproc hpdf-set-permission (doc::<hpdf-doc> permission::<uint>)
+  (body <ulong>
+        "switch(permission) {"
+        "case HPDF_ENABLE_READ:"
+        "case HPDF_ENABLE_PRINT:"
+        "case HPDF_ENABLE_EDIT_ALL:"
+        "case HPDF_ENABLE_COPY:"
+        "case HPDF_ENABLE_EDIT:"
+        "  break;"
+        "default:"
+        "  break;"
+        "}"
+        "SCM_RESULT = HPDF_SetPermission(doc->h, permission);"))
+
+(define-cproc hpdf-set-encryption-mode (doc::<hpdf-doc> mode::<fixnum> key_len::<uint>)
+  (expr <ulong> "SCM_RESULT = HPDF_SetEncryptionMode(doc->h, mode, key_len)"))
+
+;; compression
+(define-cproc hpdf-set-compression-mode (doc::<hpdf-doc> mode::<uint>)
+  (body <ulong>
+        "switch (mode) {"
+        "case HPDF_COMP_NONE:"
+        "case HPDF_COMP_TEXT:"
+        "case HPDF_COMP_IMAGE:"
+        "case HPDF_COMP_METADATA:"
+        "case HPDF_COMP_ALL:"
+        "  SCM_RESULT = HPDF_SetCompressionMode(doc->h, mode);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"\");"
+        "  break;"
+        "}"))
+
+;; font
+(define-cproc hpdf-font-get-font-name (font::<hpdf-font>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-font-name\");"
+        "SCM_RESULT = HPDF_Font_GetFontName(font->h);"))
+
+(define-cproc hpdf-font-get-encoding-name (font::<hpdf-font>)
+  (body <const-cstring>
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-encoding-name\");"
+        "SCM_RESULT = HPDF_Font_GetEncodingName(font->h);"))
+
+(define-cproc hpdf-font-get-unicode-width (font::<hpdf-font> code::<uint16>)
+  (body <int>
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-unicode-width\");"
+        "SCM_RESULT = HPDF_Font_GetUnicodeWidth(font->h, code);"))
+
+(define-cproc hpdf-font-get-bbox (font::<hpdf-font>)
+  (body <hpdf-box>
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-bbox\");"
+        "ScmHpdfBox *h = SCM_NEW(ScmHpdfBox);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDFBOX);"
+        "h->h = HPDF_Font_GetBBox(font->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-font-get-ascent (font::<hpdf-font>)
+  (expr <int> "SCM_RESULT = HPDF_Font_GetAscent(font->h)"))
+
+(define-cproc hpdf-font-get-descent (font::<hpdf-font>)
+  (expr <int> "SCM_RESULT = HPDF_Font_GetDescent(font->h)"))
+
+(define-cproc hpdf-font-get-xheight (font::<hpdf-font>)
+  (expr <uint> "SCM_RESULT = HPDF_Font_GetXHeight(font->h)"))
+
+(define-cproc hpdf-font-get-cap-height (font::<hpdf-font>)
+  (expr <uint> "SCM_RESULT = HPDF_Font_GetCapHeight(font->h)"))
+
+(define-cproc hpdf-font-text-width (font::<hpdf-font> text::<const-cstring> len::<uint>)
+  (body <hpdf-textwidth>
+        "  ScmHpdfTextWidth *h = SCM_NEW(ScmHpdfTextWidth);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFTEXTWIDTH);
+  h->h = HPDF_Font_TextWidth(font->h, text, len);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-font-measure-text (font::<hpdf-font>
+                                      text::<foreign-pointer>
+                                      len::<uint> width::<float> font_size::<float>
+                                      char_space::<float> word_space::<float> wordwrap::<float>
+                                      real_width::<foreign-pointer>)
+  (body <uint>
+        "HPDF_Font_MeasureText(font->h,"
+        "SCM_FOREIGN_POINTER(text)->ptr, len, width, font_size, char_space, word_space, wordwrap,"
+        "SCM_FOREIGN_POINTER(real_width)->ptr);"))
+
+;; extended graphics state
+(define-cproc hpdf-create-ext-gstate (doc::<hpdf-doc>)
+  (body <hpdf-extgstate>
+        "  ScmHpdfExtGState *h = SCM_NEW(ScmHpdfExtGState);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_EXTGSTATE);
+  h->h = HPDF_CreateExtGState(doc->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-ext-gstate-set-alpha-stroke (ext_gstate::<hpdf-extgstate> value::<float>)
+  (expr <ulong> "HPDF_ExtGState_SetAlphaStroke(ext_gstate->h, value)"))
+
+(define-cproc hpdf-ext-gstate-set-alpha-fill (ext_gstate::<hpdf-extgstate> value::<float>)
+  (expr <ulong> "HPDF_ExtGState_SetAlphaFill(ext_gstate->h, value)"))
+
+(define-cproc hpdf-ext-gstate-set-blend-mode (ext_gstate::<hpdf-extgstate> mode::<fixnum>)
+  (expr <ulong> "HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode)"))
+
+;;
+(define-cproc hpdf-page-text-width (page::<hpdf-page> text::<const-cstring>)
+  (expr <float> "HPDF_Page_TextWidth(page->h, text)"))
+
+"
+/*
+
+HPDF_EXPORT(HPDF_UINT)
+HPDF_Page_MeasureText  (HPDF_Page    page,
+                        const char  *text,
+                        HPDF_REAL    width,
+                        HPDF_BOOL    wordwrap,
+                        HPDF_REAL   *real_width);
+
+*/
+"
+
+(define-cproc hpdf-page-get-width (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetWidth(page->h)"))
+
+(define-cproc hpdf-page-get-height (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetHeight(page->h)"))
+
+(define-cproc hpdf-page-get-gmode (page::<hpdf-page>)
+  (expr <uint16> "HPDF_Page_GetGMode(page->h)"))
+
+(define-cproc hpdf-page-get-current-pos (page::<hpdf-page>)
+  (body <hpdf-point>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_POINT);
+  h->h = HPDF_Page_GetCurrentPos(page->h);
+  SCM_RESULT = h;"))
+
+;; FIXME
+;; (define-cproc hpdf-page-get-current-pos2 (page::<hpdf-page> pos::<hpdf-point>)
+;;   (body <ulong> "  SCM_RESULT = HPDF_Page_GetCurrentPos2(page->h, pos->h);"))
+
+(define-cproc hpdf-page-get-current-text-pos (page::<hpdf-page>)
+  (body <hpdf-point>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_POINT);
+  h->h = HPDF_Page_GetCurrentTextPos(page->h);
+  SCM_RESULT = h;"))
+
+;; FIXME
+;; (define-cproc hpdf-page-get-current-text-pos2 (page::<hpdf-page> pos::<hpdf-point>)
+;;  (body <ulong> "  SCM_RESULT = HPDF_Page_GetCurrentTextPos2(page->h, pos->h);"))
+
+(define-cproc hpdf-page-get-current-font (page::<hpdf-page>)
+  (body <hpdf-font>
+        "  ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);
+  h->h = HPDF_Page_GetCurrentFont(page->h);
+  SCM_RESULT = h;"))
+
+
+(define-cproc hpdf-page-get-current-font-size (page::<hpdf-page>)
+  (expr <float>  "HPDF_Page_GetCurrentFontSize(page->h)"))
+
+(define-cproc hpdf-page-get-transmatrix (page::<hpdf-page>)
+  (body <hpdf-transmatrix>
+        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_TRANSMATRIX);"
+        "h->h = HPDF_Page_GetTransMatrix(page->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-line-width (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetLineWidth(page->h)"))
+
+(define-cproc hpdf-page-get-line-cap (page::<hpdf-page>)
+  (body <hpdf-linecap>
+        "  ScmHpdfLineCap *h = SCM_NEW(ScmHpdfLineCap);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_LINECAP);
+  h->h = HPDF_Page_GetLineCap(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-line-join (page::<hpdf-page>)
+  (body <hpdf-linejoin>
+        "  ScmHpdfLineJoin *h = SCM_NEW(ScmHpdfLineJoin);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_LINEJOIN);
+  h->h = HPDF_Page_GetLineJoin(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-miter-limit (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetMiterLimit(page->h)"))
+
+(define-cproc hpdf-page-get-dash (page::<hpdf-page>)
+  (body <hpdf-dashmode>
+        "  ScmHpdfDashMode *h = SCM_NEW(ScmHpdfDashMode);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_DASHMODE);
+  h->h = HPDF_Page_GetDash(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-flat (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetFlat(page->h)"))
+
+(define-cproc hpdf-page-get-char-space (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetCharSpace(page->h)"))
+
+(define-cproc hpdf-page-get-word-space (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetWordSpace(page->h)"))
+
+(define-cproc hpdf-page-get-horizontal-scalling (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetHorizontalScalling(page->h)"))
+
+(define-cproc hpdf-page-get-text-leading (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetTextLeading(page->h)"))
+
+(define-cproc hpdf-page-get-text-rendering-mode (page::<hpdf-page>)
+  (expr <fixnum> "HPDF_Page_GetTextRenderingMode(page->h)"))
+
+;; obsolete
+(define-cproc hpdf-page-get-text-raise (page::<hpdf-page>)
+  (body <float>
+        "Scm_Printf(SCM_CURERR, \"Warning: hpdf-page-get-text-raise is obsolete. use hpdf-page-get-text-rise instead.\");"
+        "  SCM_RESULT = HPDF_Page_GetTextRaise(page->h);"))
+
+(define-cproc hpdf-page-get-text-rise (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetTextRise(page->h)"))
+
+(define-cproc hpdf-page-get-rgb-fill (page::<hpdf-page>)
+  (body <hpdf-rgbcolor>
+        "  ScmHpdfRGBColor *h = SCM_NEW(ScmHpdfRGBColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_RGBCOLOR);
+  h->h = HPDF_Page_GetRGBFill(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-rgb-stroke (page::<hpdf-page>)
+  (body <hpdf-rgbcolor>
+        "  ScmHpdfRGBColor *h = SCM_NEW(ScmHpdfRGBColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_RGBCOLOR);
+  h->h = HPDF_Page_GetRGBStroke(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-cmyk-fill (page::<hpdf-page>)
+  (body <hpdf-cmykcolor>
+        "  ScmHpdfCMYKColor *h = SCM_NEW(ScmHpdfCMYKColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_CMYKCOLOR);
+  h->h = HPDF_Page_GetCMYKFill(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-cmyk-stroke (page::<hpdf-page>)
+  (body <hpdf-cmykcolor>
+        "  ScmHpdfCMYKColor *h = SCM_NEW(ScmHpdfCMYKColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_CMYKCOLOR);
+  h->h = HPDF_Page_GetCMYKStroke(page->h);
+  SCM_RESULT = h;"))
+
+
+(define-cproc hpdf-page-get-gray-fill (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetGrayFill(page->h)"))
+
+(define-cproc hpdf-page-get-gray-stroke (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetGrayStroke(page->h)"))
+
+(define-cproc hpdf-page-get-stroking-color-space (page::<hpdf-page>)
+  (expr <fixnum> "HPDF_Page_GetStrokingColorSpace(page->h)"))
+
+(define-cproc hpdf-page-get-filling-color-space (page::<hpdf-page>)
+  (expr <fixnum> "HPDF_Page_GetFillingColorSpace(page->h)"))
+
+(define-cproc hpdf-page-get-textmatrix (page::<hpdf-page>)
+  (body <hpdf-transmatrix>
+        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_TRANSMATRIX);
+  h->h = HPDF_Page_GetTextMatrix(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-gstate-depth (page::<hpdf-page>)
+  (expr <uint> "HPDF_Page_GetGStateDepth(page->h)"))
+
+;;
+;; GRAPHICS OPERATORS
+;;
+
+
+;; Local variables:
+;; mode: scheme
+;; end:
