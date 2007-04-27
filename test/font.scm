@@ -218,10 +218,16 @@
 (test* "TA Bimyou proportional embed" "TAbimyou_Add_p" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add_p.TTF" #t))
 (test* "dejima-mincho embed" "dejima-mincho,mincho" (test-hpdf-load-ttf-font-from-file "font/dejima-mincho-r21.ttf" #t))
 
+(test* "Osaka embed" "Osaka" (test-hpdf-load-ttf-font-from-file2 "font/Osaka.ttc" 0 #t))
+(test* "Osaka embed" "Osaka-Mono" (test-hpdf-load-ttf-font-from-file2 "font/Osaka.ttc" 1 #t))
+(test* "Osaka embed" "Osaka-UI" (test-hpdf-load-ttf-font-from-file2 "font/Osaka.ttc" 2 #t))
+(test* "SH G30 embed" "GK-M" (test-hpdf-load-ttf-font-from-file2 "font/SH G30.ttc" 0 #t))
+(test* "SH G30 embed" "GK-P" (test-hpdf-load-ttf-font-from-file2 "font/SH G30.ttc" 1 #t))
+
 (test-section "Zetuei fonts")
-;; (test* "Zetsuei mincho embed" "ZeueiMinchoSample" (test-hpdf-load-ttf-font-from-file "font/ZEUEMS__.TTF" #t))
-;; (test* "Zetsuei mincho HIR embed" "ZetueiMinchoHIR,HIR" (test-hpdf-load-ttf-font-from-file "font/ZETUMH__.TTF" #t))
-;; (test* "Zestuei HRKT rev embed" "HRKTKAI" (test-hpdf-load-ttf-font-from-file "font/HRKT-KAI.TTF" #t))
+(test* "Zetsuei mincho embed" "ZeueiMinchoSample" (test-hpdf-load-ttf-font-from-file "font/ZEUEMS__.TTF" #t))
+(test* "Zetsuei mincho HIR embed" "ZetueiMinchoHIR,HIR" (test-hpdf-load-ttf-font-from-file "font/ZETUMH__.TTF" #t))
+(test* "Zestuei HRKT rev embed" "HRKTKAI" (test-hpdf-load-ttf-font-from-file "font/HRKT-KAI.TTF" #t))
 
 (test-section "hpdf text")
 
