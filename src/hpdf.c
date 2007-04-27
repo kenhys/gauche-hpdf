@@ -288,4 +288,6 @@ ScmObj Scm_Init_hpdf(void)
 
     /* Register stub-generated procedures */
     Scm_Init_hpdflib(mod);
+    Scm_Init_hpdf_page(mod);
+    Scm_Init_hpdf_image(mod);
 }
