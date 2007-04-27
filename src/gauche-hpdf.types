@@ -1,73 +1,48 @@
-(define-cclass <hpdf-doc> :base "ScmHpdfDoc*" "Scm_HpdfDocClass"
-()
-())
-(define-cclass <hpdf-page> :base "ScmHpdfPage*" "Scm_HpdfPageClass"
-()
-())
-(define-cclass <hpdf-pages> :base "ScmHpdfPages*" "Scm_HpdfPagesClass"
-()
-())
-(define-cclass <hpdf-stream> :base "ScmHpdfStream*" "Scm_HpdfStreamClass"
-()
-())
-(define-cclass <hpdf-image> :base "ScmHpdfImage*" "Scm_HpdfImageClass"
-()
-())
-(define-cclass <hpdf-font> :base "ScmHpdfFont*" "Scm_HpdfFontClass"
-()
-())
-(define-cclass <hpdf-outline> :base "ScmHpdfOutline*" "Scm_HpdfOutlineClass"
-()
-())
-(define-cclass <hpdf-encoder> :base "ScmHpdfEncoder*" "Scm_HpdfEncoderClass"
-()
-())
-(define-cclass <hpdf-destination> :base "ScmHpdfDestination*" "Scm_HpdfDestinationClass"
-()
-())
-(define-cclass <hpdf-xobject> :base "ScmHpdfXObject*" "Scm_HpdfXObjectClass"
-()
-())
-(define-cclass <hpdf-annotation> :base "ScmHpdfAnnotation*" "Scm_HpdfAnnotationClass"
-()
-())
-(define-cclass <hpdf-extgstate> :base "ScmHpdfExtGState*" "Scm_HpdfExtGStateClass"
-()
-())
-(define-cclass <hpdf-point> "ScmHpdfPoint*" "Scm_HpdfPointClass"
-()
-())
-(define-cclass <hpdf-rect> "ScmHpdfRect*" "Scm_HpdfRectClass"
-()
-())
-(define-cclass <hpdf-box> "ScmHpdfBox*" "Scm_HpdfBoxClass"
-()
-())
-(define-cclass <hpdf-transmatrix> "ScmHpdfTransMatrix*" "Scm_HpdfTransMatrixClass"
-()
-())
-(define-cclass <hpdf-rgbcolor> "ScmHpdfRGBColor*" "Scm_HpdfRGBColorClass"
-()
-())
-(define-cclass <hpdf-cmykcolor> "ScmHpdfCMYKColor*" "Scm_HpdfCMYKColorClass"
-()
-())
-(define-cclass <hpdf-linecap> "ScmHpdfLineCap*" "Scm_HpdfLineCapClass"
-()
-())
-(define-cclass <hpdf-linejoin> "ScmHpdfLineJoin*" "Scm_HpdfLineJoinClass"
-()
-())
-(define-cclass <hpdf-dashmode> "ScmHpdfDashMode*" "Scm_HpdfDashModeClass"
-()
-())
-(define-cclass <hpdf-date> "ScmHpdfDate*" "Scm_HpdfDateClass"
-()
-())
-(define-cclass <hpdf-dict> "ScmHpdfDict*" "Scm_HpdfDictClass"
-()
-())
-(define-cclass <hpdf-textwidth> "ScmHpdfTextWidth*" "Scm_HpdfTextWidthClass"
-()
-())
-
+(define-type <hpdf-doc>  "ScmHpdfDoc*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-page>  "ScmHpdfPage*" #f
+  "SCM_HPDF_PAGE_P" "SCM_HPDF_PAGE")
+(define-type <hpdf-pages>  "ScmHpdfPages*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-stream>  "ScmHpdfStream*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-image>  "ScmHpdfImage*" #f
+  "SCM_HPDF_IMAGE_P" "SCM_HPDF_IMAGE")
+(define-type <hpdf-font>  "ScmHpdfFont*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-outline>  "ScmHpdfOutline*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-encoder>  "ScmHpdfEncoder*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-destination>  "ScmHpdfDestination*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-xobject>  "ScmHpdfXObject*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-annotation>  "ScmHpdfAnnotation*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-extgstate>  "ScmHpdfExtGState*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-point> "ScmHpdfPoint*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-rect> "ScmHpdfRect*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-box> "ScmHpdfBox*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-transmatrix> "ScmHpdfTransMatrix*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-rgbcolor> "ScmHpdfRGBColor*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-cmykcolor> "ScmHpdfCMYKColor*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-linecap> "ScmHpdfLineCap*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-linejoin> "ScmHpdfLineJoin*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-dashmode> "ScmHpdfDashMode*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-date> "ScmHpdfDate*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-dict> "ScmHpdfDict*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
+(define-type <hpdf-textwidth> "ScmHpdfTextWidth*" #f
+  "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")

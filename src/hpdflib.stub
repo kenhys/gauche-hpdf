@@ -38,7 +38,78 @@
 #include \"gauche-hpdf.h\"
 #include <hpdf.h>
 "
-(include "gauche-hpdf.types")
+(define-cclass <hpdf-doc> :base "ScmHpdfDoc*" "Scm_HpdfDocClass"
+()
+())
+(define-cclass <hpdf-page> :base "ScmHpdfPage*" "Scm_HpdfPageClass"
+()
+())
+(define-cclass <hpdf-pages> :base "ScmHpdfPages*" "Scm_HpdfPagesClass"
+()
+())
+(define-cclass <hpdf-stream> :base "ScmHpdfStream*" "Scm_HpdfStreamClass"
+()
+())
+(define-cclass <hpdf-image> :base "ScmHpdfImage*" "Scm_HpdfImageClass"
+()
+())
+(define-cclass <hpdf-font> :base "ScmHpdfFont*" "Scm_HpdfFontClass"
+()
+())
+(define-cclass <hpdf-outline> :base "ScmHpdfOutline*" "Scm_HpdfOutlineClass"
+()
+())
+(define-cclass <hpdf-encoder> :base "ScmHpdfEncoder*" "Scm_HpdfEncoderClass"
+()
+())
+(define-cclass <hpdf-destination> :base "ScmHpdfDestination*" "Scm_HpdfDestinationClass"
+()
+())
+(define-cclass <hpdf-xobject> :base "ScmHpdfXObject*" "Scm_HpdfXObjectClass"
+()
+())
+(define-cclass <hpdf-annotation> :base "ScmHpdfAnnotation*" "Scm_HpdfAnnotationClass"
+()
+())
+(define-cclass <hpdf-extgstate> :base "ScmHpdfExtGState*" "Scm_HpdfExtGStateClass"
+()
+())
+(define-cclass <hpdf-point> "ScmHpdfPoint*" "Scm_HpdfPointClass"
+()
+())
+(define-cclass <hpdf-rect> "ScmHpdfRect*" "Scm_HpdfRectClass"
+()
+())
+(define-cclass <hpdf-box> "ScmHpdfBox*" "Scm_HpdfBoxClass"
+()
+())
+(define-cclass <hpdf-transmatrix> "ScmHpdfTransMatrix*" "Scm_HpdfTransMatrixClass"
+()
+())
+(define-cclass <hpdf-rgbcolor> "ScmHpdfRGBColor*" "Scm_HpdfRGBColorClass"
+()
+())
+(define-cclass <hpdf-cmykcolor> "ScmHpdfCMYKColor*" "Scm_HpdfCMYKColorClass"
+()
+())
+(define-cclass <hpdf-linecap> "ScmHpdfLineCap*" "Scm_HpdfLineCapClass"
+()
+())
+(define-cclass <hpdf-linejoin> "ScmHpdfLineJoin*" "Scm_HpdfLineJoinClass"
+()
+())
+(define-cclass <hpdf-dashmode> "ScmHpdfDashMode*" "Scm_HpdfDashModeClass"
+()
+())
+(define-cclass <hpdf-date> "ScmHpdfDate*" "Scm_HpdfDateClass"
+()
+())
+(define-cclass <hpdf-dict> "ScmHpdfDict*" "Scm_HpdfDictClass"
+()
+())
+(define-cclass <hpdf-textwidth> "ScmHpdfTextWidth*" "Scm_HpdfTextWidthClass"
+()
+())
 
 (define-cproc hpdf-info-set-info-date-attr (dict::<hpdf-dict> type::<fixnum>
                                                               year::<int>
@@ -793,75 +864,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 
 (define-cproc hpdf-text-annot-set-opened (annot::<hpdf-annotation> opened::<boolean>)
   (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetOpened (annot->h, opened);"))
-
-;;
-;; Image Data
-;;
-(define-cproc hpdf-load-png-image-from-file (doc::<hpdf-doc> filename::<const-cstring>)
-  (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadPngImageFromFile(doc->h, filename);
-  SCM_RESULT = h;"))
-
-(define-cproc hpdf-load-png-image-from-file2 (doc::<hpdf-doc> filename::<const-cstring>)
-  (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadPngImageFromFile2(doc->h, filename);
-  SCM_RESULT = h;"))
-
-(define-cproc hpdf-load-jpeg-image-from-file (doc::<hpdf-doc> filename::<const-cstring>)
-  (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadJpegImageFromFile(doc->h, filename);
-  SCM_RESULT = h;"))
-
-(define-cproc hpdf-load-raw-image-from-file (doc::<hpdf-doc> filename::<const-cstring> width::<uint> height::<uint> color_space::<fixnum>)
-  (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadRawImageFromFile(doc->h, filename, width, height, color_space);
-  SCM_RESULT = h;"))
-
-;; FIXME
-(define-cproc hpdf-load-raw-image-from-mem (doc::<hpdf-doc> buf::<const-cstring> width::<uint> height::<uint> color_space::<fixnum> bits_per_component::<uint>)
-  (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadRawImageFromMem(doc->h, buf, width, height, color_space, bits_per_component);
-  SCM_RESULT = h;"))
-
-(define-cproc hpdf-image-get-size (image::<hpdf-image>)
-  (body <hpdf-point>
-        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_POINT);
-  h->h = HPDF_Image_GetSize(image->h);
-  SCM_RESULT = h;"))
-
-;; FIXME
-;;(define-cproc hpdf-image-get-size2 (image::<hpdf-image> size::<hpdf-point>)
-;;  (body <ulong> "SCM_RESULT = HPDF_Image_GetSize2 (image->h, size->h);"))
-
-(define-cproc hpdf-image-get-width (img::<hpdf-image>)
-  (expr <uint> "SCM_RESULT = HPDF_Image_GetWidth(img->h)"))
-
-(define-cproc hpdf-image-get-height (image::<hpdf-image>)
-  (expr <uint> "SCM_RESULT = HPDF_Image_GetHeight(image->h)"))
-
-(define-cproc hpdf-image-get-bits-per-component (image::<hpdf-image>)
-  (expr <uint> "SCM_RESULT = HPDF_Image_GetBitsPerComponent(image->h)"))
-
-(define-cproc hpdf-image-get-color-space (image::<hpdf-image>)
-  (expr <const-cstring> "SCM_RESULT = HPDF_Image_GetColorSpace(image->h)"))
-
-(define-cproc hpdf-image-set-color-mask (image::<hpdf-image> rmin::<uint> rmax::<uint> gmin::<uint> gmax::<uint> bmin::<uint> bmax::<uint>)
-  (expr <ulong> "SCM_RESULT = HPDF_Image_SetColorMask(image->h, rmin, rmax, gmin, gmax, bmin, bmax)"))
-
-(define-cproc hpdf-image-set-mask-image (image::<hpdf-image> mask_image::<hpdf-image>)
-  (expr <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h)"))
-
 
 ;; Info Dictionary
 (define-cproc hpdf-set-info-attr (doc::<hpdf-doc> type::<fixnum> value::<const-cstring>)

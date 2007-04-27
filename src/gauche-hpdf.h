@@ -43,8 +43,6 @@ SCM_DECL_BEGIN
  * Replace it for your declarations.
  */
 
-extern ScmObj test_hpdf(void);
-
 #ifdef GAUCHE_HPDF_DEBUG
 #define GAUCHE_HPDF_FUNC(func) Scm_Printf(SCM_CURERR, "#=> %s()\n", func)
 #define GAUCHE_HPDF_WARN(msg) Scm_Printf(SCM_CURERR, "Warning: %s\n", msg)
@@ -137,7 +135,6 @@ HPDF_Image h;
 SCM_CLASS_DECL(Scm_HpdfImageClass);
  #define SCM_CLASS_HPDF_IMAGE (&Scm_HpdfImageClass)
  #define SCM_HPDF_IMAGE(obj) ((ScmHpdfImage*)(obj))
- #define SCM_HPDF_IMAGEP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_IMAGE))
  #define SCM_HPDF_IMAGE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_IMAGE))
 
 typedef struct ScmHpdfFontRec {
