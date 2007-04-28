@@ -16,6 +16,8 @@
 
 (define (test-subsection msg)
   (format #t "~a()\n" msg))
+(define (test-subsubsection msg)
+  (format #t "#=> ~a\n" msg))
 
 (define (test-hpdf-load-ttf-font-from-file file flag)
   (let ((pdf (hpdf-new)))
@@ -274,155 +276,130 @@
         )
     ))
         
-(define (test-jpfonts-embed index)
+(define font-list
+  (list
+   '("data/msgothic_0.pdf"
+     ("font/msgothic.ttc" 0 #t))
+   '("data/msgothic_1.pdf"
+     ("font/msgothic.ttc" 1 #t))
+   '("data/msgothic_2.pdf"
+     ("font/msgothic.ttc" 2 #t))
+   '("data/msmincho_0.pdf"
+     ("font/msmincho.ttc" 0 #t))
+   '("data/msmincho_1.pdf"
+     ("font/msmincho.ttc" 1 #t))
+   '("data/mikachanALL_0.pdf"
+     ("font/mikachanALL.ttc" 0 #t))
+   '("data/mikachanALL_1.pdf"
+     ("font/mikachanALL.ttc" 1 #t))
+   '("data/mikachanALL_2.pdf"
+     ("font/mikachanALL.ttc" 2 #t))
+   '("data/mikachanALL_3.pdf"
+     ("font/mikachanALL.ttc" 3 #t))
+   '("data/mikachan_puchi_0.pdf"
+     ("font/mikachan_puchi.ttc" 0 #t))
+   '("data/mikachan_puchi_1.pdf"
+     ("font/mikachan_puchi.ttc" 1 #t))
+   '("data/Konatu.pdf"
+     ("font/Konatu.ttf" #t))
+   '("data/KonatuTohaba.pdf"
+     ("font/KonatuTohaba.ttf" #t))
+   '("data/aquafont.pdf"
+     ("font/aquafont.ttf" #t))
+   '("data/aqua_pfont.pdf"
+     ("font/aqua_pfont.ttf" #t))
+   '("data/SNsanafon.pdf"
+     ("font/SNsanafon.ttf" #t))
+   '("data/SNsanafonGyou.pdf"
+     ("font/SNsanafonGyou.TTF" #t))
+   '("data/SNsanafonKazari.pdf"
+     ("font/SNsanafonKazari.ttf" #t))
+  '("data/SNsanafonMugi.pdf"
+    ("font/SNsanafonMugi.TTF" #t))
+  '("data/SNsanafonObi.pdf"
+    ("font/SNsanafonObi.ttf" #t))
+  '("data/SNsanafonkaku.pdf"
+    ("font/SNsanafonkaku.ttf" #t))
+  '("data/SNsanafonkakuP.pdf"
+    ("font/SNsanafonkakuP.ttf" #t))
+  '("data/SNsanafonmaru.pdf"
+    ("font/SNsanafonmaru.ttf" #t))
+  '("data/SNsanafonmaruP.pdf"
+    ("font/SNsanafonmaruP.ttf" #t))
+  '("data/SNsanafonYu.pdf"
+    ("font/SNsanafonyu.ttf" #t))
+  '("data/cinecaption226.pdf"
+    ("font/cinecaption226.ttf" #t))
+  '("data/dameji.pdf"
+    ("font/dameji.ttf" #t))
+  '("data/habadasa.pdf"
+    ("font/habadasa.ttf" #t))
+  '("data/Dosei.pdf"
+    ("font/Dosei.ttf" #t))
+  '("data/umi.pdf"
+    ("font/umi.ttf" #t))
+  '("data/sea.pdf"
+    ("font/sea.ttf" #t))
+  '("data/seap.pdf"
+    ("font/seap.ttf" #t))
+  '("data/uni.pdf"
+    ("font/uni.ttf" #t))
+  '("data/unip.pdf"
+    ("font/unip.ttf" #t))
+  '("data/tsuki.pdf"
+    ("font/tsuki.ttf" #t))
+  '("data/tsukip.pdf"
+    ("font/tsukip.ttf" #t))
+  '("data/naguri.pdf"
+    ("font/naguri.ttf" #t))
+  '("data/nagurip.pdf"
+    ("font/nagurip.ttf" #t))
+  '("data/memo.pdf"
+    ("font/memo.ttf" #t))
+  '("data/love.pdf"
+    ("font/love.ttf" #t))
+  '("data/elmer.pdf"
+    ("font/elmer.ttf" #t))
+  '("data/elmerp.pdf"
+    ("font/elmerp.ttf" #t))
+  '("data/TABimyou.pdf"
+    ("font/tabimyou_add.TTF" #t))
+  '("data/TABimyouP.pdf"
+    ("font/tabimyou_add_p.TTF" #t))
+  '("data/SHG30_0.pdf"
+    ("font/SH G30.ttc" 0 #t))
+  '("data/SHG30_1.pdf"
+    ("font/SH G30.ttc" 1 #t))
+  ))
+
+(define (test-jpfonts-embed-loop arg index)
+  (let* ((len (length arg))
+         (null (write index))
+         (null (write len))
+         )
+    (if (< index len)
+        (begin0
+         (test-jpfonts-embed arg index)
+         (test-jpfonts-embed-loop arg (+ index 1)))
+        #f)))
+        
+
+(define (test-jpfonts-embed arg index)
   (let* ((pdf (hpdf-new))
-         (s (hpdf-set-compression-mode pdf HPDF_COMP_ALL))
+         ;;(s (hpdf-set-compression-mode pdf HPDF_COMP_ALL))
          (s (hpdf-use-jp-encodings pdf))
-;;          (s (if (< index 10)
-;;                 (begin0
-;;                  (hpdf-load-ttf-font-from-file2 pdf "font/msgothic.ttc" 0 #t)
-;;                  (hpdf-load-ttf-font-from-file2 pdf "font/msgothic.ttc" 1 #t)
-;;                  (hpdf-load-ttf-font-from-file2 pdf "font/msgothic.ttc" 2 #t)
-;;                  (hpdf-load-ttf-font-from-file2 pdf "font/msmincho.ttc" 0 #t)
-;;                  (hpdf-load-ttf-font-from-file2 pdf "font/msmincho.ttc" 1 #t)
-;;                  )
-;;                 (hpdf-use-jp-fonts pdf)))
-         (f (cond ((= index 0)
-                   (list "data/msgothic_0.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/msgothic.ttc" 0 #t)))
-                  ((= index 1)
-                   (list "data/msgothic_1.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/msgothic.ttc" 1 #t)))
-                  ((= index 2)
-                   (list "data/msgothic_2.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/msgothic.ttc" 2 #t)))
-                  ((= index 3)
-                   (list "data/msmincho_0.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/msmincho.ttc" 0 #t)))
-                  ((= index 4)
-                   (list "data/msmincho_1.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/msmincho.ttc" 1 #t)))
-                  ((= index 5)
-                   (list "data/mikachanALL_0.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/mikachanALL.ttc" 0 #t)))
-                  ((= index 6)
-                   (list "data/mikachanALL_1.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/mikachanALL.ttc" 1 #t)))
-                  ((= index 7)
-                   (list "data/mikachanALL_2.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/mikachanALL.ttc" 2 #t)))
-                  ((= index 8)
-                   (list "data/mikachanALL_3.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/mikachanALL.ttc" 3 #t)))
-                  ((= index 9)
-                   (list "data/mikachan_puchi_0.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/mikachan_puchi.ttc" 0 #t)))
-                  ((= index 10)
-                   (list "data/mikachan_puchi_1.pdf"
-                         (hpdf-load-ttf-font-from-file2 pdf "font/mikachan_puchi.ttc" 1 #t)))
-                  ((= index 11)
-                   (list "data/Konatu.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/Konatu.ttf" #t)))
-                  ((= index 12)
-                   (list "data/KonatuTohaba.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/KonatuTohaba.ttf" #t)))
-                  ((= index 13)
-                   (list "data/aquafont.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/aquafont.ttf" #t)))
-                  ((= index 14)
-                   (list "data/aqua_pfont.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/aqua_pfont.ttf" #t)))
-                  ((= index 15)
-                   (list "data/SNsanafon.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafon.ttf" #t)))
-                  ((= index 16)
-                   (list "data/SNsanafonGyou.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonGyou.TTF" #t)))
-                  ((= index 17)
-                   (list "data/SNsanafonKazari.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonKazari.ttf" #t)))
-                  ((= index 18)
-                   (list "data/SNsanafonMugi.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonMugi.TTF" #t)))
-                  ((= index 19)
-                   (list "data/SNsanafonObi.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonObi.ttf" #t)))
-                  ((= index 20)
-                   (list "data/SNsanafonkaku.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonkaku.ttf" #t)))
-                  ((= index 21)
-                   (list "data/SNsanafonkakuP.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonkakuP.ttf" #t)))
-                  ((= index 22)
-                   (list "data/SNsanafonmaru.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonmaru.ttf" #t)))
-                  ((= index 23)
-                   (list "data/SNsanafonmaruP.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonmaruP.ttf" #t)))
-                  ((= index 24)
-                   (list "data/SNsanafonYu.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/SNsanafonyu.ttf" #t)))
-                  ((= index 25)
-                   (list "data/cinecaption226.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/cinecaption226.ttf" #t)))
-                  ((= index 26)
-                   (list "data/dameji.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/dameji.ttf" #t)))
-                  ((= index 27)
-                   (list "data/habadasa.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/habadasa.ttf" #t)))
-                  ((= index 28)
-                   (list "data/Dosei.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/Dosei.ttf" #t)))
-                  ((= index 29)
-                   (list "data/umi.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/umi.ttf" #t)))
-                  ((= index 30)
-                   (list "data/sea.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/sea.ttf" #t)))
-                  ((= index 31)
-                   (list "data/seap.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/seap.ttf" #t)))
-                  ((= index 32)
-                   (list "data/uni.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/uni.ttf" #t)))
-                  ((= index 33)
-                   (list "data/unip.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/unip.ttf" #t)))
-                  ((= index 34)
-                   (list "data/tsuki.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/tsuki.ttf" #t)))
-                  ((= index 35)
-                   (list "data/tsukip.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/tsukip.ttf" #t)))
-                  ((= index 36)
-                   (list "data/naguri.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/naguri.ttf" #t)))
-                  ((= index 37)
-                   (list "data/nagurip.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/nagurip.ttf" #t)))
-                  ((= index 38)
-                   (list "data/memo.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/memo.ttf" #t)))
-                  ((= index 39)
-                   (list "data/love.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/love.ttf" #t)))
-                  ((= index 40)
-                   (list "data/elmer.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/elmer.ttf" #t)))
-                  ((= index 41)
-                   (list "data/elmerp.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/elmerp.ttf" #t)))
-                  ((= index 42)
-                   (list "data/TABimyou.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/tabimyou_add.TTF" #t)))
-                  ((= index 43)
-                   (list "data/TABimyouP.pdf"
-                         (hpdf-load-ttf-font-from-file pdf "font/tabimyou_add_p.TTF" #t)))
-                  ))
-         (font (hpdf-get-font pdf (list-ref f 1) "90ms-RKSJ-H"))
+         (f (list-ref arg index))
+         (outfile (list-ref f 0))
+         (fontfile (list-ref (list-ref f 1) 0))
+         (ttcindex (list-ref (list-ref f 1) 1))
+         (font (if (= (length (list-ref f 1)) 3)
+                   ;; ttc
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file2 pdf fontfile ttcindex #t) "90ms-RKSJ-H")
+                   ;;; ttf
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file pdf fontfile #t) "90ms-RKSJ-H")
+                   ))
          (page_1 (hpdf-add-page pdf))
-         (font (hpdf-page-set-font-and-size page_1 font 14))
+         (st (hpdf-page-set-font-and-size page_1 font 14))
          (st (hpdf-page-begin-text page_1))
          (w (hpdf-page-get-width page_1))
          (h (hpdf-page-get-height page_1))
@@ -431,52 +408,10 @@
          (null (show-test-text page_1 "data/sjis.txt"))
          (dummy (hpdf-page-end-text page_1))
          )
-    (hpdf-save-to-file pdf (list-ref f 0))))
+    (hpdf-save-to-file pdf outfile)))
 
-(test-jpfonts-embed 0)
-(test-jpfonts-embed 1)
-(test-jpfonts-embed 2)
-(test-jpfonts-embed 3)
-(test-jpfonts-embed 4)
-(test-jpfonts-embed 5)
-(test-jpfonts-embed 6)
-(test-jpfonts-embed 7)
-(test-jpfonts-embed 8)
-(test-jpfonts-embed 9)
-(test-jpfonts-embed 10)
-(test-jpfonts-embed 11)
-(test-jpfonts-embed 12)
-(test-jpfonts-embed 13)
-(test-jpfonts-embed 14)
-(test-jpfonts-embed 15)
-(test-jpfonts-embed 16)
-(test-jpfonts-embed 17)
-(test-jpfonts-embed 18)
-(test-jpfonts-embed 19)
-(test-jpfonts-embed 20)
-(test-jpfonts-embed 21)
-(test-jpfonts-embed 22)
-(test-jpfonts-embed 23)
-(test-jpfonts-embed 24)
-(test-jpfonts-embed 25)
-(test-jpfonts-embed 26)
-(test-jpfonts-embed 27)
-(test-jpfonts-embed 28)
-(test-jpfonts-embed 29)
-(test-jpfonts-embed 30)
-(test-jpfonts-embed 31)
-(test-jpfonts-embed 32)
-(test-jpfonts-embed 33)
-(test-jpfonts-embed 34)
-(test-jpfonts-embed 35)
-(test-jpfonts-embed 36)
-(test-jpfonts-embed 37)
-(test-jpfonts-embed 38)
-(test-jpfonts-embed 39)
-(test-jpfonts-embed 40)
-(test-jpfonts-embed 41)
-(test-jpfonts-embed 42)
-(test-jpfonts-embed 43)
+(test-subsection "embeded font test")
+(test-jpfonts-embed-loop font-list 0)
 
 ;; epilogue
 (test-end)
