@@ -207,6 +207,10 @@
 (test* "memo.ttf embed" "S2Gmemo" (test-hpdf-load-ttf-font-from-file "font/memo.ttf" #t))
 (test* "love.ttf embed" "S2G-love" (test-hpdf-load-ttf-font-from-file "font/love.ttf" #t))
 
+(test-section "S2G fonts")
+(test* "Sazanami-Gothic-Regular embed" "Sazanami-Gothic-Regular,Gothic-Regular" (test-hpdf-load-ttf-font-from-file "font/sazanami-gothic.ttf" #t))
+(test* "Sazanami-Mincho-Regular embed" "Sazanami-Mincho-Regular,Mincho-Regular" (test-hpdf-load-ttf-font-from-file "font/sazanami-mincho.ttf" #t))
+
 (test-section "Other fonts")
 ;; (test* "akubin embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AKUBIN.TTF" #t))
 ;; (test* "japonesque embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Japonesque1.45.TTF" #t))
@@ -370,12 +374,15 @@
     ("font/SH G30.ttc" 0 #t))
   '("data/SHG30_1.pdf"
     ("font/SH G30.ttc" 1 #t))
+  '("data/Osaka_0.pdf" ("font/Osaka.ttc" 0 #f))
+  '("data/Osaka_1.pdf" ("font/Osaka.ttc" 1 #f))
+  '("data/Osaka_2.pdf" ("font/Osaka.ttc" 2 #f))
+  ;;'("data/sazanami-gothic.pdf" ("font/sazanami-gothic.ttf" #f))
+  ;;'("data/sazanami-mincho.pdf" ("font/sazanami-mincho.ttf" #f))
   ))
 
 (define (test-jpfonts-embed-loop arg index)
   (let* ((len (length arg))
-         (null (write index))
-         (null (write len))
          )
     (if (< index len)
         (begin0
@@ -390,11 +397,16 @@
          (s (hpdf-use-jp-encodings pdf))
          (f (list-ref arg index))
          (outfile (list-ref f 0))
+         (null (display "begin test"))
+         (null (display index))
          (fontfile (list-ref (list-ref f 1) 0))
          (ttcindex (list-ref (list-ref f 1) 1))
+         (embed (if (= (length (list-ref f 1)) 3)
+                    (list-ref (list-ref f 1) 2)
+                    (list-ref (list-ref f 1) 1)))
          (font (if (= (length (list-ref f 1)) 3)
                    ;; ttc
-                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file2 pdf fontfile ttcindex #t) "90ms-RKSJ-H")
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file2 pdf fontfile ttcindex embed) "90ms-RKSJ-H")
                    ;;; ttf
                    (hpdf-get-font pdf (hpdf-load-ttf-font-from-file pdf fontfile #t) "90ms-RKSJ-H")
                    ))

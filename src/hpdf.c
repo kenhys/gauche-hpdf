@@ -290,4 +290,5 @@ ScmObj Scm_Init_hpdf(void)
     Scm_Init_hpdflib(mod);
     Scm_Init_hpdf_page(mod);
     Scm_Init_hpdf_image(mod);
+    Scm_Init_hpdf_text(mod);
 }

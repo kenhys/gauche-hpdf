@@ -480,10 +480,10 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-page-set-text-leading (page::<hpdf-page> value::<float>)
   (expr <ulong> "HPDF_Page_SetTextLeading(page->h, value)"))
 
-(define-cproc hpdf-page-set-font-and-size (page::<hpdf-page> font::<hpdf-font> size::<float>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
-        "SCM_RESULT = HPDF_Page_SetFontAndSize(page->h, font->h, size);"))
+;; (define-cproc hpdf-page-set-font-and-size (page::<hpdf-page> font::<hpdf-font> size::<float>)
+;;   (body <ulong>
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
+;;         "SCM_RESULT = HPDF_Page_SetFontAndSize(page->h, font->h, size);"))
 
 (define-cproc hpdf-page-set-text-rendering-mode (page::<hpdf-page> mode::<uint>)
   (expr <ulong> "HPDF_Page_SetTextRenderingMode(page->h, mode)"))
@@ -584,48 +584,48 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;
 ;; Font Handling
 ;;
-(define-cproc hpdf-get-font (doc::<hpdf-doc> font::<const-cstring> enc::<const-cstring>)
-  (body <hpdf-font>?
-        "GAUCHE_HPDF_FUNC(\"hpdf-get-font\");"
-        "ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);"
-        "if (strlen(enc) > 0) {"
-        "  h->h = HPDF_GetFont(doc->h, font, enc);"
-        "} else {"
-        "  h->h = HPDF_GetFont(doc->h, font, NULL);"
-        "}"
-        "if (h->h) {"
-        "  SCM_RESULT = h;"
-        "} else {"
-        "  GAUCHE_HPDF_WARN(\"error in HPDF_GetFont\");"
-        "  SCM_RESULT = SCM_NIL;"
-        "}"))
+;; (define-cproc hpdf-get-font (doc::<hpdf-doc> font::<const-cstring> enc::<const-cstring>)
+;;   (body <hpdf-font>?
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-get-font\");"
+;;         "ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);"
+;;         "SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);"
+;;         "if (strlen(enc) > 0) {"
+;;         "  h->h = HPDF_GetFont(doc->h, font, enc);"
+;;         "} else {"
+;;         "  h->h = HPDF_GetFont(doc->h, font, NULL);"
+;;         "}"
+;;         "if (h->h) {"
+;;         "  SCM_RESULT = h;"
+;;         "} else {"
+;;         "  GAUCHE_HPDF_WARN(\"error in HPDF_GetFont\");"
+;;         "  SCM_RESULT = SCM_NIL;"
+;;         "}"))
 
-(define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
-  (body <const-cstring>?
-        "GAUCHE_HPDF_FUNC(\"hpdf-load-type1-font-from-file\");"
-        "/* afm, pfb*/"
-        "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm_file_name, data_file_name);"))
+;; (define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
+;;   (body <const-cstring>?
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-load-type1-font-from-file\");"
+;;         "/* afm, pfb*/"
+;;         "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm_file_name, data_file_name);"))
 
-(define-cproc hpdf-load-ttf-font-from-file (doc::<hpdf-doc> file::<const-cstring> embedding::<boolean>)
-  (body <const-cstring>?
-        "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file\");"
-        "const char *p = HPDF_LoadTTFontFromFile(doc->h, file, embedding);"
-        "/* GAUCHE_HPDF_HEX('funcp', p);*/"
-        "SCM_RESULT = p;"
-        "if (p) {"
-        "} else {"
-        "  if (embedding) {"
-        "     Scm_Error(\"can't load True Type Font(embedding %s) into PDF.\", file);"
-        "  } else {"
-        "     Scm_Error(\"can't load True Type Font(%s) into PDF.\", file);"
-        "  }"
-        "}"))
+;; (define-cproc hpdf-load-ttf-font-from-file (doc::<hpdf-doc> file::<const-cstring> embedding::<boolean>)
+;;   (body <const-cstring>?
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file\");"
+;;         "const char *p = HPDF_LoadTTFontFromFile(doc->h, file, embedding);"
+;;         "/* GAUCHE_HPDF_HEX('funcp', p);*/"
+;;         "SCM_RESULT = p;"
+;;         "if (p) {"
+;;         "} else {"
+;;         "  if (embedding) {"
+;;         "     Scm_Error(\"can't load True Type Font(embedding %s) into PDF.\", file);"
+;;         "  } else {"
+;;         "     Scm_Error(\"can't load True Type Font(%s) into PDF.\", file);"
+;;         "  }"
+;;         "}"))
 
-(define-cproc hpdf-load-ttf-font-from-file2 (doc::<hpdf-doc> file::<const-cstring> index::<uint> embedding::<boolean>)
-  (body <const-cstring>?
-        "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file2\");"
-        "SCM_RESULT = HPDF_LoadTTFontFromFile2(doc->h, file, index, embedding);"))
+;; (define-cproc hpdf-load-ttf-font-from-file2 (doc::<hpdf-doc> file::<const-cstring> index::<uint> embedding::<boolean>)
+;;   (body <const-cstring>?
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file2\");"
+;;         "SCM_RESULT = HPDF_LoadTTFontFromFile2(doc->h, file, index, embedding);"))
 
 (define-cproc hpdf-add-page-label (doc::<hpdf-doc> page-num::<uint> page-style::<uint> first-page::<uint> prefix::<const-cstring>)
   (body <ulong>
