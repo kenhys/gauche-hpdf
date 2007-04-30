@@ -370,20 +370,39 @@
 
 (define-cproc hpdf-font-text-width (font::<hpdf-font> text::<const-cstring> len::<uint>)
   (body <hpdf-textwidth>
-        "  ScmHpdfTextWidth *h = SCM_NEW(ScmHpdfTextWidth);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDFTEXTWIDTH);
-  h->h = HPDF_Font_TextWidth(font->h, text, len);
-  SCM_RESULT = h;"))
+        "ScmHpdfTextWidth *h = SCM_NEW(ScmHpdfTextWidth);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDFTEXTWIDTH);"
+        "h->h = HPDF_Font_TextWidth(font->h, text, len);"
+        "SCM_RESULT = h;"))
 
+;; FIXME utility function 
+(define-cproc hpdf-font-text-width-as-list (text_width::<hpdf-textwidth>)
+  (body <list>
+        "SCM_RESULT = SCM_LIST3(SCM_MAKE_INT(text_width->h.numchars),"
+        "SCM_MAKE_INT(text_width->h.width),"
+        "SCM_MAKE_INT(text_width->h.numspace));"))
+
+;; FIXME
 (define-cproc hpdf-font-measure-text (font::<hpdf-font>
-                                      text::<foreign-pointer>
+                                      text::<const-cstring>
                                       len::<uint> width::<float> font_size::<float>
                                       char_space::<float> word_space::<float> wordwrap::<float>
-                                      real_width::<foreign-pointer>)
-  (body <uint>
+                                      )
+  (body <float>
+        "float real_width;"
+        "#ifdef GAUCHE_HPDF_DEBUG"
+        "fprintf(stderr,\"text:%s\\n\", text);"
+        "fprintf(stderr,\"len:%d\\n\", len);"
+        "fprintf(stderr,\"width:%lf\\n\", width);"
+        "fprintf(stderr,\"font_size:%lf\\n\", font_size);"
+        "fprintf(stderr,\"char_space:%lf\\n\", char_space);"
+        "fprintf(stderr,\"word_space:%lf\\n\", word_space);"
+        "fprintf(stderr,\"wordwrap:%lf\\n\", wordwrap);"
+        "#endif"
         "HPDF_Font_MeasureText(font->h,"
-        "SCM_FOREIGN_POINTER(text)->ptr, len, width, font_size, char_space, word_space, wordwrap,"
-        "SCM_FOREIGN_POINTER(real_width)->ptr);"))
+        "text, len, width, font_size, char_space, word_space, wordwrap,"
+        "&real_width);"
+        "SCM_RESULT = real_width;"))
 
 ;; extended graphics state
 (define-cproc hpdf-create-ext-gstate (doc::<hpdf-doc>)

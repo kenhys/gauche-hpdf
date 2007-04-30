@@ -325,8 +325,8 @@ HPDF_TextWidth h;
 
 SCM_CLASS_DECL(Scm_HpdfTextWidthClass);
  #define SCM_CLASS_HPDFTEXTWIDTH (&Scm_HpdfTextWidthClass)
- #define SCM_HPDFTEXTWIDTH(obj) ((ScmHpdfTextWidth*)(obj))
- #define SCM_HPDFTEXTWIDTHP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTEXTWIDTH))
+ #define SCM_HPDF_TEXTWIDTH(obj) ((ScmHpdfTextWidth*)(obj))
+ #define SCM_HPDF_TEXTWIDTH_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTEXTWIDTH))
 
 extern void hpdf_error_handler(HPDF_STATUS   error_no,
                         HPDF_STATUS   detail_no,

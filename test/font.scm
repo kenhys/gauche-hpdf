@@ -87,6 +87,20 @@
 (test* "M+2P+IPAG-circle.ttf non-embed" "M+2P+IPAG-circle-Regular,regular" (test-hpdf-load-ttf-font-from-file "font/M+2P+IPAG-circle.ttf" #t))
 (test* "M+2VM+IPAG-circle.ttf non-embed" "M+2VM+IPAG-circle-Regular,regular" (test-hpdf-load-ttf-font-from-file "font/M+2VM+IPAG-circle.ttf" #t))
 
+(test-section "IPA Mona fonts")
+(test-subsection "hpdf-load-ttf-font-from-file")
+(test* "IPA Mona Gothic embed" "IPAMonaGothic,Book" (test-hpdf-load-ttf-font-from-file "font/ipag-mona.ttf" #t))
+(test* "IPA Mona PGothic embed" "IPAMonaPGothic" (test-hpdf-load-ttf-font-from-file "font/ipagp-mona.ttf" #t))
+(test* "IPA Mona UI Gothic embed" "IPAMonaUIGothic,Book" (test-hpdf-load-ttf-font-from-file "font/ipagui-mona.ttf" #t))
+(test* "IPA Mona Mincho embed" "IPAMonaMincho,Book" (test-hpdf-load-ttf-font-from-file "font/ipam-mona.ttf" #t))
+(test* "IPA Mona PMincho embed" "IPAMonaPMincho" (test-hpdf-load-ttf-font-from-file "font/ipamp-mona.ttf" #t))
+
+
+(test-section "VL fonts")
+(test-subsection "hpdf-load-ttf-font-from-file")
+(test* "VL Gothic embed" "VL-Gothic-Regular,regular" (test-hpdf-load-ttf-font-from-file "font/VL-Gothic-Regular.ttf" #t))
+(test* "VL PGothic embed" "VL-PGothic-Regular,regular" (test-hpdf-load-ttf-font-from-file "font/VL-PGothic-Regular.ttf" #t))
+
 
 (test-section "M+ fonts")
 (test-subsection "hpdf-load-ttf-font-from-file")
@@ -150,21 +164,21 @@
 (test* "Anito L proportional embed" "Anito-L-kyohkan" (test-hpdf-load-ttf-font-from-file "font/AnitoLP.TTF" #t))
 (test* "Arare monospace embed" "Aralet-Mono-Kyohkan,Mono-Kyohkan" (test-hpdf-load-ttf-font-from-file "font/ArareM.TTF" #t))
 (test* "Capanito L proportional embed" "Capanito-L-kyohkan" (test-hpdf-load-ttf-font-from-file "font/CapaLP.ttf" #t))
-;; (test* "September L proportional embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/SeptemberLP.TTF" #t))
-;; (test* "September L monospace embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/SeptemberL.TTF" #t))
-;; (test* "September M proportional embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/SeptemberMP.TTF" #t))
-;; (test* "September M monospace embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/SeptemberM.TTF" #t))
-;; (test* "Anito Inline embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AnitoInline.TTF" #t))
-;; (test* "Anito Relief embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AnitoRelief.TTF" #t))
-;; (test* "Anito L monospace embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AnitoL.TTF" #t))
-;; (test* "Anito M proportional embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AnitoMP.TTF" #t))
-;; (test* "Anito M monospace embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AnitoM.TTF" #t))
-;; (test* "Arare proportional embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/ArareP.TTF" #t))
-;; (test* "Capanito L monospace embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/CapaL.ttf" #t))
-;; (test* "Capanito M monospace embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/CapaM.ttf" #t))
-;; (test* "Capanito M proportional embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/CapaMP.ttf" #t))
-;; (test* "Capanito M monospace(Propriety) embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/CapaMMO.TTF" #t))
-;; (test* "Capanito M proportional(Propriety) embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/CapanitoM.TTF" #t))
+(test* "September L proportional embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/SeptemberLP.TTF" #t))
+(test* "September L monospace embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/SeptemberL.TTF" #t))
+(test* "September M proportional embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/SeptemberMP.TTF" #t))
+(test* "September M monospace embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/SeptemberM.TTF" #t))
+(test* "Anito Inline embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/AnitoInline.TTF" #t))
+(test* "Anito Relief embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/AnitoRelief.TTF" #t))
+(test* "Anito L monospace embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/AnitoL.TTF" #t))
+(test* "Anito M proportional embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/AnitoMP.TTF" #t))
+(test* "Anito M monospace embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/AnitoM.TTF" #t))
+(test* "Arare proportional embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/ArareP.TTF" #t))
+(test* "Capanito L monospace embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/CapaL.ttf" #t))
+(test* "Capanito M monospace embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/CapaM.ttf" #t))
+(test* "Capanito M proportional embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/CapaMP.ttf" #t))
+(test* "Capanito M monospace(Propriety) embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/CapaMMO.TTF" #t))
+(test* "Capanito M proportional(Propriety) embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/CapanitoM.TTF" #t))
 (test* "Elegant w3 embed" "ElgseionW3.TTF" (test-hpdf-load-ttf-font-from-file "font/ElgseionW3.TTF" #t))
 (test* "Elegant w5 embed" "ElgseionW5.TTF" (test-hpdf-load-ttf-font-from-file "font/ElgseionW5.TTF" #t))
 (test* "Elegant w7 embed" "ElgseionW7.TTF" (test-hpdf-load-ttf-font-from-file "font/ElgseionW7.TTF" #t))
@@ -187,11 +201,11 @@
 (test* "SNsanafonYu embed" "SanafonYu" (test-hpdf-load-ttf-font-from-file "font/SNsanafonyu.ttf" #t))
 
 (test-section "XANO fonts")
-;; (test* "Kandata embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Kandata.ttf" #t))
-;; (test* "Oradano embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Oradano.ttf" #t))
-;; (test* "QANO mincho embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/QANO-mincho.ttf" #t))
-;; (test* "QuiMi mincho embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/QuiMi-mincho.ttf" #t))
-;; (test* "XANO-mincho embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/XANO-mincho.ttf" #t))
+(test* "Kandata embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/Kandata.ttf" #t))
+(test* "Oradano embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/Oradano.ttf" #t))
+(test* "QANO mincho embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/QANO-mincho.ttf" #t))
+(test* "QuiMi mincho embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/QuiMi-mincho.ttf" #t))
+(test* "XANO-mincho embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/XANO-mincho.ttf" #t))
 (test* "XANO-mincho-U32 embed" "XANO-mincho-U32" (test-hpdf-load-ttf-font-from-file "font/XANO-mincho-U32.ttf" #t))
 
 (test-section "S2G fonts")
@@ -212,7 +226,7 @@
 (test* "Sazanami-Mincho-Regular embed" "Sazanami-Mincho-Regular,Mincho-Regular" (test-hpdf-load-ttf-font-from-file "font/sazanami-mincho.ttf" #t))
 
 (test-section "Other fonts")
-;; (test* "akubin embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/AKUBIN.TTF" #t))
+(test* "akubin embed" *test-error* (test-hpdf-load-ttf-font-from-file "font/AKUBIN.TTF" #t))
 ;; (test* "japonesque embed" "unsupported" (test-hpdf-load-ttf-font-from-file "font/Japonesque1.45.TTF" #t))
 (test* "cinecaption embed" "cinecaption" (test-hpdf-load-ttf-font-from-file "font/cinecaption226.ttf" #t))
 (test* "elmer monospace embed" "ElmerFont" (test-hpdf-load-ttf-font-from-file "font/elmer.ttf" #t))
@@ -223,6 +237,11 @@
 (test* "TA Bimyou embed" "TAbimyou_Add" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add.TTF" #t))
 (test* "TA Bimyou proportional embed" "TAbimyou_Add_p" (test-hpdf-load-ttf-font-from-file "font/tabimyou_add_p.TTF" #t))
 (test* "dejima-mincho embed" "dejima-mincho,mincho" (test-hpdf-load-ttf-font-from-file "font/dejima-mincho-r21.ttf" #t))
+(test* "hogehoge-gothic embed" "Hogehoge-Gothic-Regular,Gothic-Regular" (test-hpdf-load-ttf-font-from-file "font/hogehoge-gothic.ttf" #t))
+
+(test* "tsuitiku embed" "Tsuitiku-Kana-Regular" (test-hpdf-load-ttf-font-from-file "font/tsuitiku.ttf" #t))
+(test* "tsuitiku-modern embed" "Tsuitiku-Kana-Modern,Modern" (test-hpdf-load-ttf-font-from-file "font/tsuitiku-modern.ttf" #t))
+(test* "tsuitiku proportional embed" "Tsuitiku-Kana-P-Regular,P-Regular" (test-hpdf-load-ttf-font-from-file "font/p-tsuitiku.ttf" #t))
 
 (test* "Osaka embed" "Osaka" (test-hpdf-load-ttf-font-from-file2 "font/Osaka.ttc" 0 #t))
 (test* "Osaka embed" "Osaka-Mono" (test-hpdf-load-ttf-font-from-file2 "font/Osaka.ttc" 1 #t))
@@ -282,103 +301,68 @@
         
 (define font-list
   (list
-   '("data/msgothic_0.pdf"
-     ("font/msgothic.ttc" 0 #t))
-   '("data/msgothic_1.pdf"
-     ("font/msgothic.ttc" 1 #t))
-   '("data/msgothic_2.pdf"
-     ("font/msgothic.ttc" 2 #t))
-   '("data/msmincho_0.pdf"
-     ("font/msmincho.ttc" 0 #t))
-   '("data/msmincho_1.pdf"
-     ("font/msmincho.ttc" 1 #t))
-   '("data/mikachanALL_0.pdf"
-     ("font/mikachanALL.ttc" 0 #t))
-   '("data/mikachanALL_1.pdf"
-     ("font/mikachanALL.ttc" 1 #t))
-   '("data/mikachanALL_2.pdf"
-     ("font/mikachanALL.ttc" 2 #t))
-   '("data/mikachanALL_3.pdf"
-     ("font/mikachanALL.ttc" 3 #t))
-   '("data/mikachan_puchi_0.pdf"
-     ("font/mikachan_puchi.ttc" 0 #t))
-   '("data/mikachan_puchi_1.pdf"
-     ("font/mikachan_puchi.ttc" 1 #t))
-   '("data/Konatu.pdf"
-     ("font/Konatu.ttf" #t))
-   '("data/KonatuTohaba.pdf"
-     ("font/KonatuTohaba.ttf" #t))
-   '("data/aquafont.pdf"
-     ("font/aquafont.ttf" #t))
-   '("data/aqua_pfont.pdf"
-     ("font/aqua_pfont.ttf" #t))
-   '("data/SNsanafon.pdf"
-     ("font/SNsanafon.ttf" #t))
-   '("data/SNsanafonGyou.pdf"
-     ("font/SNsanafonGyou.TTF" #t))
-   '("data/SNsanafonKazari.pdf"
-     ("font/SNsanafonKazari.ttf" #t))
-  '("data/SNsanafonMugi.pdf"
-    ("font/SNsanafonMugi.TTF" #t))
-  '("data/SNsanafonObi.pdf"
-    ("font/SNsanafonObi.ttf" #t))
-  '("data/SNsanafonkaku.pdf"
-    ("font/SNsanafonkaku.ttf" #t))
-  '("data/SNsanafonkakuP.pdf"
-    ("font/SNsanafonkakuP.ttf" #t))
-  '("data/SNsanafonmaru.pdf"
-    ("font/SNsanafonmaru.ttf" #t))
-  '("data/SNsanafonmaruP.pdf"
-    ("font/SNsanafonmaruP.ttf" #t))
-  '("data/SNsanafonYu.pdf"
-    ("font/SNsanafonyu.ttf" #t))
-  '("data/cinecaption226.pdf"
-    ("font/cinecaption226.ttf" #t))
-  '("data/dameji.pdf"
-    ("font/dameji.ttf" #t))
-  '("data/habadasa.pdf"
-    ("font/habadasa.ttf" #t))
-  '("data/Dosei.pdf"
-    ("font/Dosei.ttf" #t))
-  '("data/umi.pdf"
-    ("font/umi.ttf" #t))
-  '("data/sea.pdf"
-    ("font/sea.ttf" #t))
-  '("data/seap.pdf"
-    ("font/seap.ttf" #t))
-  '("data/uni.pdf"
-    ("font/uni.ttf" #t))
-  '("data/unip.pdf"
-    ("font/unip.ttf" #t))
-  '("data/tsuki.pdf"
-    ("font/tsuki.ttf" #t))
-  '("data/tsukip.pdf"
-    ("font/tsukip.ttf" #t))
-  '("data/naguri.pdf"
-    ("font/naguri.ttf" #t))
-  '("data/nagurip.pdf"
-    ("font/nagurip.ttf" #t))
-  '("data/memo.pdf"
-    ("font/memo.ttf" #t))
-  '("data/love.pdf"
-    ("font/love.ttf" #t))
-  '("data/elmer.pdf"
-    ("font/elmer.ttf" #t))
-  '("data/elmerp.pdf"
-    ("font/elmerp.ttf" #t))
-  '("data/TABimyou.pdf"
-    ("font/tabimyou_add.TTF" #t))
-  '("data/TABimyouP.pdf"
-    ("font/tabimyou_add_p.TTF" #t))
-  '("data/SHG30_0.pdf"
-    ("font/SH G30.ttc" 0 #t))
-  '("data/SHG30_1.pdf"
-    ("font/SH G30.ttc" 1 #t))
+   '("data/msgothic_0.pdf" ("font/msgothic.ttc" 0 #t))
+   '("data/msgothic_1.pdf" ("font/msgothic.ttc" 1 #t))
+   '("data/msgothic_2.pdf" ("font/msgothic.ttc" 2 #t))
+   '("data/msmincho_0.pdf" ("font/msmincho.ttc" 0 #t))
+   '("data/msmincho_1.pdf" ("font/msmincho.ttc" 1 #t))
+   '("data/mikachanALL_0.pdf" ("font/mikachanALL.ttc" 0 #t))
+   '("data/mikachanALL_1.pdf" ("font/mikachanALL.ttc" 1 #t))
+   '("data/mikachanALL_2.pdf" ("font/mikachanALL.ttc" 2 #t))
+   '("data/mikachanALL_3.pdf" ("font/mikachanALL.ttc" 3 #t))
+   '("data/mikachan_puchi_0.pdf" ("font/mikachan_puchi.ttc" 0 #t))
+   '("data/mikachan_puchi_1.pdf" ("font/mikachan_puchi.ttc" 1 #t))
+   '("data/Konatu.pdf" ("font/Konatu.ttf" #t))
+   '("data/KonatuTohaba.pdf" ("font/KonatuTohaba.ttf" #t))
+   '("data/aquafont.pdf" ("font/aquafont.ttf" #t))
+   '("data/aqua_pfont.pdf" ("font/aqua_pfont.ttf" #t))
+   '("data/SNsanafon.pdf" ("font/SNsanafon.ttf" #t))
+   '("data/SNsanafonGyou.pdf" ("font/SNsanafonGyou.TTF" #t))
+   '("data/SNsanafonKazari.pdf" ("font/SNsanafonKazari.ttf" #t))
+  '("data/SNsanafonMugi.pdf" ("font/SNsanafonMugi.TTF" #t))
+  '("data/SNsanafonObi.pdf" ("font/SNsanafonObi.ttf" #t))
+  '("data/SNsanafonkaku.pdf" ("font/SNsanafonkaku.ttf" #t))
+  '("data/SNsanafonkakuP.pdf" ("font/SNsanafonkakuP.ttf" #t))
+  '("data/SNsanafonmaru.pdf" ("font/SNsanafonmaru.ttf" #t))
+  '("data/SNsanafonmaruP.pdf" ("font/SNsanafonmaruP.ttf" #t))
+  '("data/SNsanafonYu.pdf" ("font/SNsanafonyu.ttf" #t))
+  '("data/cinecaption226.pdf" ("font/cinecaption226.ttf" #t))
+  '("data/dameji.pdf" ("font/dameji.ttf" #t))
+  '("data/habadasa.pdf" ("font/habadasa.ttf" #t))
+  '("data/Dosei.pdf" ("font/Dosei.ttf" #t))
+  '("data/umi.pdf" ("font/umi.ttf" #t))
+  '("data/sea.pdf" ("font/sea.ttf" #t))
+  '("data/seap.pdf" ("font/seap.ttf" #t))
+  '("data/uni.pdf" ("font/uni.ttf" #t))
+  '("data/unip.pdf" ("font/unip.ttf" #t))
+  '("data/tsuki.pdf" ("font/tsuki.ttf" #t))
+  '("data/tsukip.pdf" ("font/tsukip.ttf" #t))
+  '("data/naguri.pdf" ("font/naguri.ttf" #t))
+  '("data/nagurip.pdf" ("font/nagurip.ttf" #t))
+  '("data/memo.pdf" ("font/memo.ttf" #t))
+  '("data/love.pdf" ("font/love.ttf" #t))
+  '("data/elmer.pdf" ("font/elmer.ttf" #t))
+  '("data/elmerp.pdf" ("font/elmerp.ttf" #t))
+  '("data/TABimyou.pdf" ("font/tabimyou_add.TTF" #t))
+  '("data/TABimyouP.pdf" ("font/tabimyou_add_p.TTF" #t))
+  '("data/SHG30_0.pdf" ("font/SH G30.ttc" 0 #t))
+  '("data/SHG30_1.pdf" ("font/SH G30.ttc" 1 #t))
   '("data/Osaka_0.pdf" ("font/Osaka.ttc" 0 #f))
   '("data/Osaka_1.pdf" ("font/Osaka.ttc" 1 #f))
   '("data/Osaka_2.pdf" ("font/Osaka.ttc" 2 #f))
-  ;;'("data/sazanami-gothic.pdf" ("font/sazanami-gothic.ttf" #f))
-  ;;'("data/sazanami-mincho.pdf" ("font/sazanami-mincho.ttf" #f))
+  '("data/tsuitiku.pdf" ("font/tsuitiku.ttf" #t))
+  '("data/tsuitiku-modern.pdf" ("font/tsuitiku-modern.ttf" #t))
+  '("data/p-tsuitiku.pdf" ("font/p-tsuitiku.ttf" #t))
+;;   '("data/ipag-mona.pdf" ("font/ipag-mona.ttf" #t))
+;;   '("data/zeueimincho.pdf" ("font/ZEUEMS__.TTF" #t))
+;;   '("data/zetueiminchohir.pdf" ("font/ZETUMH__.TTF" #t))
+;;   '("data/zetueihrkt.pdf" ("font/HRKT-KAI.TTF" #t))
+;;    '("data/VL-Gothic.pdf" ("font/VL-Gothic-Regular.ttf" #f))
+;;    '("data/VL-PGothic.pdf" ("font/VL-PGothic-Regular.ttf" #f))
+;;   '("data/hogehoge-gothic.pdf" ("font/hogehoge-gothic.ttf" #t))
+;;   '("data/dejima-mincho-r21.pdf" ("font/dejima-mincho-r21.ttf" #f))
+;;   '("data/sazanami-gothic.pdf" ("font/sazanami-gothic.ttf" #f))
+;;   '("data/sazanami-mincho.pdf" ("font/sazanami-mincho.ttf" #f))
   ))
 
 (define (test-jpfonts-embed-loop arg index)
@@ -397,8 +381,6 @@
          (s (hpdf-use-jp-encodings pdf))
          (f (list-ref arg index))
          (outfile (list-ref f 0))
-         (null (display "begin test"))
-         (null (display index))
          (fontfile (list-ref (list-ref f 1) 0))
          (ttcindex (list-ref (list-ref f 1) 1))
          (embed (if (= (length (list-ref f 1)) 3)
@@ -423,8 +405,83 @@
     (hpdf-save-to-file pdf outfile)))
 
 (test-subsection "embeded font test")
-(test-jpfonts-embed-loop font-list 0)
+;;(test-jpfonts-embed-loop font-list 0)
 
+(test-subsection "text measure test")
+(test-subsubsection "hpdf-font-measure-text")
+
+(define (test-hpdf-measure-text outfile params)
+  (let* ((pdf (hpdf-new))
+         (s (hpdf-use-jp-encodings pdf))
+         (fontfile (list-ref params 0))
+         (ttcindex (if (= (length params) 3)
+                       (list-ref params 1)
+                       #f))
+         (point (if (= (length params) 3)
+                    (list-ref params 2)
+                    (list-ref params 1)))
+         ;; ttc
+         (font (if ttcindex
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file2 pdf fontfile ttcindex embed) "90ms-RKSJ-H")
+                   ;;; ttf
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file pdf fontfile #t) "90ms-RKSJ-H")
+                   ))
+         (page_1 (hpdf-add-page pdf))
+         (st (hpdf-page-begin-text page_1))
+         (st (hpdf-page-set-font-and-size page_1 font point))
+         (width (hpdf-page-get-width page_1))
+         (height (hpdf-page-get-height page_1))
+         (st (hpdf-page-move-text-pos page_1 0 (- height point)))
+         (null (hpdf-page-set-text-leading page_1 point))
+         (text (read-line (open-input-file "data/sjis.txt") #t))
+         (null (hpdf-page-show-text page_1 (read-line (open-input-file "data/sjis.txt") #t)))
+         (len 1)
+         (real (hpdf-font-measure-text font text len width point 0 0 HPDF_FALSE))
+         (dummy (hpdf-page-end-text page_1))
+         (null (hpdf-save-to-file pdf outfile))
+         )
+    real))
+
+(test* "" 36.0 (floor (test-hpdf-measure-text "data/hpdf-font-measure-text-konatu.pdf" '("font/Konatu.ttf" 96))))
+
+(define (test-hpdf-font-text-width outfile params)
+  (let* ((pdf (hpdf-new))
+         (s (hpdf-use-jp-encodings pdf))
+         (fontfile (list-ref params 0))
+         (ttcindex (if (= (length params) 3)
+                       (list-ref params 1)
+                       #f))
+         (point (if (= (length params) 3)
+                    (list-ref params 2)
+                    (list-ref params 1)))
+         ;; ttc
+         (font (if ttcindex
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file2 pdf fontfile ttcindex embed) "90ms-RKSJ-H")
+                   ;;; ttf
+                   (hpdf-get-font pdf (hpdf-load-ttf-font-from-file pdf fontfile #t) "90ms-RKSJ-H")
+                   ))
+         (page_1 (hpdf-add-page pdf))
+         (st (hpdf-page-begin-text page_1))
+         (st (hpdf-page-set-font-and-size page_1 font point))
+         (width (hpdf-page-get-width page_1))
+         (height (hpdf-page-get-height page_1))
+         (st (hpdf-page-move-text-pos page_1 0 (- height point)))
+         (null (hpdf-page-set-text-leading page_1 point))
+         (text (read-line (open-input-file "data/sjis.txt") #t))
+         (null (hpdf-page-show-text page_1 (read-line (open-input-file "data/sjis.txt") #t)))
+         (len 36)
+         (text-width (hpdf-font-text-width font text len))
+         (tlist (hpdf-font-text-width-as-list text-width))
+         (null (display width))
+         (null (display tlist))
+         (dummy (hpdf-page-end-text page_1))
+         (null (hpdf-save-to-file pdf outfile))
+         (null (display width))
+         (null (display (* point (/ (list-ref tlist 1) 1000))))
+         )
+    (list-ref tlist 1)))
+
+(test* "" 36.0 (floor (test-hpdf-font-text-width "data/hpdf-font-text-width-konatu.pdf" '("font/Konatu.ttf" 36))))
 ;; epilogue
 (test-end)
 
