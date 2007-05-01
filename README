@@ -1,9 +1,9 @@
 
-This is Gauche-hpdf, libharu binding for Gauche.
+This is Gauche-hpdf, libharu(Haru Free PDF Library) binding for Gauche.
 
 * System Requirement
 
-Gauche 0.8.9
+Gauche 0.8.10 or later.
 libharu 2.0.8
 
 * Install
@@ -15,4 +15,4 @@ $ make install
 * Initial Test
 
 After make process, you can make check.
-
+Before make check, prepare required fonts and images

@@ -54,24 +54,24 @@
 
 (define-cproc hpdf-load-png-image-from-file2 (doc::<hpdf-doc> filename::<const-cstring>)
   (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadPngImageFromFile2(doc->h, filename);
-  SCM_RESULT = h;"))
+        "ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);"
+        "h->h = HPDF_LoadPngImageFromFile2(doc->h, filename);"
+        "SCM_RESULT = h;"))
 
 (define-cproc hpdf-load-jpeg-image-from-file (doc::<hpdf-doc> filename::<const-cstring>)
   (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadJpegImageFromFile(doc->h, filename);
-  SCM_RESULT = h;"))
+        "ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);"
+        "h->h = HPDF_LoadJpegImageFromFile(doc->h, filename);"
+        "SCM_RESULT = h;"))
 
 (define-cproc hpdf-load-raw-image-from-file (doc::<hpdf-doc> filename::<const-cstring> width::<uint> height::<uint> color_space::<fixnum>)
   (body <hpdf-image>
-        "  ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);
-  h->h = HPDF_LoadRawImageFromFile(doc->h, filename, width, height, color_space);
-  SCM_RESULT = h;"))
+        "ScmHpdfImage *h = SCM_NEW(ScmHpdfImage);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_IMAGE);"
+        "h->h = HPDF_LoadRawImageFromFile(doc->h, filename, width, height, color_space);"
+        "SCM_RESULT = h;"))
 
 ;; FIXME
 (define-cproc hpdf-load-raw-image-from-mem (doc::<hpdf-doc> buf::<const-cstring> width::<uint> height::<uint> color_space::<fixnum> bits_per_component::<uint>)
@@ -110,6 +110,15 @@
 (define-cproc hpdf-image-set-mask-image (image::<hpdf-image> mask_image::<hpdf-image>)
   (expr <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h)"))
 
+(define-cproc hpdf-page-draw-image (page::<hpdf-page>
+                                    image::<hpdf-image>
+                                    x::<float>
+                                    y::<float>
+                                    width::<float>
+                                    height::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-draw-image\");"
+        "SCM_RESULT = HPDF_Page_DrawImage(page->h, image->h, x, y, width, height);"))
 
 ;; Local variables:
 ;; mode: scheme

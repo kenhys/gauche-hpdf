@@ -574,7 +574,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-page-execute-xobject (page::<hpdf-page> obj::<hpdf-xobject>)
   (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
 
-(define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-textout (page::<hpdf-page>) (body <float> ""))
