@@ -154,7 +154,19 @@
 (define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-textout (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-textrect (page::<hpdf-page>) (body <float> ""))
+(define-cproc hpdf-page-text-rect (page::<hpdf-page>
+                                   left::<float>
+                                   top::<float>
+                                   right::<float>
+                                   bottom::<float>
+                                   text::<const-cstring>
+                                   align::<fixnum>
+                                   )
+  (body <uint>
+        "unsigned int uint;"
+        "int status;"
+        "status = HPDF_Page_TextRect(page->h, left, top, right, bottom, text, align, &uint);"
+        "SCM_RESULT = uint;"))
 
 
 ;;
@@ -233,10 +245,10 @@
 ;;
 (define-cproc hpdf-get-encoder (doc::<hpdf-doc> encoding_name::<const-cstring>)
   (body <hpdf-encoder>
-        "  ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);
-  h->h = HPDF_GetEncoder(doc->h, encoding_name);
-  SCM_RESULT = h;"))
+        "ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);"
+        "h->h = HPDF_GetEncoder(doc->h, encoding_name);"
+        "SCM_RESULT = h;"))
 
 (define-cproc hpdf-get-current-encoder (doc::<hpdf-doc>)
   (body <hpdf-encoder>
@@ -352,7 +364,7 @@
   (body <hpdf-box>
         "GAUCHE_HPDF_FUNC(\"hpdf-font-get-bbox\");"
         "ScmHpdfBox *h = SCM_NEW(ScmHpdfBox);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDFBOX);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_BOX);"
         "h->h = HPDF_Font_GetBBox(font->h);"
         "SCM_RESULT = h;"))
 

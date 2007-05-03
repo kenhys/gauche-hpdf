@@ -111,19 +111,60 @@
 ()
 ())
 
-(define-cproc hpdf-info-set-info-date-attr (dict::<hpdf-dict> type::<fixnum>
-                                                              year::<int>
-                                                              month::<int>
-                                                              day::<int>
-                                                              hour::<int>
-                                                              minutes::<int>
-                                                              seconds::<int>
-                                                              ind::<char>
-                                                              off_hour::<int>
-                                                              off_minutes::<int>)
+(define-cproc hpdf-info-set-info-date-attr (dict::<hpdf-dict>
+                                            type::<fixnum>
+                                            year::<int>
+                                            month::<int>
+                                            day::<int>
+                                            hour::<int>
+                                            minutes::<int>
+                                            seconds::<int>
+                                            ind::<char>
+                                            off_hour::<int>
+                                            off_minutes::<int>)
   (body <ulong>
         ""))
 
+;; type utility 
+(define-cproc make-rect (left::<float>
+                         bottom::<float>
+                         right::<float>
+                         top::<float>)
+  (body <hpdf-rect>
+        "GAUCHE_HPDF_FUNC(\"make-rect\");"
+        "ScmHpdfRect *h = SCM_NEW(ScmHpdfRect);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_RECT);"
+        "h->h.left = left;"
+        "h->h.bottom = bottom;"
+        "h->h.right = right;"
+        "h->h.top = top;"
+        "SCM_RESULT = h;"))
+
+(define-cproc make-date (year::<int>
+                         month::<int>
+                         day::<int>
+                         hour::<int>
+                         minutes::<int>
+                         seconds::<int>
+                         ind::<char>
+                         off_hour::<int>
+                         off_minutes::<int>)
+  (body <hpdf-date>
+        "GAUCHE_HPDF_FUNC(\"make-rect\");"
+        "ScmHpdfDate *h = SCM_NEW(ScmHpdfDate);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_DATE);"
+        "h->h.year = year;"
+        "h->h.month = month;"
+        "h->h.day = day;"
+        "h->h.hour = hour;"
+        "h->h.minutes = minutes;"
+        "h->h.seconds = seconds;"
+        "h->h.ind = ind;"
+        "h->h.off_hour = off_hour;"
+        "h->h.off_minutes = off_minutes;"
+        "SCM_RESULT = h;"))
+
+    
 ;;
 ;; The following entry is a procedure
 ;;
@@ -927,7 +968,7 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
   (body <hpdf-box>
         "GAUCHE_HPDF_FUNC(\"hpdf-font-get-bbox\");"
         "ScmHpdfBox *h = SCM_NEW(ScmHpdfBox);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDFBOX);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_BOX);"
         "h->h = HPDF_Font_GetBBox(font->h);"
         "SCM_RESULT = h;"))
 
@@ -950,15 +991,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
   h->h = HPDF_Font_TextWidth(font->h, text, len);
   SCM_RESULT = h;"))
 
-(define-cproc hpdf-font-measure-text (font::<hpdf-font>
-                                      text::<foreign-pointer>
-                                      len::<uint> width::<float> font_size::<float>
-                                      char_space::<float> word_space::<float> wordwrap::<float>
-                                      real_width::<foreign-pointer>)
-  (body <uint>
-        "HPDF_Font_MeasureText(font->h,"
-        "SCM_FOREIGN_POINTER(text)->ptr, len, width, font_size, char_space, word_space, wordwrap,"
-        "SCM_FOREIGN_POINTER(real_width)->ptr);"))
 
 ;; extended graphics state
 (define-cproc hpdf-create-ext-gstate (doc::<hpdf-doc>)
@@ -981,18 +1013,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-page-text-width (page::<hpdf-page> text::<const-cstring>)
   (expr <float> "HPDF_Page_TextWidth(page->h, text)"))
 
-"
-/*
-
-HPDF_EXPORT(HPDF_UINT)
-HPDF_Page_MeasureText  (HPDF_Page    page,
-                        const char  *text,
-                        HPDF_REAL    width,
-                        HPDF_BOOL    wordwrap,
-                        HPDF_REAL   *real_width);
-
-*/
-"
 
 (define-cproc hpdf-page-get-width (page::<hpdf-page>)
   (expr <float> "HPDF_Page_GetWidth(page->h)"))
@@ -1838,6 +1858,25 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
 (define-enum HPDF_TS_GLITTER_DOWN)
 (define-enum HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT)
 (define-enum HPDF_TS_REPLACE)
+
+;; enum HPDF_TextAlignment
+(define-enum HPDF_TALIGN_LEFT)
+(define-enum HPDF_TALIGN_RIGHT)
+(define-enum HPDF_TALIGN_CENTER)
+(define-enum HPDF_TALIGN_JUSTIFY)
+;; alias
+(define-enum ALIGN_LEFT)
+(define-enum ALIGN_RIGHT)
+(define-enum ALIGN_CENTER)
+(define-enum ALIGN_JUSTIFY)
+
+(define-enum ICON_COMMENT)
+(define-enum ICON_KEY)
+(define-enum ICON_NOTE)
+(define-enum ICON_HELP)
+(define-enum ICON_NEW_PARAGRAPH)
+(define-enum ICON_PARAGRAPH)
+(define-enum ICON_INSERT)
 
 ;; Local variables:
 ;; mode: scheme

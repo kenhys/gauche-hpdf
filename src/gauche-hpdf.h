@@ -87,6 +87,20 @@ SCM_DECL_BEGIN
 #define COPY HPDF_ENABLE_COPY
 #define EDIT HPDF_ENABLE_EDIT
 
+#define ALIGN_LEFT HPDF_TALIGN_LEFT
+#define ALIGN_RIGHT HPDF_TALIGN_RIGHT
+#define ALIGN_CENTER HPDF_TALIGN_CENTER
+#define ALIGN_JUSTIFY HPDF_TALIGN_JUSTIFY
+
+/* enum HPDF_AnnotIcon */
+#define ICON_COMMENT HPDF_ANNOT_ICON_COMMENT
+#define ICON_KEY HPDF_ANNOT_ICON_KEY
+#define ICON_NOTE HPDF_ANNOT_ICON_NOTE
+#define ICON_HELP HPDF_ANNOT_ICON_HELP
+#define ICON_NEW_PARAGRAPH HPDF_ANNOT_ICON_NEW_PARAGRAPH
+#define ICON_PARAGRAPH HPDF_ANNOT_ICON_PARAGRAPH
+#define ICON_INSERT HPDF_ANNOT_ICON_INSERT
+
 typedef struct ScmHpdfDocRec {
 SCM_HEADER;
 HPDF_Doc h;
@@ -234,9 +248,9 @@ HPDF_Rect h;
 } ScmHpdfBox;
 
 SCM_CLASS_DECL(Scm_HpdfBoxClass);
- #define SCM_CLASS_HPDFBOX (&Scm_HpdfBoxClass)
- #define SCM_HPDFBOX(obj) ((ScmHpdfBox*)(obj))
- #define SCM_HPDFBOXP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFBOX))
+ #define SCM_CLASS_HPDF_BOX (&Scm_HpdfBoxClass)
+ #define SCM_HPDF_BOX(obj) ((ScmHpdfBox*)(obj))
+ #define SCM_HPDF_BOX_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_BOX))
 
 typedef struct ScmHpdfTransMatrixRec {
 SCM_HEADER;
@@ -304,9 +318,9 @@ HPDF_Date h;
 } ScmHpdfDate;
 
 SCM_CLASS_DECL(Scm_HpdfDateClass);
- #define SCM_CLASS_HPDFDATE (&Scm_HpdfDateClass)
+ #define SCM_CLASS_HPDF_DATE (&Scm_HpdfDateClass)
  #define SCM_HPDF_DATE(obj) ((ScmHpdfDate*)(obj))
- #define SCM_HPDF_DATE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDATE))
+ #define SCM_HPDF_DATE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_DATE))
 
 typedef struct ScmHpdfDictRec {
 SCM_HEADER;
