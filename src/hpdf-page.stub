@@ -727,7 +727,7 @@
   (body <hpdf-box>
         "GAUCHE_HPDF_FUNC(\"hpdf-font-get-bbox\");"
         "ScmHpdfBox *h = SCM_NEW(ScmHpdfBox);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDFBOX);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_BOX);"
         "h->h = HPDF_Font_GetBBox(font->h);"
         "SCM_RESULT = h;"))
 
