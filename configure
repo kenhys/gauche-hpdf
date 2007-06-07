@@ -1871,6 +1871,11 @@ if test "${enable_debug+set}" = set; then
 
 fi
 
+if test "$enable_debug" = "yes"; then
+  HPDF_DEBUG=yes
+else
+  HPDF_DEBUG=no
+fi
 
 
 HPDF_LIB="-lhpdf"
@@ -2916,3 +2921,15 @@ if test "$no_create" != yes; then
 fi
 
 
+{ echo "$as_me:$LINENO: result:
+       version: $PACKAGE_VERSION
+         debug: $HPDF_DEBUG
+  libharu path: $HPDF_LIBDIR
+
+" >&5
+echo "${ECHO_T}
+       version: $PACKAGE_VERSION
+         debug: $HPDF_DEBUG
+  libharu path: $HPDF_LIBDIR
+
+" >&6; }

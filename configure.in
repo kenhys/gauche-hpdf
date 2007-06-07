@@ -51,6 +51,11 @@ AC_ARG_ENABLE(debug,
    AC_HELP_STRING([--enable-debug], [enable Gauche-hpdf debug mode.]), [
    GAUCHE_HPDF_DEBUG=-DGAUCHE_HPDF_DEBUG
 ])
+if test "$enable_debug" = "yes"; then
+  HPDF_DEBUG=yes
+else
+  HPDF_DEBUG=no
+fi
 AC_SUBST(GAUCHE_HPDF_DEBUG)
 
 HPDF_LIB="-lhpdf"
@@ -81,3 +86,10 @@ dnl Output
 echo $PACKAGE_VERSION > VERSION
 AC_OUTPUT(Makefile src/Makefile test/Makefile)
 
+AC_MSG_RESULT(
+[
+       version: $PACKAGE_VERSION
+         debug: $HPDF_DEBUG
+  libharu path: $HPDF_LIBDIR
+]
+)
