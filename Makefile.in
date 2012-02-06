@@ -30,6 +30,9 @@ LIBS           = -L@HPDF_LIBDIR@ -lhpdf # @LIBS@
 SOEXT  = @SOEXT@
 OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
+LOCAL_PATHS = @LOCAL_PATHS@
+HPDF_CPPFLAGS = @HPDF_CPPFLAGS@
+HPDF_LDFLAGS = @HPDF_LDFLAGS@
 
 # Module-specific stuff
 PACKAGE   = Gauche-hpdf
