@@ -30,6 +30,9 @@ LIBS           = -L@HPDF_LIBDIR@ -lhpdf # @LIBS@
 SOEXT  = @SOEXT@
 OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
+LOCAL_PATHS = @LOCAL_PATHS@
+HPDF_CPPFLAGS = @HPDF_CPPFLAGS@
+HPDF_LDFLAGS = @HPDF_LDFLAGS@
 
 # Module-specific stuff
 PACKAGE   = Gauche-hpdf
@@ -53,9 +56,8 @@ all : $(TARGET)
 
 hpdf.$(SOEXT): $(hpdf_SRCS)
 	$(GAUCHE_PACKAGE) compile --verbose \
---cppflags="$(CPPFLAGS)" \
---ldflags="$(LDFLAGS)" \
---libs="$(LIBS)" \
+	 --local=$(LOCAL_PATHS) --cflags=$(HPDF_CPPFLAGS) --ldflags=$(HPDF_LDFLAGS) --libs=-lhpdf gauche--hpdf $(hpdf_SRCS)
+
 hpdf $(hpdf_SRCS)
 
 check:
