@@ -57,7 +57,9 @@ all :
 #	cd doc; $(MAKE) all
 
 check : all
-	cd test; $(MAKE) check
+	@rm -f test.log
+	sh test/run-test.sh >> test.log
+	cat test.record
 
 clean :
 	rm -rf core *~
