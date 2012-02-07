@@ -275,6 +275,12 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
  * Module initialization function.
  */
 extern void Scm_Init_hpdflib(ScmModule*);
+extern void Scm_Init_hpdf_types(ScmModule*);
+extern void Scm_Init_hpdf_page(ScmModule*);
+extern void Scm_Init_hpdf_image(ScmModule*);
+extern void Scm_Init_hpdf_text(ScmModule*);
+extern void Scm_Init_hpdf_u3d(ScmModule*);
+
 
 ScmObj Scm_Init_gauche__hpdf(void)
 {
@@ -289,9 +295,9 @@ ScmObj Scm_Init_gauche__hpdf(void)
     /* Register stub-generated procedures */
     Scm_Init_hpdflib(mod);
 
+    Scm_Init_hpdf_types(mod);
+    Scm_Init_hpdf_u3d(mod);
     Scm_Init_hpdf_page(mod);
-#if 0
     Scm_Init_hpdf_image(mod);
     Scm_Init_hpdf_text(mod);
-#endif
 }
