@@ -6,7 +6,12 @@
 
 (test-start "hpdf")
 (use hpdf)
+
+(test-record-file "test.record")
+
 (test-module 'hpdf)
+(test-start "doc")
+
 
 (define (test-subsection msg)
   (format #t "~a()\n" msg))

@@ -6,7 +6,11 @@
 
 (test-start "hpdf")
 (use hpdf)
+
+(test-record-file "test.record")
+
 (test-module 'hpdf)
+(test-start "const")
 
 ;; The following is a dummy test code.
 ;; Replace it for your tests.

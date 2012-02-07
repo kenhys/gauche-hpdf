@@ -8,7 +8,7 @@
 (select-module hpdf)
 
 ;; Loads extension
-(dynamic-load "hpdf")
+(dynamic-load "gauche--hpdf")
 
 ;;
 ;; Put your Scheme definitions here

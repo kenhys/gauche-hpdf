@@ -48,11 +48,9 @@ GAUCHE_PKGARCHDIR = $(DESTDIR)@GAUCHE_PKGARCHDIR@
 
 check :
 	make clean
-	$(GOSH) -I. -I../lib -I../src const.scm > log/const.log
-	$(GOSH) -I. -I../lib -I../src font.scm > log/font.log
-	$(GOSH) -I. -I../lib -I../src test.scm > log/test.log
-	$(GOSH) -I. -I../lib -I../src doc.scm > log/doc.log
-	$(GOSH) -I. -I../lib -I../src page.scm > log/page.log
+	@rm -f test.log
+	sh run-test.sh >> test.log
+	cat test.record
 
 
 clean :

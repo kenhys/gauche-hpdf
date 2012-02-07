@@ -276,7 +276,7 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
  */
 extern void Scm_Init_hpdflib(ScmModule*);
 
-ScmObj Scm_Init_hpdf(void)
+ScmObj Scm_Init_gauche__hpdf(void)
 {
     ScmModule *mod;
 
@@ -288,7 +288,10 @@ ScmObj Scm_Init_hpdf(void)
 
     /* Register stub-generated procedures */
     Scm_Init_hpdflib(mod);
+
     Scm_Init_hpdf_page(mod);
+#if 0
     Scm_Init_hpdf_image(mod);
     Scm_Init_hpdf_text(mod);
+#endif
 }

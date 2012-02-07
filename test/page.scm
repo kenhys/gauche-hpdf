@@ -4,10 +4,12 @@
 
 (use gauche.test)
 (use math.mt-random)
-
-(test-start "hpdf")
 (use hpdf)
+
+(test-record-file "test.record")
+
 (test-module 'hpdf)
+(test-start "page")
 
 (define (test-subsection msg)
   (format #t "~a()\n" msg))
