@@ -5,6 +5,7 @@ autom4te.*
 *.dll
 *.exe
 Makefile
+configure
 test/PngSuite-2011apr25
 test/data/*.pdf
 test/font/*.tt[cf]
