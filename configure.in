@@ -11,6 +11,20 @@ dnl configure, uncomment the following line.  In such a case, you need
 dnl to copy config.guess and config.sub from automake distribution.
 dnl AC_CANONICAL_SYSTEM
 
+dnl Replace @LOCAL_PATHS@ by --with-local option.
+AC_ARG_WITH(local,
+  AC_HELP_STRING([--with-local=PATH:PATH...],
+                 [For each PATH, add PATH/include to the include search
+paths and PATH/lib to the library search paths.  Useful if you have some
+libraries installed in non-standard places. ]),
+  [
+    case $with_local in
+      yes|no|"") ;;  #no effect
+      *) LOCAL_PATHS=$with_local ;;
+    esac
+  ])
+AC_SUBST(LOCAL_PATHS)
+
 dnl Set up gauche related commands.  The commands are set by scanning
 dnl PATH.  You can override them by "GOSH=/my/gosh ./configure" etc.
 AC_PATH_PROG([GOSH], gosh)
@@ -60,23 +74,6 @@ else
 fi
 AC_SUBST(GAUCHE_HPDF_DEBUG)
 
-HPDF_LIB="-lhpdf"
-AC_ARG_WITH(libharu, [  --with-libharu[=PATH]:    use Haru Free PDF library installed under PATH.
-                          By default, Gauche-hpdf assumes Haru is installed in
-                          the system standard location.], [
-  case $with_libharu in
-    no)  HPDF_LIB= ;;
-    yes) HPDF_LIB="-lhpdf";;
-    *)   HPDF_LIB="-lhpdf"
-         HPDF_INCDIR="-I$with_libharu/include"
-         HPDF_LIBDIR="$with_libharu/lib"
-         ;;
-         
-  esac
-])
-AC_SUBST(HPDF_INCDIR)
-AC_SUBST(HPDF_LIBDIR)
-
 dnl Creating gpd (gauche package description) file
 GAUCHE_PACKAGE_CONFIGURE_ARGS="`echo ""$ac_configure_args"" | sed 's/[\\""\`\$]/\\\&/g'`"
 AC_MSG_NOTICE([creating ${PACKAGE_NAME}.gpd])
@@ -93,5 +90,6 @@ AC_MSG_RESULT(
        version: $PACKAGE_VERSION
          debug: $HPDF_DEBUG
   libharu path: $HPDF_LIBDIR
-]
-)
+           png: $HAVE_PNG
+          zlib: $HAVE_ZLIB])
+
