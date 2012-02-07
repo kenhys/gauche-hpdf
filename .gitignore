@@ -1,2 +1,10 @@
-
+*.o
 *.log
+*.swp
+autom4te.*
+*.dll
+*.exe
+Makefile
+test/PngSuite-2011apr25
+test/data/*.pdf
+test/font/*.tt[cf]
