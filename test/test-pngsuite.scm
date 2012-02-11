@@ -280,26 +280,5 @@
 (test-subsubsection "Corrupted files")
 (mktest	corrupted-files)
 
-(exit)
-
-(test-subsubsection "Size test files noninterlacing")
-
-(test-section "")
-(test-subsection "hpdf-page-draw-image")
-
-(define (test-hpdf-page-draw-image filename)
-  (let* ((pdf (hpdf-new))
-         (image (hpdf-load-png-image-from-file pdf filename))
-         (page (hpdf-add-page pdf))
-         (w (hpdf-page-get-width page))
-         (h (hpdf-page-get-height page))
-         (iw (hpdf-image-get-width image))
-         (ih (hpdf-image-get-height image))
-         (st (hpdf-page-draw-image page image 0 (- h ih) iw ih))
-         )
-    (hpdf-save-to-file pdf "data/sample.pdf")))
-
-(test* "" HPDF_OK (test-hpdf-page-draw-image "image/PngSuite/TP1N3P08.PNG"))
-
 ;; epilogue
 (test-end)
