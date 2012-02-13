@@ -124,8 +124,6 @@
   (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
 
 (define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
 
 (define-cproc hpdf-page-textout
   (page::<hpdf-page> xpos::<float> ypos::<float> text::<const-cstring>) ::<ulong>

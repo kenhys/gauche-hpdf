@@ -349,8 +349,17 @@
   (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
 
 (define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
+
+(define-cproc hpdf-page-circle
+  (page::<hpdf-page> x::<real> y::<real> ray::<real>) ::<ulong>
+  (result (HPDF_Page_Circle (-> page h) x y ray)))
+
+;; 
+(define-cproc hpdf-page-arc
+  (page::<hpdf-page> x::<real> y::<real> ray::<real> ang1::<real> ang2::<real>) ::<ulong>
+  (let* ()
+    (result (HPDF_Page_Arc (-> page h) x y ray ang1 ang2))))
+
 (define-cproc hpdf-page-textout (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-textrect (page::<hpdf-page>) (body <float> ""))
 

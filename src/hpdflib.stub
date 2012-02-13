@@ -587,12 +587,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 (define-cproc hpdf-page-execute-xobject (page::<hpdf-page> obj::<hpdf-xobject>)
   (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
 
-(define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-textout (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-textrect (page::<hpdf-page>) (body <float> ""))
-
-
 ;;
 ;; Font Handling
 ;;
@@ -1102,28 +1096,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
   h->h = HPDF_Page_GetCMYKStroke(page->h);
   SCM_RESULT = h;"))
 
-
-(define-cproc hpdf-page-get-gray-fill (page::<hpdf-page>)
-  (expr <float> "HPDF_Page_GetGrayFill(page->h)"))
-
-(define-cproc hpdf-page-get-gray-stroke (page::<hpdf-page>)
-  (expr <float> "HPDF_Page_GetGrayStroke(page->h)"))
-
-(define-cproc hpdf-page-get-stroking-color-space (page::<hpdf-page>)
-  (expr <fixnum> "HPDF_Page_GetStrokingColorSpace(page->h)"))
-
-(define-cproc hpdf-page-get-filling-color-space (page::<hpdf-page>)
-  (expr <fixnum> "HPDF_Page_GetFillingColorSpace(page->h)"))
-
-(define-cproc hpdf-page-get-textmatrix (page::<hpdf-page>)
-  (body <hpdf-transmatrix>
-        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_TRANSMATRIX);
-  h->h = HPDF_Page_GetTextMatrix(page->h);
-  SCM_RESULT = h;"))
-
-(define-cproc hpdf-page-get-gstate-depth (page::<hpdf-page>)
-  (expr <uint> "HPDF_Page_GetGStateDepth(page->h)"))
 
 ;;
 ;; GRAPHICS OPERATORS
