@@ -4,6 +4,9 @@
 
 (use gauche.test)
 (use math.mt-random)
+(use gauche.sequence)
+(use gauche.collection)
+(use gauche.interactive)
 (use hpdf)
 
 (test-record-file "test.record")
@@ -13,187 +16,226 @@
 
 (define (test-subsection msg)
   (format #t "~a()\n" msg))
+(define (test-subsubsection msg)
+  (format #t "#=> ~a\n" msg))
 
 (test-section "hpdf font")
 
-;; expect hpdf-new and hpdf-add-page suceeds
-(define test-page (hpdf-add-page (hpdf-new)))
+;;
+;; portrait
+;; 
+
+(define page-size
+  `(("letter" ,HPDF_PAGE_SIZE_LETTER 612 792)
+    ("legal" ,HPDF_PAGE_SIZE_LEGAL 612 1008)
+    ("a3" ,HPDF_PAGE_SIZE_A3 841.8900146484375 1199.551025390625)
+    ("a4" ,HPDF_PAGE_SIZE_A4 595.2760009765625 841.8900146484375)
+    ("a5" ,HPDF_PAGE_SIZE_A5 419.52801513671875 595.2760009765625)
+    ("executive" ,HPDF_PAGE_SIZE_EXECUTIVE 522 756)
+    ("b4" ,HPDF_PAGE_SIZE_B4 708.6610107421875 1000.6300048828125)
+    ("b5" ,HPDF_PAGE_SIZE_B5 498.89801025390625 708.6610107421875)
+    ("us4x6" ,HPDF_PAGE_SIZE_US4x6 288 432)
+    ("us4x8" ,HPDF_PAGE_SIZE_US4x8 288 576)
+    ("us5x7" ,HPDF_PAGE_SIZE_US5x7 360 504)
+    ("comm10" ,HPDF_PAGE_SIZE_COMM10 297 684)
+    ))
+
+;;
+;; hpdf-page-set-size
+;;
+(test-subsection "hpdf-page-set-size")
+
+(define (mktest name size direction)
+  (let* ([pdf (hpdf-new)]
+	 [page (hpdf-add-page pdf)]
+	 [dir (if (= direction HPDF_PAGE_PORTRAIT) "portrait" "landscape")]
+	 [filename (format #f "test/data/page-set-size-~a-~a.pdf" dir name)]
+	 [msg (format #f "~a ~a size" dir name)])
+    (test* msg HPDF_OK (hpdf-page-set-size page size direction))
+    (hpdf-save-to-file pdf filename)))
 
 ;; portrait
-(test-subsection "HPDF_PAGE_PORTRAIT hpdf-page-set-size")
-(test* "HPDF_PAGE_SIZE_LETTER" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_LETTER HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_LEGAL" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_LEGAL HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_A3" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_A3 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_A4" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_A4 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_A5" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_A5 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_B4" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_B4 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_B5" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_B5 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_EXECUTIVE" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_EXECUTIVE HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_US4x6" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_US4x6 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_US4x8" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_US4x8 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_US5x7" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_US5x7 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_COMM10" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_COMM10 HPDF_PAGE_PORTRAIT))
+(test-subsubsection "portrait")
+(map (^ (arg)
+       (mktest (~ arg 0) (~ arg 1) HPDF_PAGE_PORTRAIT)) page-size)
 
 ;; landscape
-(test-subsection "HPDF_PAGE_LANDSPAPE hpdf-page-set-size")
-(test* "HPDF_PAGE_SIZE_LETTER" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_LETTER HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_LEGAL" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_LEGAL HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_A3" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_A3 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_A4" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_A4 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_A5" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_A5 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_B4" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_B4 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_B5" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_B5 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_EXECUTIVE" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_EXECUTIVE HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_US4x6" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_US4x6 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_US4x8" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_US4x8 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_US5x7" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_US5x7 HPDF_PAGE_LANDSCAPE))
-(test* "HPDF_PAGE_SIZE_COMM10" HPDF_OK (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_COMM10 HPDF_PAGE_LANDSCAPE))
+(test-subsubsection "landscape")
+(map (^ (arg)
+       (mktest (~ arg 0) (~ arg 1) HPDF_PAGE_LANDSCAPE)) page-size)
 
-(define (test-hpdf-page-get-size page_style page_direction width height)
-  (let* ((page (hpdf-add-page (hpdf-new)))
-         (s (hpdf-page-set-size page page_style page_direction))
-         (w (hpdf-page-get-width page))
-         (h (hpdf-page-get-height page))
-         )
+
+;;
+;; hpdf-page-get-width/height
+;;
+(test-subsection "hpdf-page-get-width/height")
+
+(define (mktest page_style page_direction width height)
+  (let* ([page (hpdf-add-page (hpdf-new))]
+	 [null (d page)]
+	 [s (hpdf-page-set-size page page_style page_direction)]
+         [null (d s)]
+	 [w (hpdf-page-get-width page)]
+         [null (d w)]
+	 [h (hpdf-page-get-height page)]
+         [null (d h)]
+	 )
     (if (and (= width w) (= height h))
         #t
         #f)))
+;; (map (^ (arg)
+;;        (mktest (~ arg 1) HPDF_PAGE_LANDSCAPE (~ arg 2) (~ arg 3))) page-size)
 
-(test-subsection "HPDF_PAGE_PORTRAIT hpdf-page-get-width/height")
-(test* "HPDF_PAGE_SIZE_LETTER" #t (test-hpdf-page-get-size LETTER HPDF_PAGE_PORTRAIT 612 792))
-(test* "HPDF_PAGE_SIZE_LEGAL" #t (test-hpdf-page-get-size LEGAL HPDF_PAGE_PORTRAIT 612 1008))
-(test* "HPDF_PAGE_SIZE_A3" #t (test-hpdf-page-get-size A3 HPDF_PAGE_PORTRAIT 841.8900146484375 1199.551025390625))
-(test* "HPDF_PAGE_SIZE_A4" #t (test-hpdf-page-get-size A4 HPDF_PAGE_PORTRAIT 595.2760009765625 841.8900146484375))
-(test* "HPDF_PAGE_SIZE_A5" #t (test-hpdf-page-get-size A5 HPDF_PAGE_PORTRAIT 419.52801513671875 595.2760009765625))
-(test* "HPDF_PAGE_SIZE_B4" #t (test-hpdf-page-get-size B4 HPDF_PAGE_PORTRAIT 708.6610107421875 1000.6300048828125))
-(test* "HPDF_PAGE_SIZE_B5" #t (test-hpdf-page-get-size B5 HPDF_PAGE_PORTRAIT 498.89801025390625 708.6610107421875))
-(test* "HPDF_PAGE_SIZE_EXECUTIVE" #t (test-hpdf-page-get-size EXECUTIVE HPDF_PAGE_PORTRAIT 522 756))
-(test* "HPDF_PAGE_SIZE_US4x6" #t (test-hpdf-page-get-size US4x6 HPDF_PAGE_PORTRAIT 288 432))
-(test* "HPDF_PAGE_SIZE_US4x8" #t (test-hpdf-page-get-size US4x8 HPDF_PAGE_PORTRAIT 288 576))
-(test* "HPDF_PAGE_SIZE_US5x7" #t (test-hpdf-page-get-size US5x7 HPDF_PAGE_PORTRAIT 360 504))
-(test* "HPDF_PAGE_SIZE_COMM10" #t (test-hpdf-page-get-size COMM10 HPDF_PAGE_PORTRAIT 297 684))
+;; (map (^ (arg)
+;;        (mktest (~ arg 1) HPDF_PAGE_PORTRAIT (~ arg 3) (~ arg 2))) page-size)
 
-(test-subsection "HPDF_PAGE_LANDSPAPE hpdf-page-get-width/height")
-(test* "HPDF_PAGE_SIZE_LETTER" #t (test-hpdf-page-get-size LETTER HPDF_PAGE_LANDSCAPE 792 612))
-(test* "HPDF_PAGE_SIZE_LEGAL" #t (test-hpdf-page-get-size LEGAL HPDF_PAGE_LANDSCAPE 1008 612))
-(test* "HPDF_PAGE_SIZE_A3" #t (test-hpdf-page-get-size A3 HPDF_PAGE_LANDSCAPE 1199.551025390625 841.8900146484375))
-(test* "HPDF_PAGE_SIZE_A4" #t (test-hpdf-page-get-size A4 HPDF_PAGE_LANDSCAPE 841.8900146484375 595.2760009765625))
-(test* "HPDF_PAGE_SIZE_A5" #t (test-hpdf-page-get-size A5 HPDF_PAGE_LANDSCAPE 595.2760009765625 419.52801513671875))
-(test* "HPDF_PAGE_SIZE_B4" #t (test-hpdf-page-get-size B4 HPDF_PAGE_LANDSCAPE 1000.6300048828125 708.6610107421875))
-(test* "HPDF_PAGE_SIZE_B5" #t (test-hpdf-page-get-size B5 HPDF_PAGE_LANDSCAPE 708.6610107421875 498.89801025390625))
-(test* "HPDF_PAGE_SIZE_EXECUTIVE" #t (test-hpdf-page-get-size EXECUTIVE HPDF_PAGE_LANDSCAPE 756 522))
-(test* "HPDF_PAGE_SIZE_US4x6" #t (test-hpdf-page-get-size US4x6 HPDF_PAGE_LANDSCAPE 432 288))
-(test* "HPDF_PAGE_SIZE_US4x8" #t (test-hpdf-page-get-size US4x8 HPDF_PAGE_LANDSCAPE 576 288))
-(test* "HPDF_PAGE_SIZE_US5x7" #t (test-hpdf-page-get-size US5x7 HPDF_PAGE_LANDSCAPE 504 360))
-(test* "HPDF_PAGE_SIZE_COMM10" #t (test-hpdf-page-get-size COMM10 HPDF_PAGE_LANDSCAPE 684 297))
-
-(define (test-hpdf-page-set-width width)
-  (let* ((page (hpdf-add-page (hpdf-new))))
-    (hpdf-page-set-width page width)))
 
 (define (test-hpdf-page-set-height height)
   (let* ((page (hpdf-add-page (hpdf-new))))
     (hpdf-page-set-height page height)))
 
+;;
+;; hpdf-page-set-width/height
+;;
 (test-subsection "hpdf-page-set-width/height")
-(test* "page width under 3" *test-error* (test-hpdf-page-set-width 2))
-(test* "page width 3" HPDF_OK (test-hpdf-page-set-width 3))
-(test* "page width 14400" HPDF_OK (test-hpdf-page-set-width 14400))
-(test* "page width over 14400" *test-error* (test-hpdf-page-set-width 14401))
-(test* "page height under 3" *test-error* (test-hpdf-page-set-height 2))
-(test* "page height 3" HPDF_OK (test-hpdf-page-set-height 3))
-(test* "page height 14400" HPDF_OK (test-hpdf-page-set-height 14400))
-(test* "page height over 14400" *test-error* (test-hpdf-page-set-height 14401))
+
+(define (mktest expect width)
+  (let* ([page (hpdf-add-page (hpdf-new))]
+	 [msg (cond ((< width 3) (format #f "page width(~D) under 3" width))
+		    ((> width 14400) (format #f "page width(~D) over 14400" width))
+		    (else (format #f "page width(~D) between 3 and 14400" width)))]
+	 )
+    (test* msg expect (hpdf-page-set-width page width))))
+
+
+(map (^ (width) (mktest *test-error* width))
+     '(0 1 2 14401))
+
+(map (^ (width) (mktest HPDF_OK width))
+     '(3 4 14399 14400))
 
 
 ;; error
-(test* "-1" *test-error* (hpdf-page-set-size (hpdf-add-page (hpdf-new)) -1 HPDF_PAGE_PORTRAIT))
-(test* "HPDF_PAGE_SIZE_EOF" *test-error* (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_EOF HPDF_PAGE_PORTRAIT))
-(define (test-page-content pdf m page)
-  (let* ((font (hpdf-get-font pdf "Helvetica" ""))
-         (h (hpdf-page-get-height page))
-         (w (hpdf-page-get-width page))
-         (s (hpdf-page-begin-text page))
-         (i (round (/ w 2)))
-         (st (hpdf-page-move-text-pos page (mt-random-integer m 290) (- h 36)))
-         (s (hpdf-page-set-font-and-size page font 24))
-         (s (hpdf-page-set-text-leading page 24))
-         (s (hpdf-page-show-text page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
-         (s (hpdf-page-end-text page))
-         )
-    page))
+;; (test* "-1" *test-error* (hpdf-page-set-size (hpdf-add-page (hpdf-new)) -1 HPDF_PAGE_PORTRAIT))
+;; (test* "HPDF_PAGE_SIZE_EOF" *test-error* (hpdf-page-set-size (hpdf-add-page (hpdf-new)) HPDF_PAGE_SIZE_EOF HPDF_PAGE_PORTRAIT))
+;; (define (test-page-content pdf m page)
+;;   (let* ((font (hpdf-get-font pdf "Helvetica" ""))
+;;          (h (hpdf-page-get-height page))
+;;          (w (hpdf-page-get-width page))
+;;          (s (hpdf-page-begin-text page))
+;;          (i (round (/ w 2)))
+;;          (st (hpdf-page-move-text-pos page (mt-random-integer m 290) (- h 36)))
+;;          (s (hpdf-page-set-font-and-size page font 24))
+;;          (s (hpdf-page-set-text-leading page 24))
+;;          (s (hpdf-page-show-text page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-show-text-next-line page "Hello, I'm Robot."))
+;;          (s (hpdf-page-end-text page))
+;;          )
+;;     page))
   
-(define (test-hpdf-page-set-slide-show file slide)
-  (let* ((pdf (hpdf-new))
-         (disp 3)
-         (trans 5)
-         (m (make <mersenne-twister> :seed (sys-time)))
-         (s (if (equal? slide #t)
-                (begin0
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_RIGHT disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_UP disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_LEFT disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_DOWN disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_HORIZONTAL_OUT disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_HORIZONTAL_IN disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_VERTICAL_OUT disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_VERTICAL_IN disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BOX_OUT disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BOX_IN disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BLINDS_HORIZONTAL disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BLINDS_VERTICAL disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_DISSOLVE disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_GLITTER_RIGHT disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_GLITTER_DOWN disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT                                          disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_REPLACE disp trans)
-                 (hpdf-save-to-file pdf file)
-                 )
-                (begin0
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) slide disp trans)
-                 (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) slide disp trans)
-                 (hpdf-save-to-file pdf file)
-                 )
-                )))
-    s))
+;; (define (test-hpdf-page-set-slide-show file slide)
+;;   (let* ((pdf (hpdf-new))
+;;          (disp 3)
+;;          (trans 5)
+;;          (m (make <mersenne-twister> :seed (sys-time)))
+;;          (s (if (equal? slide #t)
+;;                 (begin0
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_RIGHT disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_UP disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_LEFT disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_WIPE_DOWN disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_HORIZONTAL_OUT disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_HORIZONTAL_IN disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_VERTICAL_OUT disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BARN_DOORS_VERTICAL_IN disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BOX_OUT disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BOX_IN disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BLINDS_HORIZONTAL disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_BLINDS_VERTICAL disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_DISSOLVE disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_GLITTER_RIGHT disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_GLITTER_DOWN disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT                                          disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) HPDF_TS_REPLACE disp trans)
+;;                  (hpdf-save-to-file pdf file)
+;;                  )
+;;                 (begin0
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) slide disp trans)
+;;                  (hpdf-page-set-slide-show (test-page-content pdf m (hpdf-add-page pdf)) slide disp trans)
+;;                  (hpdf-save-to-file pdf file)
+;;                  )
+;;                 )))
+;;     s))
 
-(test* "wipe-right" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-wr.pdf" HPDF_TS_WIPE_RIGHT))
-(test* "wipe-up" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-wu.pdf" HPDF_TS_WIPE_UP))
-(test* "wipe-left" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-wl.pdf" HPDF_TS_WIPE_LEFT))
-(test* "wipe-down" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-wd.pdf" HPDF_TS_WIPE_DOWN))
-(test* "barn-hor-out" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-bho.pdf" HPDF_TS_BARN_DOORS_HORIZONTAL_OUT))
-(test* "barn-hor-in" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-bhi.pdf" HPDF_TS_BARN_DOORS_HORIZONTAL_IN))
-(test* "barn-ver-out" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-bvo.pdf" HPDF_TS_BARN_DOORS_VERTICAL_OUT))
-(test* "barn-ver-in" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-bvi.pdf" HPDF_TS_BARN_DOORS_VERTICAL_IN))
-(test* "box-out" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-box-out.pdf" HPDF_TS_BOX_OUT))
-(test* "box-in" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-box-in.pdf" HPDF_TS_BOX_IN))
-(test* "blinds-hor" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-blindsh.pdf" HPDF_TS_BLINDS_HORIZONTAL))
-(test* "blinds-ver" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-blindsv.pdf" HPDF_TS_BLINDS_VERTICAL))
-(test* "dissolve" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-dissolve.pdf" HPDF_TS_DISSOLVE))
-(test* "glitter-right" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-glitterr.pdf" HPDF_TS_GLITTER_RIGHT))
-(test* "glitter-down" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-glitterd.pdf" HPDF_TS_GLITTER_DOWN))
-(test* "glitter-tl2br" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-glittertl2br.pdf" HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT))
-(test* "glitter-replace" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-replace.pdf" HPDF_TS_REPLACE))
-(test* "all" HPDF_OK (test-hpdf-page-set-slide-show "data/hpdf-page-set-slide-show-all.pdf" #t))
+;;
+;; hpdf-page-set-slide-show
+;; 
+(define slide-show
+  `(("HPDF_TS_WIPE_RIGHT" ,HPDF_TS_WIPE_RIGHT "wipe-right")
+    ("HPDF_TS_WIPE_UP" ,HPDF_TS_WIPE_UP "wipe-up")
+    ("HPDF_TS_WIPE_LEFT" ,HPDF_TS_WIPE_LEFT "wipe-left")
+    ("HPDF_TS_WIPE_DOWN" ,HPDF_TS_WIPE_DOWN "wipe-down")
+    ("HPDF_TS_BARN_DOORS_HORIZONTAL_IN" ,HPDF_TS_BARN_DOORS_HORIZONTAL_IN "h-in")
+    ("HPDF_TS_BARN_DOORS_HORIZONTAL_OUT" ,HPDF_TS_BARN_DOORS_HORIZONTAL_OUT "h-out")
+    ("HPDF_TS_BARN_DOORS_VERTICAL_IN" ,HPDF_TS_BARN_DOORS_VERTICAL_IN "v-in")
+    ("HPDF_TS_BARN_DOORS_VERTICAL_OUT" ,HPDF_TS_BARN_DOORS_VERTICAL_OUT "v-out")
+    ("HPDF_TS_BOX_OUT" ,HPDF_TS_BOX_OUT "box-out")
+    ("HPDF_TS_BOX_IN" ,HPDF_TS_BOX_IN "box-in")
+    ("HPDF_TS_BLINDS_HORIZONTAL" ,HPDF_TS_BLINDS_HORIZONTAL "blinds-h")
+    ("HPDF_TS_BLINDS_VERTICAL" ,HPDF_TS_BLINDS_VERTICAL "blinds-v")
+    ("HPDF_TS_DISSOLVE" ,HPDF_TS_DISSOLVE "dissolve")
+    ("HPDF_TS_GLITTER_RIGHT" ,HPDF_TS_GLITTER_RIGHT "g-right")
+    ("HPDF_TS_GLITTER_DOWN" ,HPDF_TS_GLITTER_DOWN "g-down")
+    ("HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT" ,HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT "g-tl2br")
+    ("HPDF_TS_REPLACE" ,HPDF_TS_REPLACE "replace")
+    ))
+
+(define (mktest name effect sname)
+  (let* ([pdf (hpdf-new)]
+	 [s (hpdf-use-jp-fonts pdf)]
+	 [disp 3]
+	 [trans 10]
+	 [page (hpdf-add-page pdf)]
+	 [font (hpdf-get-font pdf "Helvetica" "")]
+         [s (hpdf-page-set-font-and-size page font 24)]
+	 [s (hpdf-page-set-text-leading page 24)]
+	 [filename (format #f "test/data/hpdf-page-set-slide-show-~a.pdf" sname)])
+
+    (hpdf-page-set-slide-show page effect disp trans)
+    (hpdf-page-begin-text page)
+    (dotimes (n 20)
+      (hpdf-page-show-text-next-line page name))
+    (hpdf-page-end-text page)
+
+    (set! page (hpdf-add-page pdf))
+    (hpdf-page-set-slide-show page effect disp trans)
+    (hpdf-page-begin-text page)
+    (dotimes (n 20)
+      (hpdf-page-show-text-next-line page name))
+    (hpdf-page-end-text page)
+
+    (hpdf-save-to-file pdf filename)))
+	 
+(map (^ (entry)
+       (mktest (~ entry 0) (~ entry 1) (~ entry 2))) slide-show)
 
 ;; epilogue
 (test-end)
