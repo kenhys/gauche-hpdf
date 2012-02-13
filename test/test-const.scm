@@ -17,8 +17,17 @@
 ;; The following is a dummy test code.
 ;; Replace it for your tests.
 
+;;
+;; hpdf-get-version
+;;
 (test-section "hpdf version constant")
-(test* "hpdf-get-version" "2.3.0RC2" (hpdf-get-version))
+
+(define (mktest desc ver)
+  (let* ([b (cond ([or (equal? ver "2.3.0-dev") (equal? ver "2.3.0RC2")] #t)
+		  (else #f))])
+    (test* desc #t b)))
+(mktest "hpdf-get-version" (hpdf-get-version))
+
 
 ;; Test Constant
 (test-section "hpdf basic constants")
@@ -27,7 +36,7 @@
 (test* "HPDF_OK" 0 HPDF_OK)
 (test* "HPDF_NOERROR" 0 HPDF_NOERROR)
 
-(test* "HPDF_VERSION_TEXT" "2.3.0RC2" HPDF_VERSION_TEXT)
+(mktest "HPDF_VERSION_TEXT" HPDF_VERSION_TEXT)
 
 ;; country code definition
 (test-section "hpdf country code constants")
