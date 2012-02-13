@@ -2,9 +2,11 @@
 ;;; Test hpdf
 ;;;
 
+(use gauche.interactive)
+(use gauche.sequence)
+(use gauche.collection)
 (use gauche.test)
 
-(test-start "hpdf")
 (use hpdf)
 
 (test-record-file "test.record")
@@ -16,7 +18,7 @@
 ;; Replace it for your tests.
 
 (test-section "hpdf version constant")
-(test* "hpdf-get-version" "2.0.8" (hpdf-get-version))
+(test* "hpdf-get-version" "2.3.0RC2" (hpdf-get-version))
 
 ;; Test Constant
 (test-section "hpdf basic constants")
@@ -25,7 +27,7 @@
 (test* "HPDF_OK" 0 HPDF_OK)
 (test* "HPDF_NOERROR" 0 HPDF_NOERROR)
 
-(test* "HPDF_VERSION_TEXT" "2.0.8" HPDF_VERSION_TEXT)
+(test* "HPDF_VERSION_TEXT" "2.3.0RC2" HPDF_VERSION_TEXT)
 
 ;; country code definition
 (test-section "hpdf country code constants")
@@ -405,7 +407,6 @@
 (test* "HPDF_LANG_YO" "yo" HPDF_LANG_YO) ;; Yoruba 
 (test* "HPDF_LANG_ZH" "zh" HPDF_LANG_ZH) ;; Chinese
 (test* "HPDF_LANG_ZU" "zu" HPDF_LANG_ZU) ;; Zulu
-
 
 ;; epilogue
 (test-end)
