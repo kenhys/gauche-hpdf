@@ -15,9 +15,15 @@
 
 (define (test-subsection msg)
   (format #t "~a()\n" msg))
+(define (test-subsubsection msg)
+  (format #t "#=> ~a\n" msg))
 
 (test-section "hpdf doc")
-(test-subsection "hpdf doc")
+
+;;
+;; hpdf-free
+;; 
+(test-subsection "hpdf-free")
 (test* "hpdf-free" (undefined) (hpdf-free (hpdf-new)))
 
 (test-subsection "hpdf-set-info-attr")
@@ -96,8 +102,8 @@
 ;;     (
 
 (define (test-hpdf-set-permission permission filename password)
-  (let* ((pdf (hpdf-new))
-         (st (if password
+  (let* ([pdf (hpdf-new)])
+    (st (if password
                  ;; need to call before set-permission
                  (hpdf-set-password pdf "owner" "")
                  #f))
@@ -107,6 +113,9 @@
          )
     (hpdf-save-to-file pdf filename)))
 
+;;
+;; hpdf-set-permission
+;;
 (test-subsection "hpdf-set-permission")
 (test* "read only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_READ "data/hpdf-set-permission-read.pdf" #t))
 (test* "print only" HPDF_OK (test-hpdf-set-permission HPDF_ENABLE_PRINT "data/hpdf-set-permission-print.pdf" #t))

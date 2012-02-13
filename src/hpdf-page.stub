@@ -43,37 +43,44 @@
         "GAUCHE_HPDF_FUNC(\"hpdf-page-set-height\");"
         "HPDF_Page_SetHeight(page->h, v);"))
 
-(define-cproc hpdf-page-set-size (page::<hpdf-page> size::<fixnum> direction::<fixnum>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-size\");"
-        "switch (size) {"
-        "case HPDF_PAGE_SIZE_LETTER:"
-        "case HPDF_PAGE_SIZE_LEGAL:"
-        "case HPDF_PAGE_SIZE_A3:"
-        "case HPDF_PAGE_SIZE_A4:"
-        "case HPDF_PAGE_SIZE_A5:"
-        "case HPDF_PAGE_SIZE_B4:"
-        "case HPDF_PAGE_SIZE_B5:"
-        "case HPDF_PAGE_SIZE_EXECUTIVE:"
-        "case HPDF_PAGE_SIZE_US4x6:"
-        "case HPDF_PAGE_SIZE_US4x8:"
-        "case HPDF_PAGE_SIZE_US5x7:"
-        "case HPDF_PAGE_SIZE_COMM10:"
-        "  GAUCHE_HPDF_INT(\"size\", size);"
-        "  break;"
-        "default:"
-        "  Scm_Error(\"Invalid 2nd argument. it needs HPDF_PAGE_SIZE_LETTER or HPDF_PAGE_SIZE_LEGAL or HPDF_PAGE_SIZE_A3 or HPDF_PAGE_SIZE_A4 or HPDF_PAGE_SIZE_A5 or HPDF_PAGE_SIZE_B4 or HPDF_PAGE_SIZE_B5 or HPDF_PAGE_SIZE_EXECUTIVE or HPDF_PAGE_SIZE_US4x6 or HPDF_PAGE_SIZE_US4x8 or HPDF_PAGE_SIZE_US5x7 or HPDF_PAGE_SIZE_COMM10.\\n\");"
-        "  break;"
-        "}"
-        "switch (direction) {"
-        "case HPDF_PAGE_PORTRAIT:"
-        "case HPDF_PAGE_LANDSCAPE:"
-        "  break;"
-        "default:"
-        "  Scm_Error(\"Invalid 3rd argument. it needs HPDF_PAGE_LANDSCAPE or HPDF_PAGE_PORTRAIT.\\n\");"
-        "  break;"
-        "}"
-        "SCM_RESULT = HPDF_Page_SetSize(page->h, size, direction);"))
+(define-enum HPDF_PAGE_SIZE_LETTER)
+(define-enum HPDF_PAGE_SIZE_LEGAL)
+(define-enum HPDF_PAGE_SIZE_A3)
+(define-enum HPDF_PAGE_SIZE_A4)
+(define-enum HPDF_PAGE_SIZE_A5)
+(define-enum HPDF_PAGE_SIZE_B4)
+(define-enum HPDF_PAGE_SIZE_B5)
+(define-enum HPDF_PAGE_SIZE_EXECUTIVE)
+(define-enum HPDF_PAGE_SIZE_US4x6)
+(define-enum HPDF_PAGE_SIZE_US4x8)
+(define-enum HPDF_PAGE_SIZE_US5x7)
+(define-enum HPDF_PAGE_SIZE_COMM10)
+(define-enum HPDF_PAGE_SIZE_EOF)
+
+(define-cproc hpdf-page-set-size
+  (page::<hpdf-page> size direction::<fixnum>) ::<ulong>
+  (let* ()
+    (GAUCHE_HPDF_FUNC "hpdf-page-set-size")
+    (case (SCM_INT_VALUE size)
+      ([HPDF_PAGE_SIZE_LETTER
+	HPDF_PAGE_SIZE_LEGAL
+	HPDF_PAGE_SIZE_A3
+	HPDF_PAGE_SIZE_A4
+	HPDF_PAGE_SIZE_A5
+	HPDF_PAGE_SIZE_B4
+	HPDF_PAGE_SIZE_B5
+	HPDF_PAGE_SIZE_EXECUTIVE
+	HPDF_PAGE_SIZE_US4x6
+	HPDF_PAGE_SIZE_US4x8
+	HPDF_PAGE_SIZE_US5x7
+	HPDF_PAGE_SIZE_COMM10] size)
+      (else 
+       (Scm_Error "Invalid 2nd argument. it needs HPDF_PageSizes.\n")))
+    (case direction
+      ([HPDF_PAGE_PORTRAIT HPDF_PAGE_LANDSCAPE] direction)
+      (else 
+       (Scm_Error "Invalid 3rd argument. it needs HPDF_PAGE_LANDSCAPE or HPDF_PAGE_PORTRAIT.\n")))
+    (result (HPDF_Page_SetSize (-> page h) (SCM_INT_VALUE size) direction))))
 
 (define-cproc hpdf-page-set-rotate (page::<hpdf-page> angle::<uint16>)
   (body <ulong>

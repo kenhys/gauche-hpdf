@@ -709,3 +709,13 @@
 ;; (define-enum ICON_NEW_PARAGRAPH)
 ;; (define-enum ICON_PARAGRAPH)
 ;; (define-enum ICON_INSERT)
+
+;;
+(define-enum    HPDF_FILL)
+(define-enum    HPDF_STROKE)
+(define-enum HPDF_FILL_THEN_STROKE)
+(define-enum HPDF_INVISIBLE)
+(define-enum HPDF_FILL_CLIPPING)
+(define-enum HPDF_STROKE_CLIPPING)
+(define-enum HPDF_FILL_STROKE_CLIPPING)
+(define-enum HPDF_CLIPPING)

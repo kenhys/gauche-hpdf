@@ -146,8 +146,8 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
                         void         *user_data);
 "
 
-(define-cproc hpdf-get-version () 
-  (body <const-cstring> "SCM_RESULT = HPDF_GetVersion();"))
+(define-cproc hpdf-get-version () ::<const-cstring>
+  (result (HPDF_GetVersion)))
 
 (define-cproc hpdf-new (&optional callback)
   (body <hpdf-doc>
@@ -162,39 +162,39 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "}"
         "SCM_RESULT = h;"))
 
-(define-cproc hpdf-free (doc::<hpdf-doc>)
-  (body <void>
-        "GAUCHE_HPDF_FUNC(\"hpdf-free\");"
-        "HPDF_Free(doc->h);"
-        "doc->h = NULL;"))
+(define-cproc hpdf-free (doc::<hpdf-doc>) ::<void>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-free"))
+    (HPDF_Free (-> doc h))
+    (set! (-> doc h) NULL)))
 
-(define-cproc hpdf-new-doc (doc::<hpdf-doc>)
-  (body <void>
-        "GAUCHE_HPDF_FUNC(\"hpdf-new-doc\");"
-        ""))
+(define-cproc hpdf-new-doc (doc::<hpdf-doc>) ::<void>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-new-doc"))
+    ))
 
-(define-cproc hpdf-has-doc (doc::<hpdf-doc>)
-  (body <int>
-        "GAUCHE_HPDF_FUNC(\"hpdf-has-doc\");"
-        "SCM_RESULT = HPDF_HasDoc(doc->h);"))
+(define-cproc hpdf-has-doc (doc::<hpdf-doc>) ::<int>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-has-doc"))
+    (result (HPDF_HasDoc (-> doc h)))))
 
-(define-cproc hpdf-free-doc (doc::<hpdf-doc>)
-  (body <void>
-        "GAUCHE_HPDF_FUNC(\"hpdf-new-doc\");"
-        ""))
+(define-cproc hpdf-free-doc (doc::<hpdf-doc>) ::<void>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-free-doc"))
+    (HPDF_FreeDoc (-> doc h))))
 
-(define-cproc hpdf-free-doc-all (doc::<hpdf-doc>)
-  (body <void>
-        "GAUCHE_HPDF_FUNC(\"hpdf-free-doc-all\");"
-        ""))
+(define-cproc hpdf-free-doc-all (doc::<hpdf-doc>) ::<void>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-free-doc-all"))
+    (HPDF_FreeDocAll (-> doc h))))
 
-(define-cproc hpdf-add-page (doc::<hpdf-doc>)
-  (body <hpdf-page>
-        "GAUCHE_HPDF_FUNC(\"hpdf-add-page\");"
-        "ScmHpdfPage *h = SCM_NEW(ScmHpdfPage);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_PAGE);"
-        "h->h = HPDF_AddPage(doc->h);"
-        "SCM_RESULT = h;"))
+(define-cproc hpdf-add-page (doc::<hpdf-doc>) ::<hpdf-page>
+  (let* ([page::ScmHpdfPage* (SCM_NEW ScmHpdfPage)]
+	 [null (SCM_SET_CLASS (-> page h) SCM_CLASS_HPDF_PAGE)]
+	 )
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-add-page"))
+    (set! (-> page h) (HPDF_AddPage (-> doc h)))
+    (result page)))
 
 (define-cproc hpdf-get-stream-size (doc::<hpdf-doc>)
   (body <uint32>
@@ -210,10 +210,11 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "GAUCHE_HPDF_FUNC(\"hpdf-reset-stream\");"
         "SCM_RESULT = HPDF_ResetStream(doc->h);"))
 
-(define-cproc hpdf-save-to-file (doc::<hpdf-doc> n::<const-cstring>)
-  (body <int>
-        "GAUCHE_HPDF_FUNC(\"hpdf-save-to-file\");"
-        "SCM_RESULT = HPDF_SaveToFile(doc->h, n);"))
+(define-cproc hpdf-save-to-file
+  (doc::<hpdf-doc> name::<const-cstring>) ::<int>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-save-to-file"))
+    (result (HPDF_SaveToFile (-> doc h) name))))
 
 (define-cproc hpdf-get-error (doc::<hpdf-doc>)
   (body <ulong>
@@ -595,22 +596,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;
 ;; Font Handling
 ;;
-;; (define-cproc hpdf-get-font (doc::<hpdf-doc> font::<const-cstring> enc::<const-cstring>)
-;;   (body <hpdf-font>?
-;;         "GAUCHE_HPDF_FUNC(\"hpdf-get-font\");"
-;;         "ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);"
-;;         "SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);"
-;;         "if (strlen(enc) > 0) {"
-;;         "  h->h = HPDF_GetFont(doc->h, font, enc);"
-;;         "} else {"
-;;         "  h->h = HPDF_GetFont(doc->h, font, NULL);"
-;;         "}"
-;;         "if (h->h) {"
-;;         "  SCM_RESULT = h;"
-;;         "} else {"
-;;         "  GAUCHE_HPDF_WARN(\"error in HPDF_GetFont\");"
-;;         "  SCM_RESULT = SCM_NIL;"
-;;         "}"))
 
 ;; (define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
 ;;   (body <const-cstring>?
@@ -1016,12 +1001,13 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;; (define-cproc hpdf-page-get-current-text-pos2 (page::<hpdf-page> pos::<hpdf-point>)
 ;;  (body <ulong> "  SCM_RESULT = HPDF_Page_GetCurrentTextPos2(page->h, pos->h);"))
 
-(define-cproc hpdf-page-get-current-font (page::<hpdf-page>)
-  (body <hpdf-font>
-        "  ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);
-  h->h = HPDF_Page_GetCurrentFont(page->h);
-  SCM_RESULT = h;"))
+(define-cproc hpdf-page-get-current-font
+  (page::<hpdf-page>) ::<hpdf-font>
+  (let* ([font::ScmHpdfFont* (SCM_NEW ScmHpdfFont)]
+	 [null (SCM_SET_CLASS (-> font h) SCM_CLASS_HPDF_FONT)]
+	 )
+    (set! (-> font h) (HPDF_Page_GetCurrentFont (-> page h)))
+    (result font)))
 
 
 (define-cproc hpdf-page-get-current-font-size (page::<hpdf-page>)

@@ -3,38 +3,6 @@
 ;;;
 
 "
-/*
- * $Id$
-
- Copyright (c) 2007, HAYASHI Kentaro <kenhys@gigo-ice.org> All rights reserved.
-
- Redistribution and use in source and binary forms, with or without modification,
- are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation and/or
-    other materials provided with the distribution.
-    * Neither the name of the GIGO-ICE.ORG nor the names of its contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-"
-
-"
 #include \"gauche-hpdf.h\"
 #include <hpdf.h>
 "
@@ -75,10 +43,11 @@
 (define-cproc hpdf-page-set-text-leading (page::<hpdf-page> value::<float>)
   (expr <ulong> "HPDF_Page_SetTextLeading(page->h, value)"))
 
-(define-cproc hpdf-page-set-font-and-size (page::<hpdf-page> font::<hpdf-font> size::<float>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
-        "SCM_RESULT = HPDF_Page_SetFontAndSize(page->h, font->h, size);"))
+(define-cproc hpdf-page-set-font-and-size
+  (page::<hpdf-page> font::<hpdf-font> size::<float>) ::<ulong>
+  (let* ()
+    "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
+    (result (HPDF_Page_SetFontAndSize (-> page h) (-> font h) size))))
 
 (define-cproc hpdf-page-set-text-rendering-mode (page::<hpdf-page> mode::<uint>)
   (expr <ulong> "HPDF_Page_SetTextRenderingMode(page->h, mode)"))
@@ -87,8 +56,9 @@
   (expr <ulong> "HPDF_Page_SetTextRise(page->h, value)"))
 
 ;; Text positioning 
-(define-cproc hpdf-page-move-text-pos (page::<hpdf-page> x::<float> y::<float>)
-  (expr <ulong> "HPDF_Page_MoveTextPos(page->h, x, y)"))
+(define-cproc hpdf-page-move-text-pos
+  (page::<hpdf-page> x::<float> y::<float>) ::<ulong>
+  (result (HPDF_Page_MoveTextPos (-> page h) x y)))
 
 (define-cproc hpdf-page-move-text-pos2 (page::<hpdf-page> x::<float> y::<float>)
   (expr <ulong> "HPDF_Page_MoveTextPos2(page->h, x, y)"))
@@ -100,45 +70,48 @@
   (expr <ulong> "HPDF_Page_MoveToNextLine(page->h)"))
   
 ;; Text showing
-(define-cproc hpdf-page-show-text (page::<hpdf-page> text::<const-cstring>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-show-text\");"
-        "#ifdef GAUCHE_HPDF_DEBUG"
-        "char dummy[20];"
-        "int i = 0;"
-        "dummy[i] = 0x83;i++;"
-        "dummy[i] = 0x41;i++;"
-        "dummy[i] = 0x83;i++;"
-        "dummy[i] = 0x81;i++;"
-        "dummy[i] = 0x83;i++;"
-        "dummy[i] = 0x93;i++;"
-        "dummy[i] = 0x83;i++;"
-        "dummy[i] = 0x7b;i++;"
-        "dummy[i] = 0x90;i++;"
-        "dummy[i] = 0xd4;i++;"
-        "dummy[i] = 0;i++;"
-        "dummy[i] = 0;i++;"
-        "dummy[i] = 0;i++;"
-        "i = 0;"
-        "char *p = text;"
-        "fprintf(stderr, \"text entry:\", text);"
-        "while (i < 20) {"
-        "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", text[i], text[i]);"
-        "  i++;"
-        "}"
-        "i = 0;"
-        "fprintf(stderr, \"dummy entry:\", dummy);"
-        "while (i < 20) {"
-        "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", dummy[i], dummy[i]);"
-        "  i++;"
-        "}"
-        "#endif"
-        "if (strlen(text) > 0) {"
-        "  SCM_RESULT = HPDF_Page_ShowText(page->h, text);"
-        "} else {"
-        "  SCM_RESULT = 0;"
-        "}"
-        ))
+(define-cproc hpdf-page-show-text
+  (page::<hpdf-page> text::<const-cstring>) ::<ulong>
+  (result (HPDF_Page_ShowText (-> page h) text)))
+
+;; (body <ulong>
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-page-show-text\");"
+;;         "#ifdef GAUCHE_HPDF_DEBUG"
+;;         "char dummy[20];"
+;;         "int i = 0;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x41;i++;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x81;i++;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x93;i++;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x7b;i++;"
+;;         "dummy[i] = 0x90;i++;"
+;;         "dummy[i] = 0xd4;i++;"
+;;         "dummy[i] = 0;i++;"
+;;         "dummy[i] = 0;i++;"
+;;         "dummy[i] = 0;i++;"
+;;         "i = 0;"
+;;         "char *p = text;"
+;;         "fprintf(stderr, \"text entry:\", text);"
+;;         "while (i < 20) {"
+;;         "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", text[i], text[i]);"
+;;         "  i++;"
+;;         "}"
+;;         "i = 0;"
+;;         "fprintf(stderr, \"dummy entry:\", dummy);"
+;;         "while (i < 20) {"
+;;         "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", dummy[i], dummy[i]);"
+;;         "  i++;"
+;;         "}"
+;;         "#endif"
+;;         "if (strlen(text) > 0) {"
+;;         "  SCM_RESULT = HPDF_Page_ShowText(page->h, text);"
+;;         "} else {"
+;;         "  SCM_RESULT = 0;"
+;;         "}"
+;;         ))
 
 (define-cproc hpdf-page-show-text-next-line (page::<hpdf-page> text::<const-cstring>)
   (expr <ulong> "HPDF_Page_ShowTextNextLine(page->h, text)"))
@@ -153,7 +126,13 @@
 (define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-circle (page::<hpdf-page>) (body <float> ""))
 (define-cproc hpdf-page-arc (page::<hpdf-page>) (body <float> ""))
-(define-cproc hpdf-page-textout (page::<hpdf-page>) (body <float> ""))
+
+(define-cproc hpdf-page-textout
+  (page::<hpdf-page> xpos::<float> ypos::<float> text::<const-cstring>) ::<ulong>
+  (let* ()
+    (result (HPDF_Page_TextOut (-> page h) xpos ypos text))))
+
+
 (define-cproc hpdf-page-text-rect (page::<hpdf-page>
                                    left::<float>
                                    top::<float>
@@ -172,22 +151,15 @@
 ;;
 ;; Font Handling
 ;;
-(define-cproc hpdf-get-font (doc::<hpdf-doc> font::<const-cstring> enc::<const-cstring>)
-  (body <hpdf-font>
-        "GAUCHE_HPDF_FUNC(\"hpdf-get-font\");"
-        "ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);"
-        "if (strlen(enc) > 0) {"
-        "  h->h = HPDF_GetFont(doc->h, font, enc);"
-        "} else {"
-        "  h->h = HPDF_GetFont(doc->h, font, NULL);"
-        "}"
-        "if (h->h) {"
-        "  SCM_RESULT = h;"
-        "} else {"
-        "  GAUCHE_HPDF_WARN(\"error in HPDF_GetFont\");"
-        "  SCM_RESULT = SCM_FALSE;"
-        "}"))
+(define-cproc hpdf-get-font
+  (doc::<hpdf-doc> name::<const-cstring>
+		   enc::<const-cstring>) ::<hpdf-font>
+  (let* ([font::ScmHpdfFont* (SCM_NEW ScmHpdfFont)])
+    (SCM_SET_CLASS font SCM_CLASS_HPDF_FONT)
+    (if (> (strlen enc) 0)
+	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL))
+	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL)))
+    (result font)))
 
 (define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
   (body <const-cstring>?
