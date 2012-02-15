@@ -119,9 +119,6 @@
 (define-cproc hpdf-page-show-text-next-line-ex (page::<hpdf-page> word_space::<float> char_space::<float> text::<const-cstring>)
   (expr <ulong> "HPDF_Page_ShowTextNextLineEx(page->h, word_space, char_space, text)"))
 
-;; XObjects
-(define-cproc hpdf-page-execute-xobject (page::<hpdf-page> obj::<hpdf-xobject>)
-  (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
 
 (define-cproc hpdf-page-drawimage (page::<hpdf-page>) (body <float> ""))
 

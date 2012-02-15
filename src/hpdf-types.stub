@@ -672,6 +672,13 @@
 ;; (define-enum SUBJECT)
 ;; (define-enum KEYWORDS)
 
+;; HPDF_EncryptMode	
+;; (define-constant HPDF_ENCRYPT_R2 HPDF_ENCRYPT_R2)
+;; (define-constant HPDF_ENCRYPT_R3 HPDF_ENCRYPT_R3)
+(define-enum HPDF_ENCRYPT_R2)
+(define-enum HPDF_ENCRYPT_R3)
+
+
 ;; enum HPDF_PageSlideShow
 (define-enum HPDF_TS_WIPE_RIGHT)
 (define-enum HPDF_TS_WIPE_UP)
@@ -719,3 +726,89 @@
 (define-enum HPDF_STROKE_CLIPPING)
 (define-enum HPDF_FILL_STROKE_CLIPPING)
 (define-enum HPDF_CLIPPING)
+
+;;
+;; HPDF_AnnotType
+(define-enum HPDF_ANNOT_TEXT_NOTES)
+(define-enum HPDF_ANNOT_LINK)
+(define-enum HPDF_ANNOT_SOUND)
+(define-enum HPDF_ANNOT_FREE_TEXT)
+(define-enum HPDF_ANNOT_STAMP)
+(define-enum HPDF_ANNOT_SQUARE)
+(define-enum HPDF_ANNOT_CIRCLE)
+(define-enum HPDF_ANNOT_STRIKE_OUT)
+(define-enum HPDF_ANNOT_HIGHTLIGHT)
+(define-enum HPDF_ANNOT_UNDERLINE)
+(define-enum HPDF_ANNOT_INK)
+(define-enum HPDF_ANNOT_FILE_ATTACHMENT)
+(define-enum HPDF_ANNOT_POPUP)
+(define-enum HPDF_ANNOT_3D)
+(define-enum HPDF_ANNOT_SQUIGGLY)
+(define-enum HPDF_ANNOT_LINE)
+(define-enum HPDF_ANNOT_PROJECTION)
+
+;;HPDF_AnnotFlgs 
+(define-enum HPDF_ANNOT_INVISIBLE)
+(define-enum HPDF_ANNOT_HIDDEN)
+(define-enum HPDF_ANNOT_PRINT)
+(define-enum HPDF_ANNOT_NOZOOM)
+(define-enum HPDF_ANNOT_NOROTATE)
+(define-enum HPDF_ANNOT_NOVIEW)
+(define-enum HPDF_ANNOT_READONLY)
+
+;; HPDF_AnnotHighlightMode 
+(define-enum HPDF_ANNOT_NO_HIGHTLIGHT )
+(define-enum HPDF_ANNOT_INVERT_BOX)
+(define-enum HPDF_ANNOT_INVERT_BORDER)
+(define-enum HPDF_ANNOT_DOWN_APPEARANCE)
+(define-enum HPDF_ANNOT_HIGHTLIGHT_MODE_EOF)
+
+    ;; HPDF_AnnotIcon
+(define-enum HPDF_ANNOT_ICON_COMMENT )
+(define-enum HPDF_ANNOT_ICON_KEY)
+(define-enum HPDF_ANNOT_ICON_NOTE)
+(define-enum HPDF_ANNOT_ICON_HELP)
+(define-enum HPDF_ANNOT_ICON_NEW_PARAGRAPH)
+(define-enum HPDF_ANNOT_ICON_PARAGRAPH)
+(define-enum HPDF_ANNOT_ICON_INSERT)
+
+;; HPDF_AnnotIntent
+(define-enum HPDF_ANNOT_INTENT_FREETEXTCALLOUT )
+(define-enum HPDF_ANNOT_INTENT_FREETEXTTYPEWRITER)
+(define-enum HPDF_ANNOT_INTENT_LINEARROW)
+(define-enum HPDF_ANNOT_INTENT_LINEDIMENSION)
+(define-enum HPDF_ANNOT_INTENT_POLYGONCLOUD)
+(define-enum HPDF_ANNOT_INTENT_POLYLINEDIMENSION)
+(define-enum HPDF_ANNOT_INTENT_POLYGONDIMENSION)
+
+;; HPDF_LineAnnotEndingStyle
+(define-enum HPDF_LINE_ANNOT_NONE )
+(define-enum HPDF_LINE_ANNOT_SQUARE)
+(define-enum HPDF_LINE_ANNOT_CIRCLE)
+(define-enum HPDF_LINE_ANNOT_DIAMOND)
+(define-enum HPDF_LINE_ANNOT_OPENARROW)
+(define-enum HPDF_LINE_ANNOT_CLOSEDARROW)
+(define-enum HPDF_LINE_ANNOT_BUTT)
+(define-enum HPDF_LINE_ANNOT_ROPENARROW)
+(define-enum HPDF_LINE_ANNOT_RCLOSEDARROW)
+(define-enum HPDF_LINE_ANNOT_SLASH)
+
+;; HPDF_LineAnnotCapPosition
+(define-enum HPDF_LINE_ANNOT_CAP_INLINE)
+(define-enum HPDF_LINE_ANNOT_CAP_TOP)
+
+;; HPDF_StampAnnotName
+(define-enum HPDF_STAMP_ANNOT_APPROVED)
+(define-enum HPDF_STAMP_ANNOT_EXPERIMENTAL)
+(define-enum HPDF_STAMP_ANNOT_NOTAPPROVED)
+(define-enum HPDF_STAMP_ANNOT_ASIS)
+(define-enum HPDF_STAMP_ANNOT_EXPIRED)
+(define-enum HPDF_STAMP_ANNOT_NOTFORPUBLICRELEASE)
+(define-enum HPDF_STAMP_ANNOT_CONFIDENTIAL)
+(define-enum HPDF_STAMP_ANNOT_FINAL)
+(define-enum HPDF_STAMP_ANNOT_SOLD)
+(define-enum HPDF_STAMP_ANNOT_DEPARTMENTAL)
+(define-enum HPDF_STAMP_ANNOT_FORCOMMENT)
+(define-enum HPDF_STAMP_ANNOT_TOPSECRET)
+(define-enum HPDF_STAMP_ANNOT_DRAFT)
+(define-enum HPDF_STAMP_ANNOT_FORPUBLICRELEASE)

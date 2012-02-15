@@ -24,6 +24,8 @@
   "SCM_HPDF_EXTGSTATE_P" "SCM_HPDF_EXTGSTATE")
 (define-type <hpdf-point> "ScmHpdfPoint*" #f
   "SCM_HPDF_POINT_P" "SCM_HPDF_POINT")
+(define-type <hpdf-point3d> "ScmHpdfPoint3D*" #f
+  "SCM_HPDF_POINT3D_P" "SCM_HPDF_POINT3D")
 (define-type <hpdf-rect> "ScmHpdfRect*" #f
   "SCM_HPDF_RECT_P" "SCM_HPDF_RECT")
 (define-type <hpdf-box> "ScmHpdfBox*" #f
@@ -46,3 +48,5 @@
   "SCM_HPDF_DICT_P" "SCM_HPDF_DICT")
 (define-type <hpdf-textwidth> "ScmHpdfTextWidth*" #f
   "SCM_HPDF_TEXTWIDTH_P" "SCM_HPDF_TEXTWIDTH")
+(define-type <hpdf-embedded-file> "ScmHpdfEmbeddedFile*" #f
+  "SCM_HPDF_EMBEDDEDFILE_P" "SCM_HPDF_EMBEDDEDFILE")

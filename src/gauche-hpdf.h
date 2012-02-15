@@ -34,6 +34,7 @@
 
 #include <gauche.h>
 #include <gauche/extend.h>
+#include <gauche/class.h>
 #include <hpdf.h>
 
 SCM_DECL_BEGIN
@@ -232,6 +233,16 @@ SCM_CLASS_DECL(Scm_HpdfPointClass);
  #define SCM_HPDF_POINT(obj) ((ScmHpdfPoint*)(obj))
  #define SCM_HPDF_POINTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT))
 
+typedef struct ScmHpdfPoint3DRec {
+SCM_HEADER;
+HPDF_Point3D h;
+} ScmHpdfPoint3D;
+
+SCM_CLASS_DECL(Scm_HpdfPoint3DClass);
+ #define SCM_CLASS_HPDF_POINT3D (&Scm_HpdfPoint3DClass)
+ #define SCM_HPDF_POINT3D(obj) ((ScmHpdfPoint3D*)(obj))
+ #define SCM_HPDF_POINT3DP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT3D))
+
 typedef struct ScmHpdfRectRec {
 SCM_HEADER;
 HPDF_Rect h;
@@ -341,6 +352,16 @@ SCM_CLASS_DECL(Scm_HpdfTextWidthClass);
  #define SCM_CLASS_HPDFTEXTWIDTH (&Scm_HpdfTextWidthClass)
  #define SCM_HPDF_TEXTWIDTH(obj) ((ScmHpdfTextWidth*)(obj))
  #define SCM_HPDF_TEXTWIDTH_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFTEXTWIDTH))
+
+typedef struct ScmHpdfEmbeddedFileRec {
+SCM_HEADER;
+HPDF_EmbeddedFile h;
+} ScmHpdfEmbeddedFile;
+
+SCM_CLASS_DECL(Scm_HpdfEmbeddedFileClass);
+ #define SCM_CLASS_HPDFEMBEDDEDFILE (&Scm_HpdfEmbeddedFileClass)
+ #define SCM_HPDF_EMBEDDEDFILE(obj) ((ScmHpdfEmbeddedFile*)(obj))
+ #define SCM_HPDF_EMBEDDEDFILE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDEMBEDDEDFILE))
 
 extern void hpdf_error_handler(HPDF_STATUS   error_no,
                         HPDF_STATUS   detail_no,

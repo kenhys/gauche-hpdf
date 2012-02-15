@@ -36,33 +36,113 @@
 (define-cclass <hpdf-destination> :base "ScmHpdfDestination*" "Scm_HpdfDestinationClass"
 ()
 ())
+
 (define-cclass <hpdf-xobject> :base "ScmHpdfXObject*" "Scm_HpdfXObjectClass"
-()
-())
+  ()
+  ()
+  [allocator
+   (let* ([ctx::ScmHpdfXObject* (SCM_ALLOCATE ScmHpdfXObject klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-annotation> :base "ScmHpdfAnnotation*" "Scm_HpdfAnnotationClass"
-()
-())
+  ()
+  ()
+  [allocator
+   (let* ([ctx::ScmHpdfAnnotation* (SCM_ALLOCATE ScmHpdfAnnotation klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-extgstate> :base "ScmHpdfExtGState*" "Scm_HpdfExtGStateClass"
 ()
 ())
-(define-cclass <hpdf-point> "ScmHpdfPoint*" "Scm_HpdfPointClass"
-()
-())
-(define-cclass <hpdf-rect> "ScmHpdfRect*" "Scm_HpdfRectClass"
-()
-())
-(define-cclass <hpdf-box> "ScmHpdfBox*" "Scm_HpdfBoxClass"
-()
-())
+
+(define-cclass <hpdf-point>
+  :base "ScmHpdfPoint*" "Scm_HpdfPointClass"
+  ()
+  [;; slot
+   (x :type <real> :c-name "h.x")
+   (y :type <real> :c-name "h.y")]
+  [allocator
+   (let* ([ctx::ScmHpdfPoint* (SCM_ALLOCATE ScmHpdfPoint klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
+(define-cclass <hpdf-point3d>
+  :base "ScmHpdfPoint3D*" "Scm_HpdfPoint3DClass"
+  ()
+  [;; slot
+   (x :type <real> :c-name "h.x")
+   (y :type <real> :c-name "h.y")
+   (z :type <real> :c-name "h.z")]
+  [allocator
+   (let* ([ctx::ScmHpdfRect* (SCM_ALLOCATE ScmHpdfRect klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
+
+(define-cclass <hpdf-rect>
+  :base "ScmHpdfRect*" "Scm_HpdfRectClass"
+  ()
+  [;; slot
+   (left :type <real> :c-name "h.left")
+   (top :type <real> :c-name "h.top")
+   (bottom :type <real> :c-name "h.bottom")
+   (right :type <real> :c-name "h.right")]
+  [allocator
+   (let* ([ctx::ScmHpdfRect* (SCM_ALLOCATE ScmHpdfRect klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
+
+(define-cclass <hpdf-box>
+  :base "ScmHpdfBox*" "Scm_HpdfBoxClass"
+  ()
+  [(left :type <real> :c-name "h.left")
+   (top :type <real> :c-name "h.top")
+   (bottom :type <real> :c-name "h.bottom")
+   (right :type <real> :c-name "h.right")]
+  [allocator
+   (let* ([ctx::ScmHpdfBox* (SCM_ALLOCATE ScmHpdfBox klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
+
 (define-cclass <hpdf-transmatrix> "ScmHpdfTransMatrix*" "Scm_HpdfTransMatrixClass"
-()
-())
+  ()
+  ((a :type <real> :c-name "h.a")
+   (b :type <real> :c-name "h.b")
+   (c :type <real> :c-name "h.c")
+   (d :type <real> :c-name "h.d")
+   (x :type <real> :c-name "h.x")
+   (y :type <real> :c-name "h.y"))
+  [allocator
+   (let* ([ctx::ScmHpdfTransMatrix* (SCM_ALLOCATE ScmHpdfTransMatrix klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-rgbcolor> "ScmHpdfRGBColor*" "Scm_HpdfRGBColorClass"
-()
-())
+  ()
+  ((r :type <real> :c-name "h.r")
+   (g :type <real> :c-name "h.g")
+   (b :type <real> :c-name "h.b"))
+  [allocator
+   (let* ([ctx::ScmHpdfRGBColor* (SCM_ALLOCATE ScmHpdfRGBColor klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-cmykcolor> "ScmHpdfCMYKColor*" "Scm_HpdfCMYKColorClass"
-()
-())
+  ()
+  ((c :type <real> :c-name "h.c")
+   (m :type <real> :c-name "h.m")
+   (y :type <real> :c-name "h.y")
+   (k :type <real> :c-name "h.k"))
+  [allocator
+   (let* ([ctx::ScmHpdfCMYKColor* (SCM_ALLOCATE ScmHpdfCMYKColor klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
+
 (define-cclass <hpdf-linecap> "ScmHpdfLineCap*" "Scm_HpdfLineCapClass"
 ()
 ())
@@ -72,15 +152,29 @@
 (define-cclass <hpdf-dashmode> "ScmHpdfDashMode*" "Scm_HpdfDashModeClass"
 ()
 ())
+
 (define-cclass <hpdf-date> "ScmHpdfDate*" "Scm_HpdfDateClass"
-()
-())
+  ()
+  ((year :type <int> :c-name "h.year")
+   (month :type <int> :c-name "h.year")
+   (day :type <int> :c-name "h.year")
+   (hour :type <int> :c-name "h.year")
+   (minutes :type <int> :c-name "h.year")
+   (seconds :type <int> :c-name "h.year")
+   ;;(ind :type <> :c-name "h.year")
+   (off-hour :type <int> :c-name "h.off_hour")
+   (off-minutes :type <int> :c-name "h.off_minutes")))
+
 (define-cclass <hpdf-dict> "ScmHpdfDict*" "Scm_HpdfDictClass"
 ()
 ())
 (define-cclass <hpdf-textwidth> "ScmHpdfTextWidth*" "Scm_HpdfTextWidthClass"
 ()
 ())
+
+(define-cclass <hpdf-embedded-file> "ScmHpdfEmbeddedFile*" "Scm_HpdfEmbeddedFileClass"
+  ()
+  ())
 
 (define-cproc hpdf-info-set-info-date-attr (dict::<hpdf-dict>
                                             type::<fixnum>
@@ -387,10 +481,21 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "SCM_RESULT = HPDF_Page_SetMiterLimit(page->h, miter_limit);"))
 
 ;; FIXME
-(define-cproc hpdf-page-set-dash (page::<hpdf-page> dash::<foreign-pointer> num_param::<uint> phase::<uint>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-dash\");"
-        "SCM_RESULT = HPDF_Page_SetDash(page->h, SCM_FOREIGN_POINTER(dash)->ptr, num_param, phase);"))
+(define-cproc hpdf-page-set-dash
+  (page::<hpdf-page> dash num_param::<uint> phase::<uint>) ::<ulong>
+  (let* ([vec::ScmU16Vector* 0])
+    (.if DEBUG
+	 (GAUCHE_HPDF_FUNC "hpdf-page-set-dash"))
+    (cond ((SCM_VECTORP dash)
+	   )
+	  ((SCM_LISTP dash)
+	   )
+	  (else
+	   (Scm_Error "")))
+    ;; (result (HPDF_Page_SetDash (-> page h)
+    ;; 			       (SCM_FOREIGN_POINTER dash))
+    ;; 						    num_param phase)))
+    (result 0)))
 
 (define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
   (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))
@@ -584,8 +689,9 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
   (expr <ulong> "HPDF_Page_SetCMYKStroke(page->h, c, m, y, k)"))
 
 ;; XObjects
-(define-cproc hpdf-page-execute-xobject (page::<hpdf-page> obj::<hpdf-xobject>)
-  (expr <ulong> "HPDF_Page_ExecuteXObject(page->h, obj->h)"))
+(define-cproc hpdf-page-execute-xobject
+  (page::<hpdf-page> obj) ::<ulong>
+  (result "HPDF_Page_ExecuteXObject(page->h, HPDF_XOBJECT_BOX(obj)->h)"))
 
 ;;
 ;; Font Handling
@@ -678,13 +784,15 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 ;;
 ;; Destination
 ;;
-(define-cproc hpdf-page-create-destination (page::<hpdf-page>)
-  (body <hpdf-destination>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-destination\");"
-        "ScmHpdfDestination *h = SCM_NEW(ScmHpdfDestination);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_DESTINATION);"
-        "h->h = HPDF_Page_CreateDestination(page->h);"
-        "SCM_RESULT = h;"))
+(define-cproc hpdf-page-create-destination
+  (page::<hpdf-page>) ::<hpdf-destination>
+  (let* ([dst::ScmHpdfDestination* (SCM_NEW ScmHpdfDestination)]
+	 )
+    (.if DEBUG
+	 (GAUCHE_HPDF_FUNC "hpdf-page-create-destination"))
+    (SCM_SET_CLASS dst SCM_CLASS_HPDF_DESTINATION)
+    (set! (-> dst h) (HPDF_Page_CreateDestination (-> page h)))
+    (result dst)))
 
 (define-cproc hpdf-destination-set-xyz (dst::<hpdf-destination> left::<float> top::<float> zoom::<float>)
   (body <ulong>
@@ -1096,6 +1204,10 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
   h->h = HPDF_Page_GetCMYKStroke(page->h);
   SCM_RESULT = h;"))
 
+
+(define-cproc hpdf-attach-file
+  (doc::<hpdf-doc> file::<const-cstring>) ::<hpdf-embedded-file>
+  (result (HPDF_AttachFile (-> doc h) file)))
 
 ;;
 ;; GRAPHICS OPERATORS

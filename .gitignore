@@ -9,3 +9,8 @@ configure
 test/PngSuite-2011apr25
 test/data/*.pdf
 test/font/*.tt[cf]
+test/mbtext/*.txt
+test/rawimage/*.dat
+test/type1/*
+test/*.pdf
+test/images/*.jpg
