@@ -10,11 +10,21 @@
 #include <hpdf_objects.h>
 "
 (define-cclass <hpdf-doc> :base "ScmHpdfDoc*" "Scm_HpdfDocClass"
-()
-())
+  ()
+  ()
+  [allocator
+   (let* ([ctx::ScmHpdfDoc* (SCM_ALLOCATE ScmHpdfDoc klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-page> :base "ScmHpdfPage*" "Scm_HpdfPageClass"
-()
-())
+  ()
+  ()
+  [allocator
+   (let* ([ctx::ScmHpdfPage* (SCM_ALLOCATE ScmHpdfPage klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-pages> :base "ScmHpdfPages*" "Scm_HpdfPagesClass"
 ()
 ())
@@ -31,8 +41,13 @@
 ()
 ())
 (define-cclass <hpdf-encoder> :base "ScmHpdfEncoder*" "Scm_HpdfEncoderClass"
-()
-())
+  ()
+  ()
+  [allocator
+   (let* ([ctx::ScmHpdfEncoder* (SCM_ALLOCATE ScmHpdfEncoder klass)])
+     (SCM_SET_CLASS ctx klass)
+     (return (SCM_OBJ ctx)))])
+
 (define-cclass <hpdf-destination> :base "ScmHpdfDestination*" "Scm_HpdfDestinationClass"
 ()
 ())
@@ -284,7 +299,7 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 
 (define-cproc hpdf-add-page (doc::<hpdf-doc>) ::<hpdf-page>
   (let* ([page::ScmHpdfPage* (SCM_NEW ScmHpdfPage)]
-	 [null (SCM_SET_CLASS (-> page h) SCM_CLASS_HPDF_PAGE)]
+	 [null (SCM_SET_CLASS page SCM_CLASS_HPDF_PAGE)]
 	 )
     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-add-page"))
     (set! (-> page h) (HPDF_AddPage (-> doc h)))

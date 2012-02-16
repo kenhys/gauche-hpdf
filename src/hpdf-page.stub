@@ -13,6 +13,13 @@
 ;; The following entry is a procedure
 ;;
 
+(define-cproc hpdf-get-current-page
+  (doc::<hpdf-doc>) ::<hpdf-page>
+  (let* ([page::ScmHpdfPage* (SCM_NEW ScmHpdfPage)]
+	 [null (SCM_SET_CLASS page SCM_CLASS_HPDF_PAGE)]
+	 )
+    (set! (-> page h) (HPDF_GetCurrentPage (-> doc h)))
+    (result page)))
 
 (define-cproc hpdf-add-page (doc::<hpdf-doc>)
   (body <hpdf-page>
