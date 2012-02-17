@@ -49,12 +49,25 @@ GAUCHE_PKGINCDIR  = $(DESTDIR)@GAUCHE_PKGINCDIR@
 GAUCHE_PKGLIBDIR  = $(DESTDIR)@GAUCHE_PKGLIBDIR@
 GAUCHE_PKGARCHDIR = $(DESTDIR)@GAUCHE_PKGARCHDIR@
 
-hpdf_SRCS = hpdf.c hpdflib.stub hpdf-image.stub hpdf-page.stub \
- hpdf-text.stub hpdf-u3d.stub hpdf-types.stub
+hpdf_SRCS = hpdf.c hpdflib.stub \
+hpdf-annotation.stub \
+hpdf-compat.stub \
+hpdf-destination.stub \
+hpdf-doc.stub \
+hpdf-encoder.stub \
+hpdf-font.stub \
+hpdf-graphics.stub \
+hpdf-gstate.stub \
+hpdf-image.stub \
+hpdf-outline.stub \
+hpdf-page.stub \
+hpdf-text.stub \
+hpdf-types.stub \
+hpdf-u3d.stub
 
 all : $(TARGET)
 
-hpdf.$(SOEXT): $(hpdf_SRCS)
+hpdf.$(SOEXT): $(hpdf_SRCS) gauche-hpdf.h gauche-hpdf.types
 	$(GAUCHE_PACKAGE) compile --verbose \
 	 --local="$(LOCAL_PATHS)" --ldflags="$(LDFLAGS)" --libs="$(LIBS)" --cflags="$(CPPFLAGS)" gauche--hpdf $(hpdf_SRCS)  
 
