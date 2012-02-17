@@ -1,7 +1,7 @@
 /*
  * hpdf.h $Id$
 
- Copyright (c) 2007, HAYASHI Kentaro <kenhys@gigo-ice.org> All rights reserved.
+ Copyright (c) 2007-2012, HAYASHI Kentaro <kenhys@gmail.com> All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -101,6 +101,21 @@ SCM_DECL_BEGIN
 #define ICON_NEW_PARAGRAPH HPDF_ANNOT_ICON_NEW_PARAGRAPH
 #define ICON_PARAGRAPH HPDF_ANNOT_ICON_PARAGRAPH
 #define ICON_INSERT HPDF_ANNOT_ICON_INSERT
+
+SCM_CLASS_DECL(Scm_HpdfStatusClass);
+ #define SCM_CLASS_HPDFSTATUS (&Scm_HpdfStatusClass)
+ #define SCM_HPDF_STATUS(obj) ((HPDF_STATUS)(obj))
+ #define SCM_HPDF_STATUS_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFSTATUS))
+
+/* HPDF_REAL */
+SCM_CLASS_DECL(Scm_HpdfRealClass);
+ #define SCM_CLASS_HPDFREAL (&Scm_HpdfRealClass)
+ #define SCM_HPDF_REAL(obj) ((HPDF_REAL)(obj))
+ #define SCM_HPDF_REAL_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFREAL))
+
+
+
+
 
 typedef struct ScmHpdfDocRec {
 SCM_HEADER;
@@ -231,7 +246,7 @@ HPDF_Point h;
 SCM_CLASS_DECL(Scm_HpdfPointClass);
  #define SCM_CLASS_HPDF_POINT (&Scm_HpdfPointClass)
  #define SCM_HPDF_POINT(obj) ((ScmHpdfPoint*)(obj))
- #define SCM_HPDF_POINTP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT))
+ #define SCM_HPDF_POINT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT))
 
 typedef struct ScmHpdfPoint3DRec {
 SCM_HEADER;
@@ -241,7 +256,7 @@ HPDF_Point3D h;
 SCM_CLASS_DECL(Scm_HpdfPoint3DClass);
  #define SCM_CLASS_HPDF_POINT3D (&Scm_HpdfPoint3DClass)
  #define SCM_HPDF_POINT3D(obj) ((ScmHpdfPoint3D*)(obj))
- #define SCM_HPDF_POINT3DP(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT3D))
+ #define SCM_HPDF_POINT3D_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_POINT3D))
 
 typedef struct ScmHpdfRectRec {
 SCM_HEADER;
@@ -291,7 +306,7 @@ HPDF_CMYKColor h;
 SCM_CLASS_DECL(Scm_HpdfCMYKColorClass);
  #define SCM_CLASS_HPDF_CMYKCOLOR (&Scm_HpdfCMYKColorClass)
  #define SCM_HPDF_CMYKCOLOR(obj) ((ScmHpdfCMYKColor*)(obj))
- #define SCM_HPDF_CMYKCOLOR_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_COLOR))
+ #define SCM_HPDF_CMYKCOLOR_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_CMYKCOLOR))
 
 typedef struct ScmHpdfLineCapRec {
 SCM_HEADER;
@@ -362,6 +377,37 @@ SCM_CLASS_DECL(Scm_HpdfEmbeddedFileClass);
  #define SCM_CLASS_HPDFEMBEDDEDFILE (&Scm_HpdfEmbeddedFileClass)
  #define SCM_HPDF_EMBEDDEDFILE(obj) ((ScmHpdfEmbeddedFile*)(obj))
  #define SCM_HPDF_EMBEDDEDFILE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDEMBEDDEDFILE))
+
+typedef struct ScmHpdfU3DRec {
+SCM_HEADER;
+HPDF_U3D h;
+} ScmHpdfU3D;
+
+SCM_CLASS_DECL(Scm_HpdfU3DClass);
+ #define SCM_CLASS_HPDFU3D (&Scm_HpdfU3DClass)
+ #define SCM_HPDF_U3D(obj) ((ScmHpdfU3D*)(obj))
+ #define SCM_HPDF_U3D_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFU3D))
+
+
+typedef struct ScmHpdf3DMeasureRec {
+SCM_HEADER;
+HPDF_Dict h;
+} ScmHpdf3DMeasure;
+
+SCM_CLASS_DECL(Scm_Hpdf3DMeasureClass);
+ #define SCM_CLASS_HPDF3DMEASURE (&Scm_Hpdf3DMeasureClass)
+ #define SCM_HPDF_3D_MEASURE(obj) ((ScmHpdf3DMeasure*)(obj))
+ #define SCM_HPDF_3D_MEASURE_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF3DMEASURE))
+
+typedef struct ScmHpdfExDataRec {
+SCM_HEADER;
+HPDF_Dict h;
+} ScmHpdfExData;
+
+SCM_CLASS_DECL(Scm_HpdfExDataClass);
+ #define SCM_CLASS_HPDFEXDATA (&Scm_HpdfExDataClass)
+ #define SCM_HPDF_EXDATA(obj) ((ScmHpdfExData*)(obj))
+ #define SCM_HPDF_EXDATA_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFEXDATA))
 
 extern void hpdf_error_handler(HPDF_STATUS   error_no,
                         HPDF_STATUS   detail_no,

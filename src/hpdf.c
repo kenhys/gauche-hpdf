@@ -275,10 +275,17 @@ void hpdf_error_handler(HPDF_STATUS   error_no,
  * Module initialization function.
  */
 extern void Scm_Init_hpdflib(ScmModule*);
-extern void Scm_Init_hpdf_types(ScmModule*);
-extern void Scm_Init_hpdf_page(ScmModule*);
+extern void Scm_Init_hpdf_annotation(ScmModule*);
+extern void Scm_Init_hpdf_destination(ScmModule*);
+extern void Scm_Init_hpdf_doc(ScmModule*);
+extern void Scm_Init_hpdf_encoder(ScmModule*);
+extern void Scm_Init_hpdf_font(ScmModule*);
+extern void Scm_Init_hpdf_graphics(ScmModule*);
 extern void Scm_Init_hpdf_image(ScmModule*);
+extern void Scm_Init_hpdf_outline(ScmModule*);
+extern void Scm_Init_hpdf_page(ScmModule*);
 extern void Scm_Init_hpdf_text(ScmModule*);
+extern void Scm_Init_hpdf_types(ScmModule*);
 extern void Scm_Init_hpdf_u3d(ScmModule*);
 
 
@@ -295,9 +302,17 @@ ScmObj Scm_Init_gauche__hpdf(void)
     /* Register stub-generated procedures */
     Scm_Init_hpdflib(mod);
 
+    Scm_Init_hpdf_annotation(mod);
+    Scm_Init_hpdf_destination(mod);
+    Scm_Init_hpdf_doc(mod);
+    Scm_Init_hpdf_encoder(mod);
+    Scm_Init_hpdf_font(mod);
+    Scm_Init_hpdf_graphics(mod);
+    Scm_Init_hpdf_image(mod);
+    Scm_Init_hpdf_outline(mod);
+    Scm_Init_hpdf_page(mod);
+    Scm_Init_hpdf_text(mod);
     Scm_Init_hpdf_types(mod);
     Scm_Init_hpdf_u3d(mod);
-    Scm_Init_hpdf_page(mod);
-    Scm_Init_hpdf_image(mod);
-    Scm_Init_hpdf_text(mod);
+
 }

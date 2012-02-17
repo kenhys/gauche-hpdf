@@ -1,3 +1,5 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
 ;;;
 ;;; hpdf-u3d.stub
 ;;;
@@ -6,21 +8,47 @@
 "
 #include \"gauche-hpdf.h\"
 #include <hpdf.h>
+#include <hpdf_u3d.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
 
 "
-;;#include \"gauche-hpdf.types\"
+
+(include "gauche-hpdf.types")
+
 ;;
 ;; The following entry is a procedure
 ;;
 
- 
+
+;;; 
+;;; from hpdf_u3d.h
+;;;
+
 ;; HPDF_EXPORT(HPDF_JavaScript) HPDF_CreateJavaScript(HPDF_Doc pdf, const char *code);
 
 
-;; HPDF_EXPORT(HPDF_U3D) HPDF_LoadU3DFromFile (HPDF_Doc pdf, const char *filename);
-;; HPDF_EXPORT(HPDF_Dict) HPDF_Create3DView (HPDF_MMgr mmgr, const char *name);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_U3D_Add3DView(HPDF_U3D u3d, HPDF_Dict view);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_U3D_SetDefault3DView(HPDF_U3D u3d, const char *name);
+;; (define-cproc hpdf-load-u3d-from-file
+;;   (pdf::<hpdf-doc> filename::<const-cstring>) ::<hpdf-u3d>
+;;   (let* ()
+;;     (result (HPDF_LoadU3DFromFile (-> pdf h) filename))))
+
+;; (define-cproc hpdf-create-3d-view 
+;;   (mmgr::<hpdf-mmgr> name::<const-cstring>) ::<hpdf-dict>
+;;   (let* ()
+;;     (result (HPDF_Create3DView (-> mmgr h) name))))
+
+;; (define-cproc hpdf-u3d-add-3d-view
+;;   (u3d::<hpdf-u3d> view::<hpdf-dict>) ::<ulong>
+;;   (let* ()
+;;     (result (HPDF_U3D_Add3DView (-> u3d h) (-> view h)))))
+
+;; (define-cproc hpdf-u3d-set-default-3d-view
+;;   (u3d::<hpdf-u3d> name::<const-cstring>) ::<ulong>
+;;   (let* ()
+;;     (result (HPDF_U3D_SetDefault3DView (-> u3d h) name))))
+
 ;; HPDF_EXPORT(HPDF_STATUS) HPDF_U3D_AddOnInstanciate(HPDF_U3D u3d, HPDF_JavaScript javaScript);
 ;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_AddNode(HPDF_Dict view, const char *name, HPDF_REAL opacity, HPDF_BOOL visible);
 ;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetLighting(HPDF_Dict view, const char *scheme);
@@ -29,6 +57,100 @@
 ;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetOrthogonalProjection(HPDF_Dict view, HPDF_REAL mag);
 ;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetCamera(HPDF_Dict view, HPDF_REAL coox, HPDF_REAL cooy, HPDF_REAL cooz, HPDF_REAL c2cx, HPDF_REAL c2cy, HPDF_REAL c2cz, HPDF_REAL roo, HPDF_REAL roll);
 
+;;;
+;;; hpdf.h
+;;;
+(define-cproc hpdf-page-create-3d-c3d-measure
+  (page::<hpdf-page>
+   first::<hpdf-point3d>
+   anchor::<hpdf-point3d>) ::<hpdf-3d-measure>
+   (let* ()
+     (result (HPDF_Page_Create3DC3DMeasure
+	      (-> page h) (-> first h) (-> anchor h)))))
+
+(define-cproc hpdf-page-create-pd3-3d-measure
+  (page::<hpdf-page>
+   annot::<hpdf-point3d>
+   first::<hpdf-point3d>
+   second::<hpdf-point3d>
+   leader::<hpdf-point3d>
+   measure::<hpdf-point3d>
+   ydirection::<hpdf-point3d>
+   value::<real>
+   units::<const-cstring>) ::<hpdf-3d-measure>
+  (let* ()
+    (result (HPDF_Page_CreatePD33DMeasure
+	     (-> page h) (-> annot h) (-> first h)
+	     (-> second h) (-> leader h) (-> measure h) 
+	     (-> ydirection h) value units))))
+
+(define-cproc hpdf-3d-measure-set-name
+  (measure::<hpdf-3d-measure>
+   name::<const-cstring>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DMeasure_SetName (-> measure h) name))))
+
+(define-cproc hpdf-3d-measure-set-color
+  (measure::<hpdf-3d-measure>
+   color::<hpdf-rgbcolor>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DMeasure_SetColor (-> measure h) (-> color h)))))
+
+(define-cproc hpdf-3d-measure-set-text-size
+  (measure::<hpdf-3d-measure>
+   textsize::<real>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DMeasure_SetTextSize (-> measure h) textsize))))
+
+(define-cproc hpdf-3d-c3d-measure-set-text-box-size
+  (measure::<hpdf-3d-measure>
+   x::<int>
+   y::<int>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DC3DMeasure_SetTextBoxSize 
+	      (-> measure h) x y))))
+
+(define-cproc hpdf-3dc3d-measure-set-text
+  (measure::<hpdf-3d-measure>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DC3DMeasure_SetText (-> measure h)
+					text (-> encoder h)))))
+
+(define-cproc hpdf-3d-c3d-measure-set-projection-annotation
+  (measure::<hpdf-3d-measure>
+   annot::<hpdf-annotation>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DC3DMeasure_SetProjectionAnotation
+	      (-> measure h) (-> annot h)))))
+
+(define-cproc hpdf-page-create-3d-annot-exdata
+  (page::<hpdf-page>) ::<hpdf-exdata>
+  (let* ()
+    (result (HPDF_Page_Create3DAnnotExData (-> page h)))))
+
+(define-cproc hpdf-3d-annot-exdata-set-3d-measurement
+  (exdata::<hpdf-exdata>
+   measure::<hpdf-3d-measure>)
+  (let* ()
+    (result (HPDF_3DAnnotExData_Set3DMeasurement (-> exdata h) (-> measure h)))))
+
+(define-cproc hpdf-page-create-3d-view
+  (page::<hpdf-page>
+   u3d::<hpdf-u3d>
+   annot3d::<hpdf-annotation>
+   name::<const-cstring>) ::<hpdf-dict>
+   (let* ()
+     (result (HPDF_Page_Create3DView (-> page h) (-> u3d h)
+				     (-> annot3d h) name))))
+
+(define-cproc hpdf-3dview-add-3d-c3d-measure
+  (view::<hpdf-dict>
+   measure::<hpdf-3d-measure>) ::<ulong>
+   (let* ()
+     (result (HPDF_3DView_Add3DC3DMeasure 
+	      (-> view h) (-> measure h)))))
 
 ;; Local variables:
 ;; mode: scheme

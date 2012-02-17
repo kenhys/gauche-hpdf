@@ -1,3 +1,7 @@
+(define-type <hpdf-status> "unsigned long" #f
+  "SCM_HPDF_STATUS_P" "SCM_HPDF_STATUS")
+(define-type <hpdf-real> "float" #f
+  "SCM_HPDF_REAL_P" "SCM_HPDF_REAL")
 (define-type <hpdf-doc>  "ScmHpdfDoc*" #f
   "SCM_HPDF_DOC_P" "SCM_HPDF_DOC")
 (define-type <hpdf-page>  "ScmHpdfPage*" #f
@@ -50,3 +54,9 @@
   "SCM_HPDF_TEXTWIDTH_P" "SCM_HPDF_TEXTWIDTH")
 (define-type <hpdf-embedded-file> "ScmHpdfEmbeddedFile*" #f
   "SCM_HPDF_EMBEDDEDFILE_P" "SCM_HPDF_EMBEDDEDFILE")
+(define-type <hpdf-u3d> "ScmHpdfU3D*" #f
+  "SCM_HPDF_U3D_P" "SCM_HPDF_U3D")
+(define-type <hpdf-3d-measure> "ScmHpdf3DMeasure*" #f
+  "SCM_HPDF_3D_MEASURE_P" "SCM_HPDF_3D_MEASURE")
+(define-type <hpdf-exdata> "ScmHpdfExData*" #f
+  "SCM_HPDF_EXDATA_P" "SCM_HPDF_EXDATA")
