@@ -1,0 +1,85 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+;;;
+;;; hpdf-encoder.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+;;
+;; Encoding Handler
+;;
+(define-cproc hpdf-get-encoder (doc::<hpdf-doc> encoding_name::<const-cstring>)
+  (body <hpdf-encoder>
+        "  ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);
+  h->h = HPDF_GetEncoder(doc->h, encoding_name);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-get-current-encoder (doc::<hpdf-doc>)
+  (body <hpdf-encoder>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-current-encoder\");"
+        "ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);"
+        "h->h = HPDF_GetCurrentEncoder(doc->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-set-current-encoder (doc::<hpdf-doc> encoding_name::<const-cstring>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-set-current-encoder\");"
+        "SCM_RESULT = HPDF_SetCurrentEncoder(doc->h, encoding_name);"))
+
+(define-cproc hpdf-encoder-get-type (enc::<hpdf-encoder>)
+  (body <fixnum>
+        "GAUCHE_HPDF_FUNC(\"hpdf-encoder-get-type\");"
+        "SCM_RESULT = HPDF_Encoder_GetType(enc->h);"))
+
+(define-cproc hpdf-encoder-get-byte-type (enc::<hpdf-encoder> text::<const-cstring> index::<uint>)
+  (body <fixnum>
+        "GAUCHE_HPDF_FUNC(\"hpdf-encoder-get-byte-type\");"
+        "SCM_RESULT = HPDF_Encoder_GetByteType(enc->h, text, index);"))
+
+(define-cproc hpdf-encoder-get-unicode (enc::<hpdf-encoder> code::<uint16>)
+  (body <uint16> "SCM_RESULT = HPDF_Encoder_GetUnicode(enc->h, code);"))
+
+(define-cproc hpdf-encoder-get-writing-mode (enc::<hpdf-encoder>)
+  (body <fixnum> "SCM_RESULT = HPDF_Encoder_GetWritingMode(enc->h);"))
+
+(define-cproc hpdf-use-jp-encodings
+  (doc::<hpdf-doc>) ::<ulong>
+  (let* ()
+    (.if DEBUG GAUCHE_HPDF_FUNC "hpdf-use-jp-encodings")
+    (result (HPDF_UseJPEncodings (-> doc h)))))
+
+(define-cproc hpdf-use-kr-encodings
+  (doc::<hpdf-doc>) ::<ulong>
+  (let* ()
+    (.if DEBUG GAUCHE_HPDF_FUNC "hpdf-use-kr-encodings")
+    (result (HPDF_UseKREncodings (-> doc h)))))
+
+(define-cproc hpdf-use-cns-encodings
+  (doc::<hpdf-doc>) ::<ulong>
+  (let* ()
+    (.if DEBUG GAUCHE_HPDF_FUNC "hpdf-use-cns-encodings")
+    (result (HPDF_UseCNSEncodings (-> doc h)))))
+
+(define-cproc hpdf-use-cnt-encodings
+  (doc::<hpdf-doc>) ::<ulong>
+  (let* ()
+    (.if DEBUG GAUCHE_HPDF_FUNC "hpdf-use-cnt-encodings")
+    (result (HPDF_UseCNTEncodings (-> doc h)))))
+
+(define-cproc hpdf-use-utf-encodings
+  (doc::<hpdf-doc>) ::<ulong>
+  (let* ()
+    (.if DEBUG GAUCHE_HPDF_FUNC "hpdf-use-utf-encodings")
+    (result (HPDF_UseUTFEncodings (-> doc h)))))
+

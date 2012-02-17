@@ -1,0 +1,66 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+;;;
+;;; hpdf-destination.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+;;
+;; Destination
+;;
+(define-cproc hpdf-page-create-destination
+  (page::<hpdf-page>) ::<hpdf-destination>
+  (let* ([dst::ScmHpdfDestination* (SCM_NEW ScmHpdfDestination)]
+	 )
+    (.if DEBUG
+	 (GAUCHE_HPDF_FUNC "hpdf-page-create-destination"))
+    (SCM_SET_CLASS dst SCM_CLASS_HPDF_DESTINATION)
+    (set! (-> dst h) (HPDF_Page_CreateDestination (-> page h)))
+    (result dst)))
+
+(define-cproc hpdf-destination-set-xyz (dst::<hpdf-destination> left::<float> top::<float> zoom::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-xyz\");"
+        "SCM_RESULT = HPDF_Destination_SetXYZ(dst->h, left, top, zoom);"))
+
+(define-cproc hpdf-destination-set-fit (dst::<hpdf-destination>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fit\");"
+        "SCM_RESULT = HPDF_Destination_SetFit(dst->h);"))
+
+(define-cproc hpdf-destination-set-fith (dst::<hpdf-destination> top::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fith\");"
+        "SCM_RESULT = HPDF_Destination_SetFitH(dst->h, top);"))
+
+(define-cproc hpdf-destination-set-fitv (dst::<hpdf-destination> left::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fitv\");"
+        "SCM_RESULT = HPDF_Destination_SetFitV(dst->h, left);"))
+
+(define-cproc hpdf-destination-set-fitr (dst::<hpdf-destination> left::<float> bottom::<float> right::<float> top::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-destination-set-fitr\");"
+        "SCM_RESULT = HPDF_Destination_SetFitR(dst->h, left, bottom, right, top);"))
+
+(define-cproc hpdf-destination-set-fitb (dst::<hpdf-destination>)
+  (body <ulong> "HPDF_Destination_SetFitB(dst->h);"))
+
+(define-cproc hpdf-destination-set-fitbh (dst::<hpdf-destination> top::<float>)
+  (body <ulong> "HPDF_Destination_SetFitBH(dst->h, top);"))
+
+(define-cproc hpdf-destination-set-fitbv (dst::<hpdf-destination> left::<float>)
+  (body <ulong> "HPDF_Destination_SetFitBV(dst->h, left);"))
+
+;; Local variables:
+;; mode: scheme
+;; end:

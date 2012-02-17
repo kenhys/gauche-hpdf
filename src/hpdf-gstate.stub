@@ -1,0 +1,208 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+;;;
+;;; hpdf-gstate.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+;; extended graphics state
+(define-cproc hpdf-create-ext-gstate (doc::<hpdf-doc>)
+  (body <hpdf-extgstate>
+        "  ScmHpdfExtGState *h = SCM_NEW(ScmHpdfExtGState);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_EXTGSTATE);
+  h->h = HPDF_CreateExtGState(doc->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-ext-gstate-set-alpha-stroke (ext_gstate::<hpdf-extgstate> value::<float>)
+  (expr <ulong> "HPDF_ExtGState_SetAlphaStroke(ext_gstate->h, value)"))
+
+(define-cproc hpdf-ext-gstate-set-alpha-fill (ext_gstate::<hpdf-extgstate> value::<float>)
+  (expr <ulong> "HPDF_ExtGState_SetAlphaFill(ext_gstate->h, value)"))
+
+(define-cproc hpdf-ext-gstate-set-blend-mode (ext_gstate::<hpdf-extgstate> mode::<fixnum>)
+  (expr <ulong> "HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode)"))
+
+;;
+(define-cproc hpdf-page-text-width (page::<hpdf-page> text::<const-cstring>)
+  (expr <float> "HPDF_Page_TextWidth(page->h, text)"))
+
+"
+/*
+
+HPDF_EXPORT(HPDF_UINT)
+HPDF_Page_MeasureText  (HPDF_Page    page,
+                        const char  *text,
+                        HPDF_REAL    width,
+                        HPDF_BOOL    wordwrap,
+                        HPDF_REAL   *real_width);
+
+*/
+"
+
+(define-cproc hpdf-page-get-width (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetWidth(page->h)"))
+
+(define-cproc hpdf-page-get-height (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetHeight(page->h)"))
+
+(define-cproc hpdf-page-get-gmode (page::<hpdf-page>)
+  (expr <uint16> "HPDF_Page_GetGMode(page->h)"))
+
+(define-cproc hpdf-page-get-current-pos (page::<hpdf-page>)
+  (body <hpdf-point>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_POINT);
+  h->h = HPDF_Page_GetCurrentPos(page->h);
+  SCM_RESULT = h;"))
+
+;; FIXME
+;; (define-cproc hpdf-page-get-current-pos2 (page::<hpdf-page> pos::<hpdf-point>)
+;;   (body <ulong> "  SCM_RESULT = HPDF_Page_GetCurrentPos2(page->h, pos->h);"))
+
+(define-cproc hpdf-page-get-current-text-pos (page::<hpdf-page>)
+  (body <hpdf-point>
+        "  ScmHpdfPoint *h = SCM_NEW(ScmHpdfPoint);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_POINT);
+  h->h = HPDF_Page_GetCurrentTextPos(page->h);
+  SCM_RESULT = h;"))
+
+;; FIXME
+;; (define-cproc hpdf-page-get-current-text-pos2 (page::<hpdf-page> pos::<hpdf-point>)
+;;  (body <ulong> "  SCM_RESULT = HPDF_Page_GetCurrentTextPos2(page->h, pos->h);"))
+
+(define-cproc hpdf-page-get-current-font (page::<hpdf-page>)
+  (body <hpdf-font>
+        "  ScmHpdfFont *h = SCM_NEW(ScmHpdfFont);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_FONT);
+  h->h = HPDF_Page_GetCurrentFont(page->h);
+  SCM_RESULT = h;"))
+
+
+(define-cproc hpdf-page-get-current-font-size (page::<hpdf-page>)
+  (expr <float>  "HPDF_Page_GetCurrentFontSize(page->h)"))
+
+(define-cproc hpdf-page-get-transmatrix (page::<hpdf-page>)
+  (body <hpdf-transmatrix>
+        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_TRANSMATRIX);"
+        "h->h = HPDF_Page_GetTransMatrix(page->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-line-width (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetLineWidth(page->h)"))
+
+(define-cproc hpdf-page-get-line-cap (page::<hpdf-page>)
+  (body <hpdf-linecap>
+        "  ScmHpdfLineCap *h = SCM_NEW(ScmHpdfLineCap);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_LINECAP);
+  h->h = HPDF_Page_GetLineCap(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-line-join (page::<hpdf-page>)
+  (body <hpdf-linejoin>
+        "  ScmHpdfLineJoin *h = SCM_NEW(ScmHpdfLineJoin);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_LINEJOIN);
+  h->h = HPDF_Page_GetLineJoin(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-miter-limit (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetMiterLimit(page->h)"))
+
+(define-cproc hpdf-page-get-dash (page::<hpdf-page>)
+  (body <hpdf-dashmode>
+        "  ScmHpdfDashMode *h = SCM_NEW(ScmHpdfDashMode);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_DASHMODE);
+  h->h = HPDF_Page_GetDash(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-flat (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetFlat(page->h)"))
+
+(define-cproc hpdf-page-get-char-space (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetCharSpace(page->h)"))
+
+(define-cproc hpdf-page-get-word-space (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetWordSpace(page->h)"))
+
+(define-cproc hpdf-page-get-horizontal-scalling (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetHorizontalScalling(page->h)"))
+
+(define-cproc hpdf-page-get-text-leading (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetTextLeading(page->h)"))
+
+(define-cproc hpdf-page-get-text-rendering-mode (page::<hpdf-page>)
+  (expr <fixnum> "HPDF_Page_GetTextRenderingMode(page->h)"))
+
+;; obsolete
+(define-cproc hpdf-page-get-text-raise (page::<hpdf-page>)
+  (body <float>
+        "Scm_Printf(SCM_CURERR, \"Warning: hpdf-page-get-text-raise is obsolete. use hpdf-page-get-text-rise instead.\");"
+        "  SCM_RESULT = HPDF_Page_GetTextRaise(page->h);"))
+
+(define-cproc hpdf-page-get-text-rise (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetTextRise(page->h)"))
+
+(define-cproc hpdf-page-get-rgb-fill (page::<hpdf-page>)
+  (body <hpdf-rgbcolor>
+        "  ScmHpdfRGBColor *h = SCM_NEW(ScmHpdfRGBColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_RGBCOLOR);
+  h->h = HPDF_Page_GetRGBFill(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-rgb-stroke (page::<hpdf-page>)
+  (body <hpdf-rgbcolor>
+        "  ScmHpdfRGBColor *h = SCM_NEW(ScmHpdfRGBColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_RGBCOLOR);
+  h->h = HPDF_Page_GetRGBStroke(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-cmyk-fill (page::<hpdf-page>)
+  (body <hpdf-cmykcolor>
+        "  ScmHpdfCMYKColor *h = SCM_NEW(ScmHpdfCMYKColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_CMYKCOLOR);
+  h->h = HPDF_Page_GetCMYKFill(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-cmyk-stroke (page::<hpdf-page>)
+  (body <hpdf-cmykcolor>
+        "  ScmHpdfCMYKColor *h = SCM_NEW(ScmHpdfCMYKColor);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_CMYKCOLOR);
+  h->h = HPDF_Page_GetCMYKStroke(page->h);
+  SCM_RESULT = h;"))
+
+
+(define-cproc hpdf-page-get-gray-fill (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetGrayFill(page->h)"))
+
+(define-cproc hpdf-page-get-gray-stroke (page::<hpdf-page>)
+  (expr <float> "HPDF_Page_GetGrayStroke(page->h)"))
+
+(define-cproc hpdf-page-get-stroking-color-space (page::<hpdf-page>)
+  (expr <fixnum> "HPDF_Page_GetStrokingColorSpace(page->h)"))
+
+(define-cproc hpdf-page-get-filling-color-space (page::<hpdf-page>)
+  (expr <fixnum> "HPDF_Page_GetFillingColorSpace(page->h)"))
+
+(define-cproc hpdf-page-get-textmatrix (page::<hpdf-page>)
+  (body <hpdf-transmatrix>
+        "  ScmHpdfTransMatrix *h = SCM_NEW(ScmHpdfTransMatrix);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDF_TRANSMATRIX);
+  h->h = HPDF_Page_GetTextMatrix(page->h);
+  SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-get-gstate-depth (page::<hpdf-page>)
+  (expr <uint> "HPDF_Page_GetGStateDepth(page->h)"))
+
+
+;; Local variables:
+;; mode: scheme
+;; end:

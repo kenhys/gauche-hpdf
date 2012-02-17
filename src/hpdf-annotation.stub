@@ -1,0 +1,289 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+;;;
+;;; hpdf-annotation.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+
+;;
+;; Annotation
+;;
+
+;; (define-cproc hpdf-page-create-3d-annot
+;;   (page::<hpdf-page>
+;;    rect::<hpdf-rect>
+;;    u3d::<hpdf-u3d>) ::<hpdf-annotation>
+;;    (let* ()
+;;      (result (HPDF_Page_Create3DAnnot (-> page h) (-> rect h) (-> u3d h)))))
+
+(define-cproc hpdf-page-create-text-annot
+  (page::<hpdf-page> 
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>)
+  (body <hpdf-annotation>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-text-annot\");"
+        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
+        "h->h = HPDF_Page_CreateTextAnnot(page->h, rect->h, text, encoder->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-free-text-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateFreeTextAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-line-annot
+  (page::<hpdf-page>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateLineAnnot
+	      (-> page h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-link-annot
+  (page::<hpdf-page> rect::<hpdf-rect> dst::<hpdf-destination>)
+  (body <hpdf-annotation>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-link-annot\");"
+        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
+        "h->h = HPDF_Page_CreateLinkAnnot(page->h, rect->h, dst->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-uri-link-annot (page::<hpdf-page> rect::<hpdf-rect> uri::<const-cstring>)
+  (body <hpdf-annotation>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-uri-link-annot\");"
+        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
+        "h->h = HPDF_Page_CreateURILinkAnnot(page->h, rect->h, uri);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-page-create-text-markup-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>
+   subType::<int>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateTextMarkupAnnot
+	      (-> page h) (-> rect h) text (-> encoder h) subType))))
+
+(define-cproc hpdf-page-create-highlight-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateHighlightAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-underline-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateUnderlineAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-squiggly-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateSquigglyAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-strikeout-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateStrikeOutAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-popup-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   parent::<hpdf-annotation>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreatePopupAnnot
+	      (-> page h) (-> rect h) (-> parent h)))))
+
+(define-cproc hpdf-page-create-stamp-annot
+  (page::<hpdf-page>
+   name::<int>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateStampAnnot
+	      (-> page h) (-> rect h) name text (-> encoder h)))))
+
+
+(define-cproc hpdf-page-create-projection-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateProjectionAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-square-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateSquareAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+(define-cproc hpdf-page-create-circle-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   text::<const-cstring>
+   encoder::<hpdf-encoder>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_CreateCircleAnnot
+	      (-> page h) (-> rect h) text (-> encoder h)))))
+
+
+(define-cproc hpdf-link-annot-set-highlight-mode
+  (annot::<hpdf-annotation> mode::<fixnum>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-link-annot-set-highlight-mode\");"
+        "SCM_RESULT = HPDF_LinkAnnot_SetHighlightMode (annot->h, mode);"))
+
+(define-cproc hpdf-link-annot-set-border-style
+  (annot::<hpdf-annotation> width::<float> dash_on::<uint16> dash_off::<uint16>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-link-annot-set-border-style\");"
+        "SCM_RESULT = HPDF_LinkAnnot_SetBorderStyle (annot->h, width, dash_on, dash_off);"))
+
+(define-cproc hpdf-text-annot-set-icon
+  (annot::<hpdf-annotation> icon::<fixnum>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-text-annot-set-icon\");"
+        "SCM_RESULT = HPDF_TextAnnot_SetIcon (annot->h, icon);"))
+
+(define-cproc hpdf-text-annot-set-opened
+  (annot::<hpdf-annotation> opened::<boolean>)
+  (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetOpened (annot->h, opened);"))
+
+
+(define-cproc hpdf-annot-set-rgb-color
+  (annot::<hpdf-annotation> color::<hpdf-rgbcolor>) ::<ulong>
+  (result (HPDF_Annot_SetRGBColor (-> annot h) (-> color h))))
+
+
+(define-cproc hpdf-annot-set-cmyk-color
+  (annot::<hpdf-annotation> color::<hpdf-cmykcolor>) ::<ulong>
+  (result (HPDF_Annot_SetCMYKColor (-> annot h) (-> color h))))
+
+(define-cproc hpdf-annot-set-gray-color
+  (annot::<hpdf-annotation> color::<real>) ::<ulong>
+  (result (HPDF_Annot_SetGrayColor (-> annot h) color)))
+
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_Annot_SetNoColor (HPDF_Annotation annot);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetTitle (HPDF_Annotation annot, const char* name);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetSubject (HPDF_Annotation annot, const char* name);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetCreationDate (HPDF_Annotation annot, HPDF_Date value);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetTransparency (HPDF_Annotation annot, HPDF_REAL value);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetIntent (HPDF_Annotation  annot, HPDF_AnnotIntent  intent);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetPopup (HPDF_Annotation annot, HPDF_Annotation popup);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetRectDiff (HPDF_Annotation  annot, HPDF_Rect  rect); /* RD entry */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetCloudEffect (HPDF_Annotation  annot, HPDF_INT cloudIntensity); /* BE entry */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetInteriorRGBColor (HPDF_Annotation  annot, HPDF_RGBColor color); /* IC with RGB entry */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetInteriorCMYKColor (HPDF_Annotation  annot, HPDF_CMYKColor color); /* IC with CMYK entry */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetInteriorGrayColor (HPDF_Annotation  annot, HPDF_REAL color); /* IC with Gray entry */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_MarkupAnnot_SetInteriorTransparent (HPDF_Annotation  annot); /* IC with No Color entry */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_TextMarkupAnnot_SetQuadPoints ( HPDF_Annotation annot, HPDF_Point lb, HPDF_Point rb, HPDF_Point rt, HPDF_Point lt); /* l-left, r-right, b-bottom, t-top positions */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_Annot_Set3DView  ( HPDF_MMgr mmgr, 
+;; 					 	HPDF_Annotation	annot,
+;; 					 	HPDF_Annotation	annot3d,
+;; 					 	HPDF_Dict			view);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_PopupAnnot_SetOpened  (HPDF_Annotation   annot,
+;;                             HPDF_BOOL         opened);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_FreeTextAnnot_SetLineEndingStyle (HPDF_Annotation annot, HPDF_LineAnnotEndingStyle startStyle, HPDF_LineAnnotEndingStyle endStyle);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_FreeTextAnnot_Set3PointCalloutLine (HPDF_Annotation annot, HPDF_Point startPoint, HPDF_Point kneePoint, HPDF_Point endPoint); /* Callout line will be in default user space */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_FreeTextAnnot_Set2PointCalloutLine (HPDF_Annotation annot, HPDF_Point startPoint, HPDF_Point endPoint); /* Callout line will be in default user space */
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_FreeTextAnnot_SetDefaultStyle (HPDF_Annotation  annot, const char* style);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_LineAnnot_SetPosition (HPDF_Annotation annot, 
+;; 							HPDF_Point startPoint, HPDF_LineAnnotEndingStyle startStyle, 
+;; 							HPDF_Point endPoint, HPDF_LineAnnotEndingStyle endStyle);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_LineAnnot_SetLeader (HPDF_Annotation annot, HPDF_INT leaderLen, HPDF_INT leaderExtLen, HPDF_INT leaderOffsetLen);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_LineAnnot_SetCaption (HPDF_Annotation annot, HPDF_BOOL showCaption, HPDF_LineAnnotCapPosition position, HPDF_INT horzOffset, HPDF_INT vertOffset);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_Annotation_SetBorderStyle  (HPDF_Annotation  annot,
+;;                                  HPDF_BSSubtype   subtype,
+;;                                  HPDF_REAL        width,
+;;                                  HPDF_UINT16      dash_on,
+;;                                  HPDF_UINT16      dash_off,
+;;                                  HPDF_UINT16      dash_phase);
+
+;; HPDF_EXPORT(HPDF_STATUS)
+;; HPDF_ProjectionAnnot_SetExData(HPDF_Annotation annot, HPDF_ExData exdata);

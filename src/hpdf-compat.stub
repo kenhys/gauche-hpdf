@@ -1,0 +1,103 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+;;;
+;;; hpdf-graphics.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+(define-cproc hpdf-page-draw-image (page::<hpdf-page>
+                                    image::<hpdf-image>
+                                    x::<float>
+                                    y::<float>
+                                    width::<float>
+                                    height::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-draw-image\");"
+        "SCM_RESULT = HPDF_Page_DrawImage(page->h, image->h, x, y, width, height);"))
+
+
+(define-cproc hpdf-page-ellipse
+  (page::<hpdf-page> x::<real> y::<real> xray::<real> yray::<real>) ::<ulong>
+  (result (HPDF_Page_Ellipse (-> page h) x y xray yray)))
+
+(define-cproc hpdf-page-circle
+  (page::<hpdf-page> x::<real> y::<real> ray::<real>) ::<ulong>
+  (result (HPDF_Page_Circle (-> page h) x y ray)))
+
+;; 
+(define-cproc hpdf-page-arc
+  (page::<hpdf-page> x::<real> y::<real> ray::<real> ang1::<real> ang2::<real>) ::<ulong>
+  (let* ()
+    (result (HPDF_Page_Arc (-> page h) x y ray ang1 ang2))))
+
+(define-cproc hpdf-page-textout
+  (page::<hpdf-page> xpos::<float> ypos::<float> text::<const-cstring>) ::<ulong>
+  (let* ()
+    (result (HPDF_Page_TextOut (-> page h) xpos ypos text))))
+
+
+(define-cproc hpdf-page-text-rect (page::<hpdf-page>
+                                   left::<float>
+                                   top::<float>
+                                   right::<float>
+                                   bottom::<float>
+                                   text::<const-cstring>
+                                   align::<fixnum>
+                                   )
+  (body <uint>
+          "unsigned int uint;"
+        "int status;"
+        "status = HPDF_Page_TextRect(page->h, left, top, right, bottom, text, align, &uint);"
+        "SCM_RESULT = uint;"))
+
+
+
+
+(define-cproc hpdf-page-set-slide-show
+  (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)
+  (body <ulong>
+        "switch(type) {"
+        "case HPDF_TS_WIPE_RIGHT:"
+        "case HPDF_TS_WIPE_UP:"
+        "case HPDF_TS_WIPE_LEFT:"
+        "case HPDF_TS_WIPE_DOWN:"
+        "case HPDF_TS_BARN_DOORS_HORIZONTAL_OUT:"
+        "case HPDF_TS_BARN_DOORS_HORIZONTAL_IN:"
+        "case HPDF_TS_BARN_DOORS_VERTICAL_OUT:"
+        "case HPDF_TS_BARN_DOORS_VERTICAL_IN:"
+        "case HPDF_TS_BOX_OUT:"
+        "case HPDF_TS_BOX_IN:"
+        "case HPDF_TS_BLINDS_HORIZONTAL:"
+        "case HPDF_TS_BLINDS_VERTICAL:"
+        "case HPDF_TS_DISSOLVE:"
+        "case HPDF_TS_GLITTER_RIGHT:"
+        "case HPDF_TS_GLITTER_DOWN:"
+        "case HPDF_TS_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT:"
+        "case HPDF_TS_REPLACE:"
+        "  SCM_RESULT = HPDF_Page_SetSlideShow(page->h, type, disp, trans);"
+        "  break;"
+        "default:"
+        "  Scm_Error(\"\");"
+        "  break;"
+        "}"))
+
+;; HPDF_EXPORT(HPDF_OutputIntent)
+;; HPDF_ICC_LoadIccFromMem (HPDF_Doc   pdf,
+;;                         HPDF_MMgr   mmgr,
+;;                         HPDF_Stream iccdata,
+;;                         HPDF_Xref   xref, 
+;;                         int         numcomponent);
+
+;; HPDF_EXPORT(HPDF_OutputIntent)
+;; HPDF_LoadIccProfileFromFile  (HPDF_Doc  pdf,
+;;                             const char* icc_file_name,
+;;                                    int  numcomponent);

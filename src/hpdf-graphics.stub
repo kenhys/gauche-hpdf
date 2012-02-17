@@ -1,0 +1,255 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+;;;
+;;; hpdf-graphics.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+;;
+;; Graphics
+;;
+(define-cproc hpdf-page-set-line-width
+  (page::<hpdf-page> line_width::<real>) ::<hpdf-status>
+  (body <ulong> "HPDF_Page_SetLineWidth(page->h, line_width);"))
+
+(define-cproc hpdf-page-set-line-cap (page::<hpdf-page> cap::<hpdf-linecap>)
+  (body <ulong> "HPDF_Page_SetLineCap(page->h, cap->h);"))
+
+(define-cproc hpdf-page-set-line-join (page::<hpdf-page> join::<uint>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-get-stream-size\");"
+        "switch (join) {"
+        "case HPDF_MITER_JOIN:"
+        "case HPDF_ROUND_JOIN:"
+        "case HPDF_BEVEL_JOIN:"
+        "  SCM_RESULT = HPDF_Page_SetLineJoin(page->h, join);"
+        "  break;"
+        "default:"
+        "  /* error */"
+        "  SCM_RESULT = 0;"
+        "  Scm_Error(\"Invalid 2nd argument. it needs HPDF_MITER_JOIN or HPDF_ROUND_JOIN or HPDF_BEVEL_JOIN.\\n\");"
+        "  break;"
+        "}"))
+
+(define-cproc hpdf-page-set-miter-limit (page::<hpdf-page> miter_limit::<float>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-miter-limit\");"
+        "SCM_RESULT = HPDF_Page_SetMiterLimit(page->h, miter_limit);"))
+
+;; FIXME
+(define-cproc hpdf-page-set-dash (page::<hpdf-page> dash::<foreign-pointer> num_param::<uint> phase::<uint>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-dash\");"
+        "SCM_RESULT = HPDF_Page_SetDash(page->h, SCM_FOREIGN_POINTER(dash)->ptr, num_param, phase);"))
+
+(define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
+  (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))
+
+(define-cproc hpdf-page-setextgstate (page::<hpdf-page> ext_gstate::<hpdf-extgstate>)
+  (expr <ulong> "HPDF_Page_SetExtGState(page->h, ext_gstate->h)"))
+
+;; Special graphic state operator
+(define-cproc hpdf-page-gsave (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_GSave(page->h);"))
+
+(define-cproc hpdf-page-grestore (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_GRestore(page->h);"))
+
+(define-cproc hpdf-page-concat (page::<hpdf-page>
+                                a::<float>
+                                b::<float>
+                                c::<float>
+                                d::<float>
+                                x::<float>
+                                y::<float>)
+  (body <ulong> "HPDF_Page_Concat(page->h, a, b, c, d, x, y);"))
+
+;; Path construction operator
+(define-cproc hpdf-page-moveto (page::<hpdf-page> x::<float> y::<float>)
+  (body <ulong> "HPDF_Page_MoveTo(page->h, x, y);"))
+
+(define-cproc hpdf-page-lineto (page::<hpdf-page> x::<float> y::<float>)
+  (body <ulong> "HPDF_Page_LineTo(page->h, x, y);"))
+
+(define-cproc hpdf-page-curveto (page::<hpdf-page> x1::<float> y1::<float> x2::<float> y2::<float> x3::<float> y3::<float>)
+  (body <ulong> "HPDF_Page_CurveTo(page->h, x1, y1, x2, y2, x3, y3);"))
+
+(define-cproc hpdf-page-curveto2 (page::<hpdf-page> x2::<float> y2::<float> x3::<float> y3::<float>)
+  (body <ulong> "HPDF_Page_CurveTo2(page->h, x2, y2, x3, y3);"))
+
+(define-cproc hpdf-page-curveto3 (page::<hpdf-page> x1::<float> y1::<float> x3::<float> y3::<float>)
+  (body <ulong> "HPDF_Page_CurveTo2(page->h, x1, y1, x3, y3);"))
+
+(define-cproc hpdf-page-close-path (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePath(page->h);"))
+
+(define-cproc hpdf-page-rectangle (page::<hpdf-page> x::<float> y::<float> width::<float> height::<float>)
+  (body <ulong> "HPDF_Page_Rectangle(page->h, x, y, width, height);"))
+
+;; Path painting operator
+(define-cproc hpdf-page-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_Stroke(page->h);"))
+
+(define-cproc hpdf-page-close-path-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePathStroke(page->h);"))
+
+(define-cproc hpdf-page-fill (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_Fill(page->h);"))
+
+(define-cproc hpdf-page-eo-fill (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_Eofill(page->h);"))
+
+(define-cproc hpdf-page-fill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_FillStroke(page->h);"))
+
+(define-cproc hpdf-page-eofill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_EofillStroke(page->h);"))
+
+(define-cproc hpdf-page-close-path-fill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePathFillStroke(page->h);"))
+
+(define-cproc hpdf-page-close-path-eofill-stroke (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_ClosePathEofillStroke(page->h);"))
+
+(define-cproc hpdf-page-end-path (page::<hpdf-page>)
+  (body <ulong> "HPDF_Page_EndPath(page->h);"))
+
+;; Clipping paths operator
+(define-cproc hpdf-page-clip (page::<hpdf-page>)
+  (body <ulong> "SCM_RESULT = HPDF_Page_Clip(page->h);"))
+
+(define-cproc hpdf-page-eoclip (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_Eoclip(page->h)"))
+
+;; Text object operator
+;; BT
+(define-cproc hpdf-page-begin-text (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_BeginText(page->h)"))
+
+;; ET
+(define-cproc hpdf-page-end-text (page::<hpdf-page>)
+  (expr <ulong> "HPDF_Page_EndText(page->h)"))
+
+;; Text state
+(define-cproc hpdf-page-set-char-space (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetCharSpace(page->h, value)"))
+
+(define-cproc hpdf-page-setwordspace (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
+
+(define-cproc hpdf-page-set-horizontal-scalling (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
+
+(define-cproc hpdf-page-set-text-leading (page::<hpdf-page> value::<float>)
+  (expr <ulong> "HPDF_Page_SetTextLeading(page->h, value)"))
+
+;; (define-cproc hpdf-page-set-font-and-size (page::<hpdf-page> font::<hpdf-font> size::<float>)
+;;   (body <ulong>
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
+;;         "SCM_RESULT = HPDF_Page_SetFontAndSize(page->h, font->h, size);"))
+
+;; (define-cproc hpdf-page-set-text-rendering-mode (page::<hpdf-page> mode::<uint>)
+;;   (expr <ulong> "HPDF_Page_SetTextRenderingMode(page->h, mode)"))
+
+;; (define-cproc hpdf-page-set-text-rise (page::<hpdf-page> value::<float>)
+;;   (expr <ulong> "HPDF_Page_SetTextRise(page->h, value)"))
+
+;; Text positioning 
+;; (define-cproc hpdf-page-move-text-pos (page::<hpdf-page> x::<float> y::<float>)
+;;   (expr <ulong> "HPDF_Page_MoveTextPos(page->h, x, y)"))
+
+;; (define-cproc hpdf-page-move-text-pos2 (page::<hpdf-page> x::<float> y::<float>)
+;;   (expr <ulong> "HPDF_Page_MoveTextPos2(page->h, x, y)"))
+
+;; (define-cproc hpdf-page-set-text-matrix (page::<hpdf-page> a::<float> b::<float> c::<float> d::<float> x::<float> y::<float>)
+;;   (expr <ulong> "HPDF_Page_SetTextMatrix(page->h, a, b, c, d, x, y)"))
+
+;; (define-cproc hpdf-page-move-to-nextline (page::<hpdf-page>)
+;;   (expr <ulong> "HPDF_Page_MoveToNextLine(page->h)"))
+  
+;; Text showing
+;; (define-cproc hpdf-page-show-text (page::<hpdf-page> text::<const-cstring>)
+;;   (body <ulong>
+;;         "GAUCHE_HPDF_FUNC(\"hpdf-page-show-text\");"
+;;         "#ifdef GAUCHE_HPDF_DEBUG"
+;;         "char dummy[20];"
+;;         "int i = 0;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x41;i++;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x81;i++;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x93;i++;"
+;;         "dummy[i] = 0x83;i++;"
+;;         "dummy[i] = 0x7b;i++;"
+;;         "dummy[i] = 0x90;i++;"
+;;         "dummy[i] = 0xd4;i++;"
+;;         "dummy[i] = 0;i++;"
+;;         "dummy[i] = 0;i++;"
+;;         "dummy[i] = 0;i++;"
+;;         "i = 0;"
+;;         "char *p = text;"
+;;         "fprintf(stderr, \"text entry:\", text);"
+;;         "while (i < 20) {"
+;;         "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", text[i], text[i]);"
+;;         "  i++;"
+;;         "}"
+;;         "i = 0;"
+;;         "fprintf(stderr, \"dummy entry:\", dummy);"
+;;         "while (i < 20) {"
+;;         "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", dummy[i], dummy[i]);"
+;;         "  i++;"
+;;         "}"
+;;         "#endif"
+;;         "if (strlen(text) > 0) {"
+;;         "  SCM_RESULT = HPDF_Page_ShowText(page->h, text);"
+;;         "} else {"
+;;         "  SCM_RESULT = 0;"
+;;         "}"
+;;         ))
+
+;; (define-cproc hpdf-page-show-text-next-line (page::<hpdf-page> text::<const-cstring>)
+;;   (expr <ulong> "HPDF_Page_ShowTextNextLine(page->h, text)"))
+
+;; (define-cproc hpdf-page-show-text-next-line-ex (page::<hpdf-page> word_space::<float> char_space::<float> text::<const-cstring>)
+;;   (expr <ulong> "HPDF_Page_ShowTextNextLineEx(page->h, word_space, char_space, text)"))
+
+;; Color showing
+(define-cproc hpdf-page-set-gray-fill (page::<hpdf-page> gray::<float>)
+  (expr <ulong> "HPDF_Page_SetGrayFill(page->h, gray)"))
+
+(define-cproc hpdf-page-set-gray-stroke (page::<hpdf-page> gray::<float>)
+  (expr <ulong> "HPDF_Page_SetGrayStroke(page->h, gray)"))
+
+(define-cproc hpdf-page-set-rgb-fill (page::<hpdf-page> r::<float> g::<float> b::<float>)
+  (expr <ulong> "HPDF_Page_SetRGBFill(page->h, r, g, b)"))
+
+(define-cproc hpdf-page-set-rgb-stroke (page::<hpdf-page> r::<float> g::<float> b::<float>)
+  (expr <ulong> "HPDF_Page_SetRGBStroke(page->h, r, g, b)"))
+
+(define-cproc hpdf-page-set-cmyk-fill (page::<hpdf-page> c::<float> m::<float> y::<float> k::<float>)
+  (expr <ulong> "HPDF_Page_SetCMYKFill(page->h, c, m, y, k)"))
+
+(define-cproc hpdf-page-set-cmyk-stroke (page::<hpdf-page> c::<float> m::<float> y::<float> k::<float>)
+  (expr <ulong> "HPDF_Page_SetCMYKStroke(page->h, c, m, y, k)"))
+
+
+(define-cproc hpdf-font-text-width (font::<hpdf-font> text::<const-cstring> len::<uint>)
+  (body <hpdf-textwidth>
+        "  ScmHpdfTextWidth *h = SCM_NEW(ScmHpdfTextWidth);
+  SCM_SET_CLASS(h, SCM_CLASS_HPDFTEXTWIDTH);
+  h->h = HPDF_Font_TextWidth(font->h, text, len);
+  SCM_RESULT = h;"))
+
+;;
+;; GRAPHICS OPERATORS
+;;

@@ -1,0 +1,151 @@
+;;; -*- mode: scheme; coding:utf-8 -*-
+;;;
+;;; hpdf-font.stub
+;;;
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+;;
+;; Font Handling
+;;
+(define-cproc hpdf-get-font
+  (doc::<hpdf-doc> name::<const-cstring>
+		   enc::<const-cstring>) ::<hpdf-font>
+  (let* ([font::ScmHpdfFont* (SCM_NEW ScmHpdfFont)])
+    (SCM_SET_CLASS font SCM_CLASS_HPDF_FONT)
+    (if (> (strlen enc) 0)
+	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL))
+	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL)))
+    (result font)))
+
+(define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-type1-font-from-file\");"
+        "/* afm, pfb*/"
+        "SCM_RESULT = HPDF_LoadType1FontFromFile(doc->h, afm_file_name, data_file_name);"))
+
+(define-cproc hpdf-load-ttf-font-from-file (doc::<hpdf-doc> file::<const-cstring> embedding::<boolean>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file\");"
+        "const char *p = HPDF_LoadTTFontFromFile(doc->h, file, embedding);"
+        "/* GAUCHE_HPDF_HEX('funcp', p);*/"
+        "SCM_RESULT = p;"
+        "if (p) {"
+        "} else {"
+        "  if (embedding) {"
+        "     Scm_Error(\"can't load True Type Font(embedding %s) into PDF.\", file);"
+        "  } else {"
+        "     Scm_Error(\"can't load True Type Font(%s) into PDF.\", file);"
+        "  }"
+        "}"))
+
+(define-cproc hpdf-load-ttf-font-from-file2 (doc::<hpdf-doc> file::<const-cstring> index::<uint> embedding::<boolean>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-load-ttf-font-from-file2\");"
+        "SCM_RESULT = HPDF_LoadTTFontFromFile2(doc->h, file, index, embedding);"))
+
+(define-cproc hpdf-add-page-label
+  (doc::<hpdf-doc>
+   page-num::<uint>
+   page-style::<uint>
+   first-page::<uint> prefix::<const-cstring>) ::<hpdf-status>
+   (let* ()
+     (result (HPDF_AddPageLabel (-> doc h)
+				page-num page-style first-page prefix))))
+
+(define-cproc hpdf-use-jp-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-jp-fonts\");"
+        "SCM_RESULT = HPDF_UseJPFonts(doc->h);"))
+
+(define-cproc hpdf-use-kr-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-kr-fonts\");"
+        "SCM_RESULT = HPDF_UseKRFonts(doc->h);"))
+
+(define-cproc hpdf-use-cns-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-cns-fonts\");"
+        "SCM_RESULT = HPDF_UseCNSFonts(doc->h);"))
+
+(define-cproc hpdf-use-cnt-fonts (doc::<hpdf-doc>)
+  (body <ulong>
+        "GAUCHE_HPDF_FUNC(\"hpdf-use-cnt-fonts\");"
+        "SCM_RESULT = HPDF_UseCNTFonts(doc->h);"))
+
+
+;; font
+(define-cproc hpdf-font-get-font-name (font::<hpdf-font>)
+  (body <const-cstring>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-font-name\");"
+        "SCM_RESULT = HPDF_Font_GetFontName(font->h);"))
+
+(define-cproc hpdf-font-get-encoding-name (font::<hpdf-font>)
+  (body <const-cstring>
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-encoding-name\");"
+        "SCM_RESULT = HPDF_Font_GetEncodingName(font->h);"))
+
+(define-cproc hpdf-font-get-unicode-width (font::<hpdf-font> code::<uint16>)
+  (body <int>
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-unicode-width\");"
+        "SCM_RESULT = HPDF_Font_GetUnicodeWidth(font->h, code);"))
+
+(define-cproc hpdf-font-get-bbox (font::<hpdf-font>)
+  (body <hpdf-box>
+        "GAUCHE_HPDF_FUNC(\"hpdf-font-get-bbox\");"
+        "ScmHpdfBox *h = SCM_NEW(ScmHpdfBox);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_BOX);"
+        "h->h = HPDF_Font_GetBBox(font->h);"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-font-get-ascent (font::<hpdf-font>)
+  (expr <int> "SCM_RESULT = HPDF_Font_GetAscent(font->h)"))
+
+(define-cproc hpdf-font-get-descent (font::<hpdf-font>)
+  (expr <int> "SCM_RESULT = HPDF_Font_GetDescent(font->h)"))
+
+(define-cproc hpdf-font-get-xheight (font::<hpdf-font>)
+  (expr <uint> "SCM_RESULT = HPDF_Font_GetXHeight(font->h)"))
+
+(define-cproc hpdf-font-get-cap-height (font::<hpdf-font>)
+  (expr <uint> "SCM_RESULT = HPDF_Font_GetCapHeight(font->h)"))
+
+(define-cproc hpdf-font-text-width (font::<hpdf-font> text::<const-cstring> len::<uint>)
+  (body <hpdf-textwidth>
+        "ScmHpdfTextWidth *h = SCM_NEW(ScmHpdfTextWidth);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDFTEXTWIDTH);"
+        "h->h = HPDF_Font_TextWidth(font->h, text, len);"
+        "SCM_RESULT = h;"))
+
+;; FIXME utility function 
+(define-cproc hpdf-font-text-width-as-list (text_width::<hpdf-textwidth>)
+  (body <list>
+        "SCM_RESULT = SCM_LIST3(SCM_MAKE_INT(text_width->h.numchars),"
+        "SCM_MAKE_INT(text_width->h.width),"
+        "SCM_MAKE_INT(text_width->h.numspace));"))
+
+;; FIXME
+(define-cproc hpdf-font-measure-text
+  (font::<hpdf-font>
+   text::<foreign-pointer>
+   len::<uint> width::<float> font_size::<float>
+   char_space::<float> word_space::<float> wordwrap::<float>
+   real_width::<foreign-pointer>)
+  (body <uint>
+        "HPDF_Font_MeasureText(font->h,"
+        "SCM_FOREIGN_POINTER(text)->ptr, len, width, font_size, char_space, word_space, wordwrap,"
+        "SCM_FOREIGN_POINTER(real_width)->ptr);"))
+
+
+ 
+;; Local variables:
+;; mode: scheme
+;; end:

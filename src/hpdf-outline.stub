@@ -1,0 +1,55 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
+"
+#include \"gauche-hpdf.h\"
+#include <hpdf.h>
+#include <hpdf_consts.h>
+#include <hpdf_types.h>
+#include <hpdf_objects.h>
+"
+
+(include "gauche-hpdf.types")
+
+
+;;
+;; Outline
+;;
+(define-cproc hpdf-create-outline
+  (doc::<hpdf-doc> parent::<hpdf-outline>?
+		   title::<const-cstring> encoder::<hpdf-encoder>?)
+  (body <hpdf-outline>?
+        "GAUCHE_HPDF_FUNC(\"hpdf-create-outline\");"
+        "ScmHpdfOutline *h = SCM_NEW(ScmHpdfOutline);"
+        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_OUTLINE);"
+        "if (parent) {"
+        "  if (encoder) {"
+        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, encoder->h);"
+        "  } else {"
+        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, NULL);"
+        "  }"
+        "} else {"
+        "  if (encoder) {"
+        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, encoder->h);"
+        "  } else {"
+        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, NULL);"
+        "  }"
+        "}"
+        "SCM_RESULT = h;"))
+
+(define-cproc hpdf-outline-set-opened
+  (out::<hpdf-outline> opened::<boolean>) ::<ulong>
+  (let* ()
+    (.if DEBUG
+	(GAUCHE_HPDF_FUNC "hpdf-set-opened"))
+    (result (HPDF_Outline_SetOpened (-> out h) opened))))
+
+(define-cproc hpdf-outline-set-destination
+  (out::<hpdf-outline> dst::<hpdf-destination>) ::<ulong>
+  (let* ()
+    (.if DEBUG
+	 (GAUCHE_HPDF_FUNC "hpdf-set-destination"))
+    (result (HPDF_Outline_SetDestination (-> out h) (-> dst h)))))
+
+;; Local variables:
+;; mode: scheme
+;; end:
