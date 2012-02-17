@@ -89,16 +89,6 @@
 (define-cproc hpdf-image-set-mask-image (image::<hpdf-image> mask_image::<hpdf-image>)
   (expr <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h)"))
 
-(define-cproc hpdf-page-draw-image (page::<hpdf-page>
-                                    image::<hpdf-image>
-                                    x::<float>
-                                    y::<float>
-                                    width::<float>
-                                    height::<float>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-draw-image\");"
-        "SCM_RESULT = HPDF_Page_DrawImage(page->h, image->h, x, y, width, height);"))
-
 ;; Local variables:
 ;; mode: scheme
 ;; end:
