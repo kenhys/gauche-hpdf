@@ -14,13 +14,6 @@
 (test-module 'hpdf)
 (test-start "page")
 
-(define (test-subsection msg)
-  (format #t "~a()\n" msg))
-(define (test-subsubsection msg)
-  (format #t "#=> ~a\n" msg))
-
-(test-section "hpdf font")
-
 ;;
 ;; portrait
 ;; 
@@ -43,7 +36,7 @@
 ;;
 ;; hpdf-page-set-size
 ;;
-(test-subsection "hpdf-page-set-size")
+(test-section "hpdf-page-set-size")
 
 (define (mktest name size direction)
   (let* ([pdf (hpdf-new)]
@@ -55,7 +48,7 @@
     (hpdf-save-to-file pdf filename)))
 
 ;; portrait
-(test-subsubsection "portrait")
+(test-subsection "portrait")
 (map (^ (arg)
        (mktest (~ arg 0) (~ arg 1) HPDF_PAGE_PORTRAIT)) page-size)
 

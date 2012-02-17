@@ -17,12 +17,6 @@
 (test-start "pngsuite")
 
 
-(define (test-subsection msg)
-  (format #t "~a()\n" msg))
-
-(define (test-subsubsection msg)
-  (format #t "#=> ~a\n" msg))
-
 (define basic-formats
   '(("basn0g01" "black & white")
     ("basn0g02" "2 bit (4 level) grayscale")

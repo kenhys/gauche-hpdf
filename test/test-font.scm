@@ -20,11 +20,6 @@
 
 (test-section "hpdf font")
 
-(define (test-subsection msg)
-  (format #t "~a()\n" msg))
-(define (test-subsubsection msg)
-  (format #t "#=> ~a\n" msg))
-
 (define (mktest-proc expect name desc)
   (let* ([pdf (hpdf-new)]
 	 [filename (cond [(file-is-readable?
@@ -131,19 +126,21 @@
 			 [else #f])]
 	 [pdf (hpdf-new)]
          [null (hpdf-use-jp-encodings pdf)])
-    (if (and filename (file-is-readable? filename))
-	(if (>= index 0)
-	    (begin ;; support .ttc
-	      (test* (format #f "~a embed" font) expect
-		     (proc pdf filename index #t)))
-	    ;; suport .ttf
-	    (test* (format #f "~a embed" font) expect
-		   (proc pdf filename #t)))
-	;; NOTE: if font file was already registered,
-	;; load font file returns HPDF_FONT_EXISTS
-	;; (test* (format #f "~a non-embed" font) expect
-	;; 	 (proc pdf filename index #f)))
-        #f)))
+    (if filename
+	(if (file-is-readable? filename)
+	    (if (>= index 0)
+		;; support .ttc
+		(test* (format #f "~a embed" font) expect
+		       (proc pdf filename index #t))
+		;; support .ttf
+		(test* (format #f "~a embed" font) expect
+		       (proc pdf filename #t)))
+	    ;; NOTE: if font file was already registered,
+	    ;; load font file returns HPDF_FONT_EXISTS
+	    ;; (test* (format #f "~a non-embed" font) expect
+	    ;; 	 (proc pdf filename index #f)))
+	    (format #t "skip ~a\n" desc))
+	(format #t "test skip ~a not found.\n" desc))))
 
 ;;
 ;; hpdf-load-ttf-font-from-file2

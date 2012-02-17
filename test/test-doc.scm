@@ -1,3 +1,5 @@
+;; -*- mode: scheme; coding:utf-8 -*-
+
 ;;;
 ;;; Test hpdf
 ;;;
@@ -18,15 +20,74 @@
 (define (test-subsubsection msg)
   (format #t "#=> ~a\n" msg))
 
-(test-section "hpdf doc")
+;;
+;; hpdf-new
+;; 
+(test-section "hpdf-new")
+(test* "new instance" <hpdf-doc> (class-of (hpdf-new)))
 
 ;;
 ;; hpdf-free
 ;; 
-(test-subsection "hpdf-free")
+(test-section "hpdf-free")
 (test* "hpdf-free" (undefined) (hpdf-free (hpdf-new)))
 
-(test-subsection "hpdf-set-info-attr")
+;;
+;; hpdf-new-doc
+;; 
+(test-section "hpdf-new-doc")
+
+;;
+;; hpdf-has-doc
+;; 
+(test-section "hpdf-has-doc")
+
+;;
+;; hpdf-free-doc
+;; 
+(test-section "hpdf-free-doc")
+
+;;
+;; hpdf-free-doc-all
+;; 
+(test-section "hpdf-free-doc-all")
+
+;;
+;; hpdf-add-page
+;; 
+(test-section "hpdf-add-page")
+
+;;
+;; hpdf-get-stream-size
+;; 
+(test-section "hpdf-get-stream-size")
+
+;;
+;; hpdf-read-from-stream
+;; 
+(test-section "hpdf-read-from-stream")
+
+;;
+;; hpdf-reset-stream
+;; 
+(test-section "hpdf-reset-stream")
+
+;;
+;; hpdf-save-to-file
+;; 
+(test-section "hpdf-save-to-file")
+
+;;
+;; hpdf-get-error
+;; 
+(test-section "hpdf-get-error")
+
+;;
+;; hpdf-get-error-detail
+;; 
+(test-section "hpdf-get-error-detail")
+
+(test-section "hpdf-set-info-attr")
 (test* "HPDF_INFO_AUTHOR" HPDF_OK (hpdf-set-info-attr (hpdf-new) AUTHOR "author"))
 (test* "HPDF_INFO_CREATOR" HPDF_OK (hpdf-set-info-attr (hpdf-new) CREATOR "creator"))
 (test* "HPDF_INFO_TITLE" HPDF_OK (hpdf-set-info-attr (hpdf-new) TITLE "title"))
@@ -111,7 +172,7 @@
          ;; dummy
          (page (hpdf-add-page pdf))
          )
-    (hpdf-save-to-file pdf filename)))
+    (hpdf-save-to-file pdf filename))
 
 ;;
 ;; hpdf-set-permission
