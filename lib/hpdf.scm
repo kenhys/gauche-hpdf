@@ -3,6 +3,12 @@
 ;;;
 
 (define-module hpdf
+  (extend
+   hpdf.annotation
+   hpdf.gstate
+   hpdf.page
+   hpdf.font
+   hpdf.text)
   (export-all)
   )
 (select-module hpdf)
@@ -20,6 +26,8 @@
 (define (test-subsubsection msg)
   (format #t "#=> ~75,,,'.,,a \n" (format #f "~a " msg)))
 
+(define-method add-page ((self <hpdf-doc>))
+  (hpdf-add-page self))
 
 ;; Epilogue
 (provide "hpdf")
