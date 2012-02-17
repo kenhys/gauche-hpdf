@@ -106,17 +106,17 @@
 
 (define-cproc hpdf-add-page
   (doc::<hpdf-doc>) ::<hpdf-page>
-  (let* ([page::ScmHpdfPage* (SCM_NEW ScmHpdfPage)]
-	 [null (SCM_SET_CLASS page SCM_CLASS_HPDF_PAGE)]
-	 )
+  (let* ([page::ScmHpdfPage* (SCM_NEW ScmHpdfPage)])
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-add-page"))
+    (SCM_SET_CLASS page SCM_CLASS_HPDF_PAGE)
     (set! (-> page h) (HPDF_AddPage (-> doc h)))
     (result page)))
 
 (define-cproc hpdf-insert-page
   (doc::<hpdf-doc> page::<hpdf-page>) ::<hpdf-page>
-  (let* ([page2::ScmHpdfPage* (SCM_NEW ScmHpdfPage)]
-	 [null (SCM_SET_CLASS page2 SCM_CLASS_HPDF_PAGE)]
-	 )
+  (let* ([page2::ScmHpdfPage* (SCM_NEW ScmHpdfPage)])
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-insert-page"))
+    (SCM_SET_CLASS page2 SCM_CLASS_HPDF_PAGE)
     (set! (-> page2 h) (HPDF_InsertPage (-> doc h) (-> page h)))
     (result page2)))
 

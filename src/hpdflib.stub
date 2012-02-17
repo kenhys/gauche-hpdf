@@ -596,26 +596,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "GAUCHE_HPDF_FUNC(\"hpdf-add-page-label\");"
         ""))
 
-(define-cproc hpdf-use-jp-fonts (doc::<hpdf-doc>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-use-jp-fonts\");"
-        "SCM_RESULT = HPDF_UseJPFonts(doc->h);"))
-
-(define-cproc hpdf-use-kr-fonts (doc::<hpdf-doc>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-use-kr-fonts\");"
-        "SCM_RESULT = HPDF_UseKRFonts(doc->h);"))
-
-(define-cproc hpdf-use-cns-fonts (doc::<hpdf-doc>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-use-cns-fonts\");"
-        "SCM_RESULT = HPDF_UseCNSFonts(doc->h);"))
-
-(define-cproc hpdf-use-cnt-fonts (doc::<hpdf-doc>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-use-cnt-fonts\");"
-        "SCM_RESULT = HPDF_UseCNTFonts(doc->h);"))
-
 
 
 
@@ -709,10 +689,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
 
 (define-cproc hpdf-ext-gstate-set-blend-mode (ext_gstate::<hpdf-extgstate> mode::<fixnum>)
   (expr <ulong> "HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode)"))
-
-;;
-(define-cproc hpdf-page-text-width (page::<hpdf-page> text::<const-cstring>)
-  (expr <float> "HPDF_Page_TextWidth(page->h, text)"))
 
 
 (define-cproc hpdf-page-get-width (page::<hpdf-page>)

@@ -32,8 +32,10 @@
   (expr <ulong> "HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode)"))
 
 ;;
-(define-cproc hpdf-page-text-width (page::<hpdf-page> text::<const-cstring>)
-  (expr <float> "HPDF_Page_TextWidth(page->h, text)"))
+(define-cproc hpdf-page-text-width
+  (page::<hpdf-page> text::<const-cstring>) ::<real>
+  (let* ()
+    (result (HPDF_Page_TextWidth (-> page h) text))))
 
 "
 /*

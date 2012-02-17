@@ -61,10 +61,11 @@
      (result (HPDF_AddPageLabel (-> doc h)
 				page-num page-style first-page prefix))))
 
-(define-cproc hpdf-use-jp-fonts (doc::<hpdf-doc>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-use-jp-fonts\");"
-        "SCM_RESULT = HPDF_UseJPFonts(doc->h);"))
+(define-cproc hpdf-use-jp-fonts
+  (doc::<hpdf-doc>) ::<hpdf-status>
+  (let* ()
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-use-jp-fonts"))
+    (result (HPDF_UseJPFonts (-> doc h)))))
 
 (define-cproc hpdf-use-kr-fonts (doc::<hpdf-doc>)
   (body <ulong>

@@ -17,18 +17,17 @@
 (define-cproc hpdf-get-version () ::<const-cstring>
   (result (HPDF_GetVersion)))
 
-(define-cproc hpdf-new (&optional callback)
-  (body <hpdf-doc>
-        "GAUCHE_HPDF_FUNC(\"hpdf-new\");"
-        "ScmHpdfDoc *h = SCM_NEW(ScmHpdfDoc);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_DOC);"
-        "if (SCM_CLOSUREP(callback)) {"
-        "  h->h = HPDF_New(hpdf_error_handler, (void *)SCM_FOREIGN_POINTER(callback)->ptr);"
-        "} else {"
-        "  /* Scm_Printf(SCM_CURERR, \"no HPDF error handler.\\n\");*/"
-        "  h->h = HPDF_New(hpdf_error_handler, NULL);"
-        "}"
-        "SCM_RESULT = h;"))
+(define-cproc hpdf-new
+  (&optional callback) ::<hpdf-doc>
+  (let* ([doc::ScmHpdfDoc*  (SCM_NEW ScmHpdfDoc)])
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-new"))
+    (SCM_SET_CLASS doc SCM_CLASS_HPDF_DOC)
+    (if (SCM_CLOSUREP callback)
+        (set! (-> doc h)
+	      (HPDF_New hpdf_error_handler (-> (SCM_FOREIGN_POINTER callback) ptr)))
+	;; else 
+        (set! (-> doc h) (HPDF_New hpdf_error_handler NULL)))
+    (result doc)))
 
 (define-cproc hpdf-free (doc::<hpdf-doc>) ::<void>
   (let* ()
@@ -56,14 +55,6 @@
     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-free-doc-all"))
     (HPDF_FreeDocAll (-> doc h))))
 
-(define-cproc hpdf-add-page
-  (doc::<hpdf-doc>) ::<hpdf-page>
-  (let* ([page::ScmHpdfPage* (SCM_NEW ScmHpdfPage)]
-  	 [null (SCM_SET_CLASS page SCM_CLASS_HPDF_PAGE)]
-	 )
-    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-add-page"))
-    (set! (-> page h) (HPDF_AddPage (-> doc h)))
-    (result page)))
 
 (define-cproc hpdf-get-stream-size
   (doc::<hpdf-doc>) ::<uint32>

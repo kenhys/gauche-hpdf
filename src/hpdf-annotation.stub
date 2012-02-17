@@ -64,7 +64,8 @@
         "h->h = HPDF_Page_CreateLinkAnnot(page->h, rect->h, dst->h);"
         "SCM_RESULT = h;"))
 
-(define-cproc hpdf-page-create-uri-link-annot (page::<hpdf-page> rect::<hpdf-rect> uri::<const-cstring>)
+(define-cproc hpdf-page-create-uri-link-annot
+  (page::<hpdf-page> rect::<hpdf-rect> uri::<const-cstring>)
   (body <hpdf-annotation>
         "GAUCHE_HPDF_FUNC(\"hpdf-page-create-uri-link-annot\");"
         "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
