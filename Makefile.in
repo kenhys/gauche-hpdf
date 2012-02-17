@@ -59,7 +59,7 @@ all :
 check : all
 	@rm -f test.log
 	sh test/run-test.sh >> test.log
-	cat test.record
+	@cat test.record
 
 clean :
 	rm -rf core *~
