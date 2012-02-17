@@ -3,12 +3,14 @@
 ;;;
 
 (define-module hpdf.page
+  (extend hpdf)
+  (use gauche.interactive)
   (export-all)
   )
 (select-module hpdf.page)
 
 ;; Loads extension
-;;(dynamic-load "gauche--hpdf")
+(dynamic-load "gauche--hpdf")
 
 ;;
 ;; Put your Scheme definitions here
@@ -44,7 +46,7 @@
 
 (define-method insert-page ((self <hpdf-doc>)
 			    (page <hpdf-page>))
-  (hpdf-add-page self page))
+  (hpdf-insert-page self page))
 
 (define-method width! ((self <hpdf-page>) width)
   (hpdf-page-set-width self width))
@@ -56,6 +58,6 @@
   (hpdf-page-set-size self size direction))
 
 ;; Epilogue
-(provide "hpdf.page")
+(provide "hpdf/page")
 
 
