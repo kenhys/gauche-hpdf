@@ -14,6 +14,10 @@
 
 (include "gauche-hpdf.types")
 
+"typedef unsigned int uint;"
+"typedef unsigned short int* uint16p;"
+"typedef unsigned short int uint16;"
+
 ;;
 ;; Graphics
 ;;
@@ -46,10 +50,23 @@
         "SCM_RESULT = HPDF_Page_SetMiterLimit(page->h, miter_limit);"))
 
 ;; FIXME
-(define-cproc hpdf-page-set-dash (page::<hpdf-page> dash::<foreign-pointer> num_param::<uint> phase::<uint>)
-  (body <ulong>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-set-dash\");"
-        "SCM_RESULT = HPDF_Page_SetDash(page->h, SCM_FOREIGN_POINTER(dash)->ptr, num_param, phase);"))
+(define-cproc hpdf-page-set-dash
+  (page::<hpdf-page> array phase::<uint>) ::<hpdf-status>
+  (let* ([obj::ScmObj SCM_NIL]
+	 [vec::ScmVector* NULL]
+	 [num_param::uint 0])
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-set-dash"))
+    (cond ([SCM_LISTP array]
+	   (set! obj (Scm_ListToVector array 0 -1))
+	   (set! vec (SCM_VECTOR obj))
+	   (set! num_param (Scm_Length array)))
+	  (else
+	   (Scm_Error "list expected, but got")))
+    (let* ([dash::uint16* (calloc (sizeof uint16) num_param)]
+	   [i::int 0])
+      (for [(set! i 0) (< i num_param) (post++ i)]
+	   (set! (aref dash i) (Scm_VectorRef vec i SCM_NIL)))
+      (result (HPDF_Page_SetDash (-> page h) dash num_param phase)))))
 
 (define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
   (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))

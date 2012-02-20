@@ -27,8 +27,8 @@
 (define-method miter-limit! ((self <hpdf-page>) miter_limit)
   (hpdf-page-set-miter-limit self miter_limit))
 
-;;(define-method dash! ((self <hpdf-page>) array num phase)
-;;  (hpdf-page-set-dash self array num phase))
+(define-method dash! ((self <hpdf-page>) array phase)
+  (hpdf-page-set-dash self array phase))
 
 (define-method flat! ((self <hpdf-page>) flatness)
   (hpdf-page-set-flat self flatness))
