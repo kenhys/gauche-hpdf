@@ -28,7 +28,9 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [index_page (hpdf-add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")])
+	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/link-annotation.pdf" "link-annotation.pdf")])
 
     (define (page-highlight index_page index mode desc)
       (let* ([tp (make <hpdf-point>)]
@@ -130,6 +132,6 @@
 
     (hpdf-page-end-text index_page)
 
-    (hpdf-save-to-file pdf "test/link-annotation.pdf")
+    (hpdf-save-to-file pdf filename)
     
     (hpdf-free pdf)))

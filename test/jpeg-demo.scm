@@ -9,16 +9,14 @@
 
 
 (define (draw-image-proc pdf filename x y text)
-  (let* ([page (current-page pdf)]
-	 [filename1 (format #f "test/images/~a" filename)]
+  (let* ([prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	 [page (current-page pdf)]
+	 [filename1 (format #f "~a/images/~a" prefix filename)]
 	 [image 0])
 
     (if (file-is-readable? filename1)
 	(begin
 	  (set! image (hpdf-load-jpeg-image-from-file pdf filename1))
-	  (d filename1)
-	  (d image)
-	  (d (hpdf-image-get-width image))
 	  (draw-image page image x y
 		      (hpdf-image-get-width image)
 		      (hpdf-image-get-height image))
@@ -34,7 +32,9 @@
   (let* ([pdf (hpdf-new)]
 	 [font (hpdf-get-font pdf "Helvetica" "")]
 	 [page (add-page pdf)]
-	 [dst 0])
+	 [dst 0]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/jpeg-demo.pdf" "jpeg-demo.pdf")])
     
     (compression-mode! pdf HPDF_COMP_ALL)
     
@@ -59,7 +59,7 @@
     (draw-image-proc pdf "gray.jpg" 340 (- (height page) 410)
 		     "8bit grayscale image")
 
-    (save-to-file pdf "test/jpeg-demo.pdf")
+    (save-to-file pdf filename)
 
     (free pdf)))
 

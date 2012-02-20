@@ -117,7 +117,9 @@
 	 [page (add-page pdf)]
 	 [s (height! page 220)]
 	 [s (width! page 220)]
-	 [pos 0])
+	 [pos 0]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/arc-demo.pdf" "arc-demo.pdf")])
     (print-grid pdf page)
 
 
@@ -164,7 +166,7 @@
     (fill page)
 
     ;; save the document to a file 
-    (save-to-file pdf "test/arc-demo.pdf")
+    (save-to-file pdf filename)
 
     ;; clean up 
     (free pdf)

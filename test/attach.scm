@@ -9,7 +9,10 @@
   (let* ([pdf (hpdf-new)]
 	 [page (add-page pdf)]
 	 [font (hpdf-get-font pdf "Helvetica" "")]
-	 [tw 0])
+	 [tw 0]
+	 [prefix (if (rxmatch #/.*test\/.*\.scm/ *program-name*) "test"".")]
+	 [scmname (format #f "~a/attach.scm" prefix)]
+	 [filename (format #f "~a/attach.pdf" prefix)])
     (size! page HPDF_PAGE_SIZE_LETTER HPDF_PAGE_PORTRAIT)
 
     (begin-text page)
@@ -21,9 +24,8 @@
     (show-text page text)
     (end-text page)
 
-    (attach-file pdf "test/attach.scm")
+    (attach-file pdf scmname)
 
-    (save-to-file pdf "test/attach.pdf")
+    (save-to-file pdf filename)
 
-    (free pdf)
-    ))
+    (free pdf)))

@@ -16,7 +16,9 @@
 	 [pdf (hpdf-new)]
 	 [page (hpdf-add-page pdf)]
 	 [font (hpdf-get-font pdf "Times-Roman" "WinAnsiEncoding")]
-	 [annot 0])
+	 [annot 0]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/text-annotation.pdf" "text-annotation.pdf")])
     
     (width! page 400)
     (height! page 500)
@@ -75,7 +77,7 @@
 	   ))
 
     ;; save the document to a file 
-    (save-to-file pdf "test/text-annotation.pdf")
+    (save-to-file pdf filename)
     
     ;; clean up 
     (free pdf)))

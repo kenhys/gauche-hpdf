@@ -53,6 +53,17 @@ check :
 	cat test.record
 
 
+DEMO_SCM = arc-demo.scm attach.scm cwrap.scm encoding-list.scm encryption.scm ext-gstate-demo.scm \
+font-demo.scm grid-sheet.scm image-demo.scm image.scm jpeg-demo.scm line-demo.scm link-annotation.scm \
+outline-demo.scm permission.scm png-demo.scm raw-image-demo.scm slide-show-demo.scm text-annotation.scm \
+text-demo.scm text-demo2.scm ttfont-demo-jp.scm ttfont-demo.scm
+
+demo: $(DEMO_SCM)
+	for f in $(DEMO_SCM); do \
+	@GOSH@ -I../lib -I../src "$$f"; \
+	done
+
+
 clean :
 	rm -rf core $(TARGET) $(GENERATED) *~
 

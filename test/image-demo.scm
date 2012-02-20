@@ -14,14 +14,14 @@
     (lineto page (+ x 10) y)
     (stroke page)
 
-    (font-and-size! page (hpdf-page-get-current-font page) 8)
+    (font-and-size! page (current-font page) 8)
     (rgb-fill! page 0 0 0)
 
     (begin-text page)
 
     (set! msg (format #f "(x=~D,y=~D)" x y))
     (move-text-pos page
-			     (- x (hpdf-page-text-width page msg) 5)
+			     (- x (text-width page msg) 5)
 			     (- y 10))
     (show-text page msg)
     (end-text page)
@@ -32,12 +32,11 @@
     (end-text page)))
 
 (define (load-png pdf name)
-  (let* ([filename (cond [(file-is-readable?
-			   (format #f "test/pngsuite/~a.png" name))
-			  (format #f "test/pngsuite/~a.png" name)]
-			 [(file-is-readable? 
-			   (format #f "test/PngSuite-2011apr25/~a.png" name))
-			  (format #f "test/PngSuite-2011apr25/~a.png" name)]
+  (let* ([prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	 [name1 (format #f "~a/pngsuite/~a.png" prefix name)]
+	 [name2 (format #f "~a/PngSuite-2011apr25/~a.png" prefix name)]
+	 [filename (cond [(file-is-readable? name1) name1]			   
+			 [(file-is-readable? name2) name2]
 			 [else #f])])
     (if (and filename (file-is-readable? filename))
 	(hpdf-load-png-image-from-file pdf filename)
@@ -55,14 +54,16 @@
 	 [image2 0]
 	 [image3 0]
 	 [x 0]
-	 [y 0])
+	 [y 0]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/image-demo.pdf" "image-demo.pdf")])
     (compression-mode! pdf HPDF_COMP_ALL)
 
     (width! page 550)
     (height! page 500)
     
-    (set! dst (hpdf-page-create-destination page))
-    (destination-xyz! dst 0 (hpdf-page-get-height page) 1)
+    (set! dst (create-destination page))
+    (destination-xyz! dst 0 (height page) 1)
     (open-action! pdf dst)
 
     (begin-text page)
@@ -157,5 +158,5 @@
     (draw-image page image3 x y iw ih)
     (show-description page x y "Color Mask")
 
-    (save-to-file pdf "test/image-demo.pdf")
+    (save-to-file pdf filename)
     (free pdf)))

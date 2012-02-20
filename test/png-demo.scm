@@ -13,12 +13,12 @@
 (load "grid-sheet.scm")
 
 (define (draw-image pdf name x y text)
-  (let* ([filename (cond [(file-is-readable?
-			   (format #f "test/pngsuite/~a.png" name))
-			  (format #f "test/pngsuite/~a.png" name)]
-			 [(file-is-readable? 
-			   (format #f "test/PngSuite-2011apr25/~a.png" name))
-			  (format #f "test/PngSuite-2011apr25/~a.png" name)]
+  (let* ([prefix (if (rxmatch #/.*test\/.*\.scm/ *program-name*)
+		     "test" ".")]
+	 [name1 (format #f "~a/pngsuite/~a.png" prefix name)]
+	 [name2 (format #f "~a/PngSuite-2011apr25/~a.png" prefix name)]
+	 [filename (cond [(file-is-readable? name1) name1]
+			 [(file-is-readable? name2) name2]
 			 [else #f])]
 	 [page (hpdf-get-current-page pdf)]
 	 [dispname (format #f "~a.png" name)]
@@ -62,7 +62,9 @@
 	 [font (hpdf-get-font pdf "Helvetica" "")]
 	 [tw 0]
 	 [fsize 0]
-	 [dst 0] [image 0])
+	 [dst 0] [image 0]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/png-demo.pdf" "png-demo.pdf")])
     (hpdf-set-compression-mode pdf HPDF_COMP_ALL)
     
     (hpdf-page-set-width page 550)
@@ -85,7 +87,6 @@
 		       (+ (hpdf-page-get-height page) (~ entry 2))
 		       (~ entry 3))) imgs)
     
-    (hpdf-save-to-file pdf "test/png-demo.pdf")
+    (hpdf-save-to-file pdf filename)
 
-    (hpdf-free pdf)
-    ))
+    (free pdf)))

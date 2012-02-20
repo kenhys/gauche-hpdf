@@ -60,7 +60,9 @@
 	 [page (add-page pdf)]
 	 [font (hpdf-get-font pdf "Helvetica" "")]
 	 [len 0]
-	 [ypos 0])
+	 [ypos 0]
+	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
+		       "test/text-demo.pdf" "text-demo.pdf")])
     (compression-mode! pdf HPDF_COMP_ALL)
     
     (print-grid pdf page)
@@ -224,5 +226,5 @@
     (text-out page 60 60 samp_text2)
     (end-text page)
 
-    (save-to-file pdf "test/text-demo.pdf")
+    (save-to-file pdf filename)
     (free pdf)))
