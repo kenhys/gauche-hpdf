@@ -12,7 +12,9 @@
   (let* ([pdf (hpdf-new)]
 	 [page (add-page pdf)]
 	 [font (hpdf-get-font pdf "Helvetica" "")]
-	 [tw 0])
+	 [tw 0]
+	 [filename (if (rxmatch #/.*test\/.+\.scm$/ *program-name*)
+		       "test/permission.pdf" "permission.pdf")])
     (size! page HPDF_PAGE_SIZE_B5 HPDF_PAGE_LANDSCAPE)
     
     (begin-text page)
@@ -27,6 +29,6 @@
     (permission! pdf HPDF_ENABLE_READ)
     (encryption-mode! pdf HPDF_ENCRYPT_R3 16)
 
-    (save-to-file pdf "test/permission.pdf")
+    (save-to-file pdf filename)
 
     (free pdf)))
