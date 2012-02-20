@@ -37,18 +37,25 @@
   (let* ()
     (result (HPDF_Page_TextWidth (-> page h) text))))
 
-"
-/*
-
-HPDF_EXPORT(HPDF_UINT)
-HPDF_Page_MeasureText  (HPDF_Page    page,
-                        const char  *text,
-                        HPDF_REAL    width,
-                        HPDF_BOOL    wordwrap,
-                        HPDF_REAL   *real_width);
-
-*/
-"
+;; FIXME real_width
+(define-cproc hpdf-page-measure-text
+  (page::<hpdf-page> 
+   text::<const-cstring>
+   width::<real>
+   wordwrap
+   :optional (real_width #f)) ::<uint>
+   (let* ()
+     (cond ([SCM_BOOLP real_width]
+	    (if real_width
+		(cond ([SCM_BOOLP wordwrap]
+		       (if wordwrap
+			   (result (HPDF_Page_MeasureText (-> page h) text width HPDF_TRUE NULL))
+			   (result (HPDF_Page_MeasureText (-> page h) text width HPDF_FALSE NULL))))
+		      ([SCM_INTEGERP wordwrap]
+		       (result (HPDF_Page_MeasureText (-> page h) text width (SCM_INT_VALUE wordwrap) NULL))))
+		(result (HPDF_Page_MeasureText (-> page h) text width HPDF_FALSE NULL))))
+	   (else
+	    (Scm_Error "")))))
 
 (define-cproc hpdf-page-get-width (page::<hpdf-page>)
   (expr <float> "HPDF_Page_GetWidth(page->h)"))
@@ -89,8 +96,9 @@ HPDF_Page_MeasureText  (HPDF_Page    page,
   SCM_RESULT = h;"))
 
 
-(define-cproc hpdf-page-get-current-font-size (page::<hpdf-page>)
-  (expr <float>  "HPDF_Page_GetCurrentFontSize(page->h)"))
+(define-cproc hpdf-page-get-current-font-size
+  (page::<hpdf-page>) ::<real>
+  (result (HPDF_Page_GetCurrentFontSize (-> page h))))
 
 (define-cproc hpdf-page-get-transmatrix (page::<hpdf-page>)
   (body <hpdf-transmatrix>

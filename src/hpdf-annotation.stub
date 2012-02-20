@@ -30,13 +30,19 @@
   (page::<hpdf-page> 
    rect::<hpdf-rect>
    text::<const-cstring>
-   encoder::<hpdf-encoder>)
-  (body <hpdf-annotation>
-        "GAUCHE_HPDF_FUNC(\"hpdf-page-create-text-annot\");"
-        "ScmHpdfAnnotation *h = SCM_NEW(ScmHpdfAnnotation);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_ANNOTATION);"
-        "h->h = HPDF_Page_CreateTextAnnot(page->h, rect->h, text, encoder->h);"
-        "SCM_RESULT = h;"))
+   :optional (encoder::<hpdf-encoder>? #f)) ::<hpdf-annotation>
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)]
+	  )
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-text-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (if encoder
+	 (set! (-> annot h) (HPDF_Page_CreateTextAnnot (-> page h)
+						   (-> rect h)
+						   text (-> encoder h)))
+	 (set! (-> annot h) (HPDF_Page_CreateTextAnnot (-> page h)
+						   (-> rect h)
+						   text NULL)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-free-text-annot
   (page::<hpdf-page>
@@ -185,9 +191,14 @@
         "SCM_RESULT = HPDF_TextAnnot_SetIcon (annot->h, icon);"))
 
 (define-cproc hpdf-text-annot-set-opened
-  (annot::<hpdf-annotation> opened::<boolean>)
-  (body <ulong> "SCM_RESULT = HPDF_TextAnnot_SetOpened (annot->h, opened);"))
-
+  (annot::<hpdf-annotation> opened) ::<hpdf-status>
+  (let* ()
+    (cond ([SCM_BOOLP opened]
+	   (HPDF_TextAnnot_SetOpened (-> annot h) opened))
+	  ([SCM_INTEGERP opened]
+	   (HPDF_TextAnnot_SetOpened (-> annot h) opened))
+	  (else
+	   (Scm_Error "HPDF_TRUE(FALSE) or #t(#f) required, but got")))))
 
 (define-cproc hpdf-annot-set-rgb-color
   (annot::<hpdf-annotation> color::<hpdf-rgbcolor>) ::<ulong>

@@ -38,8 +38,9 @@
   (expr <ulong> "HPDF_Page_SetCharSpace(page->h, value)"))
 
 ;; Tw
-(define-cproc hpdf-page-setwordspace (page::<hpdf-page> value::<float>)
-  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
+(define-cproc hpdf-page-set-word-space
+  (page::<hpdf-page> value::<float>) ::<hpdf-status>
+  (result (HPDF_Page_SetWordSpace (-> page h) value)))
 
 (define-cproc hpdf-page-set-horizontal-scalling (page::<hpdf-page> value::<float>)
   (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
@@ -67,8 +68,11 @@
 (define-cproc hpdf-page-move-text-pos2 (page::<hpdf-page> x::<float> y::<float>)
   (expr <ulong> "HPDF_Page_MoveTextPos2(page->h, x, y)"))
 
-(define-cproc hpdf-page-set-text-matrix (page::<hpdf-page> a::<float> b::<float> c::<float> d::<float> x::<float> y::<float>)
-  (expr <ulong> "HPDF_Page_SetTextMatrix(page->h, a, b, c, d, x, y)"))
+(define-cproc hpdf-page-set-text-matrix
+  (page::<hpdf-page> 
+   a::<float> b::<float> c::<float>
+   d::<float> x::<float> y::<float>) ::<hpdf-status>
+   (result (HPDF_Page_SetTextMatrix (-> page h) a b c d x y)))
 
 (define-cproc hpdf-page-move-to-nextline (page::<hpdf-page>)
   (expr <ulong> "HPDF_Page_MoveToNextLine(page->h)"))

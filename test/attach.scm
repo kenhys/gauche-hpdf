@@ -21,9 +21,9 @@
     (show-text page text)
     (end-text page)
 
-    (hpdf-attach-file pdf "test/attach.scm")
+    (attach-file pdf "test/attach.scm")
 
-    (hpdf-save-to-file pdf "test/attach.pdf")
+    (save-to-file pdf "test/attach.pdf")
 
-    (hpdf-free pdf)
+    (free pdf)
     ))

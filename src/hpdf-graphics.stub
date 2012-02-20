@@ -58,20 +58,23 @@
   (expr <ulong> "HPDF_Page_SetExtGState(page->h, ext_gstate->h)"))
 
 ;; Special graphic state operator
-(define-cproc hpdf-page-gsave (page::<hpdf-page>)
-  (body <ulong> "HPDF_Page_GSave(page->h);"))
+(define-cproc hpdf-page-gsave 
+  (page::<hpdf-page>) ::<hpdf-status>
+  (result (HPDF_Page_GSave (-> page h))))
 
-(define-cproc hpdf-page-grestore (page::<hpdf-page>)
-  (body <ulong> "HPDF_Page_GRestore(page->h);"))
+(define-cproc hpdf-page-grestore
+  (page::<hpdf-page>) ::<hpdf-status>
+  (result (HPDF_Page_GRestore (-> page h))))
 
-(define-cproc hpdf-page-concat (page::<hpdf-page>
-                                a::<float>
-                                b::<float>
-                                c::<float>
-                                d::<float>
-                                x::<float>
-                                y::<float>)
-  (body <ulong> "HPDF_Page_Concat(page->h, a, b, c, d, x, y);"))
+(define-cproc hpdf-page-concat
+  (page::<hpdf-page>
+   a::<float>
+   b::<float>
+   c::<float>
+   d::<float>
+   x::<float>
+   y::<float>) ::<hpdf-status>
+   (result (HPDF_Page_Concat (-> page h) a b c d x y)))
 
 ;; Path construction operator
 (define-cproc hpdf-page-moveto (page::<hpdf-page> x::<float> y::<float>)
@@ -130,98 +133,6 @@
 (define-cproc hpdf-page-eoclip (page::<hpdf-page>)
   (expr <ulong> "HPDF_Page_Eoclip(page->h)"))
 
-;; Text object operator
-;; BT
-(define-cproc hpdf-page-begin-text (page::<hpdf-page>)
-  (expr <ulong> "HPDF_Page_BeginText(page->h)"))
-
-;; ET
-(define-cproc hpdf-page-end-text (page::<hpdf-page>)
-  (expr <ulong> "HPDF_Page_EndText(page->h)"))
-
-;; Text state
-(define-cproc hpdf-page-set-char-space (page::<hpdf-page> value::<float>)
-  (expr <ulong> "HPDF_Page_SetCharSpace(page->h, value)"))
-
-(define-cproc hpdf-page-setwordspace (page::<hpdf-page> value::<float>)
-  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
-
-(define-cproc hpdf-page-set-horizontal-scalling (page::<hpdf-page> value::<float>)
-  (expr <ulong> "HPDF_Page_SetWordSpace(page->h, value)"))
-
-(define-cproc hpdf-page-set-text-leading (page::<hpdf-page> value::<float>)
-  (expr <ulong> "HPDF_Page_SetTextLeading(page->h, value)"))
-
-;; (define-cproc hpdf-page-set-font-and-size (page::<hpdf-page> font::<hpdf-font> size::<float>)
-;;   (body <ulong>
-;;         "GAUCHE_HPDF_FUNC(\"hpdf-page-set-font-and-size\");"
-;;         "SCM_RESULT = HPDF_Page_SetFontAndSize(page->h, font->h, size);"))
-
-;; (define-cproc hpdf-page-set-text-rendering-mode (page::<hpdf-page> mode::<uint>)
-;;   (expr <ulong> "HPDF_Page_SetTextRenderingMode(page->h, mode)"))
-
-;; (define-cproc hpdf-page-set-text-rise (page::<hpdf-page> value::<float>)
-;;   (expr <ulong> "HPDF_Page_SetTextRise(page->h, value)"))
-
-;; Text positioning 
-;; (define-cproc hpdf-page-move-text-pos (page::<hpdf-page> x::<float> y::<float>)
-;;   (expr <ulong> "HPDF_Page_MoveTextPos(page->h, x, y)"))
-
-;; (define-cproc hpdf-page-move-text-pos2 (page::<hpdf-page> x::<float> y::<float>)
-;;   (expr <ulong> "HPDF_Page_MoveTextPos2(page->h, x, y)"))
-
-;; (define-cproc hpdf-page-set-text-matrix (page::<hpdf-page> a::<float> b::<float> c::<float> d::<float> x::<float> y::<float>)
-;;   (expr <ulong> "HPDF_Page_SetTextMatrix(page->h, a, b, c, d, x, y)"))
-
-;; (define-cproc hpdf-page-move-to-nextline (page::<hpdf-page>)
-;;   (expr <ulong> "HPDF_Page_MoveToNextLine(page->h)"))
-  
-;; Text showing
-;; (define-cproc hpdf-page-show-text (page::<hpdf-page> text::<const-cstring>)
-;;   (body <ulong>
-;;         "GAUCHE_HPDF_FUNC(\"hpdf-page-show-text\");"
-;;         "#ifdef GAUCHE_HPDF_DEBUG"
-;;         "char dummy[20];"
-;;         "int i = 0;"
-;;         "dummy[i] = 0x83;i++;"
-;;         "dummy[i] = 0x41;i++;"
-;;         "dummy[i] = 0x83;i++;"
-;;         "dummy[i] = 0x81;i++;"
-;;         "dummy[i] = 0x83;i++;"
-;;         "dummy[i] = 0x93;i++;"
-;;         "dummy[i] = 0x83;i++;"
-;;         "dummy[i] = 0x7b;i++;"
-;;         "dummy[i] = 0x90;i++;"
-;;         "dummy[i] = 0xd4;i++;"
-;;         "dummy[i] = 0;i++;"
-;;         "dummy[i] = 0;i++;"
-;;         "dummy[i] = 0;i++;"
-;;         "i = 0;"
-;;         "char *p = text;"
-;;         "fprintf(stderr, \"text entry:\", text);"
-;;         "while (i < 20) {"
-;;         "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", text[i], text[i]);"
-;;         "  i++;"
-;;         "}"
-;;         "i = 0;"
-;;         "fprintf(stderr, \"dummy entry:\", dummy);"
-;;         "while (i < 20) {"
-;;         "  fprintf(stderr, \"hex: 0x%02x int:%6d\\n\", dummy[i], dummy[i]);"
-;;         "  i++;"
-;;         "}"
-;;         "#endif"
-;;         "if (strlen(text) > 0) {"
-;;         "  SCM_RESULT = HPDF_Page_ShowText(page->h, text);"
-;;         "} else {"
-;;         "  SCM_RESULT = 0;"
-;;         "}"
-;;         ))
-
-;; (define-cproc hpdf-page-show-text-next-line (page::<hpdf-page> text::<const-cstring>)
-;;   (expr <ulong> "HPDF_Page_ShowTextNextLine(page->h, text)"))
-
-;; (define-cproc hpdf-page-show-text-next-line-ex (page::<hpdf-page> word_space::<float> char_space::<float> text::<const-cstring>)
-;;   (expr <ulong> "HPDF_Page_ShowTextNextLineEx(page->h, word_space, char_space, text)"))
 
 ;; Color showing
 (define-cproc hpdf-page-set-gray-fill (page::<hpdf-page> gray::<float>)

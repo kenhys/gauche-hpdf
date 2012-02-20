@@ -17,12 +17,12 @@
 ;;
 ;; Encoding Handler
 ;;
-(define-cproc hpdf-get-encoder (doc::<hpdf-doc> encoding_name::<const-cstring>)
-  (body <hpdf-encoder>
-        "  ScmHpdfEncoder *h = SCM_NEW(ScmHpdfEncoder);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_ENCODER);
-  h->h = HPDF_GetEncoder(doc->h, encoding_name);
-  SCM_RESULT = h;"))
+(define-cproc hpdf-get-encoder
+  (doc::<hpdf-doc> encoding_name::<const-cstring>) ::<hpdf-encoder>
+  (let* ([encoder::ScmHpdfEncoder* (SCM_NEW ScmHpdfEncoder)])
+    (SCM_SET_CLASS encoder SCM_CLASS_HPDF_ENCODER)
+    (set! (-> encoder h) (HPDF_GetEncoder (-> doc h) encoding_name))
+    (result encoder)))
 
 (define-cproc hpdf-get-current-encoder (doc::<hpdf-doc>)
   (body <hpdf-encoder>

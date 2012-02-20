@@ -6,110 +6,77 @@
 
 (define (main args)
   (let* ([rect1 (make-rect 50 350 150 400)]
+	 [rect2 (make-rect 210 350 350 400)]
+	 [rect3 (make-rect 50 250 150 300)]
+	 [rect4 (make-rect 210 250 350 300)]
+	 [rect5 (make-rect 50 150 150 200)]
+	 [rect6 (make-rect 210 150 350 200)]
+	 [rect7 (make-rect 50 50 150 100)]
+	 [rect8 (make-rect 210 50 350 100)]
 	 [pdf (hpdf-new)]
 	 [page (hpdf-add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Times-Roman" "WinAnsiEncoding")]
 	 [annot 0])
     
-    (hpdf-page-set-width page 400)
-    (hpdf-page-set-height page 500)
+    (width! page 400)
+    (height! page 500)
 
-    (hpdf-page-begin-text page)
-    (hpdf-page-set-font-and-size page font 16)
-    (hpdf-page-move-text-pos page 130 450)
-    (hpdf-page-show-text page "Annotation Demo")
-    (hpdf-page-end-text page)
+    (begin-text page)
+    (font-and-size! page font 16)
+    (move-text-pos page 130 450)
+    (show-text page "Annotation Demo")
+    (end-text page)
 
     (set! annot (hpdf-page-create-text-annot
-		 page rect1 "Annotation with Comment Icon. \n This annotation set to be opened initially." (make <hpdf-encoder>)))
+		 page rect1 "Annotation with Comment Icon. \n This annotation set to be opened initially."))
 
     
-    (hpdf-text-annot-set-icon annot HPDF_ANNOT_ICON_COMMENT)
-    (hpdf-text-annot-set-opened annot  HPDF_TRUE)
+    (text-annot-icon! annot HPDF_ANNOT_ICON_COMMENT)
+    (text-annot-opened! annot HPDF_TRUE)
 
-    ;; (set! annot (hpdf-page-createtext-annot
-    ;; 		 page rect2
-    ;; 		 "annotation with key icon" null))
-    ;; (hpdf-text-annot-set-icon annot HPDF_ANNOT_ICON_PARAGRAPH)
+    ;; rect2 .. rect7
+    (map (^ (entry)
+	   (let* ([rect (~ entry 0)]
+		  [text (~ entry 1)]
+		  [icon (~ entry 2)]
+		  [annot 0]
+		  [encoding 0])
+	     (set! annot (create-text-annot page rect text #f))
+	     (text-annot-icon! annot icon)))
+	 `((,rect2 "Annotation with Key Icon" ,HPDF_ANNOT_ICON_PARAGRAPH)
+	   (,rect3 "Annotation with Note Icon" ,HPDF_ANNOT_ICON_NOTE)
+	   (,rect4 "Annotation with Help Icon" ,HPDF_ANNOT_ICON_HELP)
+	   (,rect5 "newparagraph icon." ,HPDF_ANNOT_ICON_NEW_PARAGRAPH)
+	   (,rect6 "paragraph icon." ,HPDF_ANNOT_ICON_PARAGRAPH)
+	   (,rect7 "insert icon." ,HPDF_ANNOT_ICON_INSERT)))
 
-    ;; (set! annot  (hpdf-page-createtext-annot 
-    ;; 		  page rect3
-    ;; 		  "annotation with note icon" null))
-    ;; (hpdf-text-annot-set-icon annot  HPDF_ANNOT_ICON_NOTE)
+    ;; (set! encoding (hpdf-get-encoder pdf "ISO8859-2"))
+    ;; (d encoding)
+    ;; (create-text-annot (page rect8
+    ;; 			     "annotation with iso8859 text ﾓﾔﾕﾖﾗﾘﾙ" encoding))
 
-    ;; (set! annot  (hpdf-page-createtext-annot
-    ;; 		  page rect4
-    ;; 		  "annotation with help icon" null))
-    ;; (hpdf-text-annot-set-icon annot  HPDF_ANNOT_ICON_HELP)
+    (font-and-size! page font 11)
 
-    ;; (set! annot (hpdf-page-createtext-annot
-    ;; 		 page rect5
-    ;; 		 "annotation with newparagraph icon" null))
-    ;; (hpdf-text-annot-set-icon annot  HPDF_ANNOT_ICON_NEW_PARAGRAPH)
-
-    ;; (set! annot  (hpdf-page-createtext-annot (page rect6
-    ;;             "annotation with paragraph icon" null)
-    ;; (hpdf-text-annot-set-icon annot  (hpdf-annot-icon-paragraph)
-
-    ;; (set! annot  (hpdf-page-createtext-annot (page rect7
-    ;;             "annotation with insert icon" null)
-    ;; (hpdf-text-annot-set-icon annot  (hpdf-annot-icon-insert)
-
-    ;; encoding = (hpdf-getencoder (pdf "iso8859-2")
-
-    ;; (hpdf-page-createtext-annot (page rect8
-    ;;             "annotation with iso8859 text ﾓﾔﾕﾖﾗﾘﾙ" encoding)
-
-    (hpdf-page-set-font-and-size page font 11)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page rect1.left + 35 rect1.top - 20)
-    (hpdf-page-show-text page "comment icon.")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page rect2.left + 35 rect2.top - 20)
-    (hpdf-page-show-text page "key icon")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page rect3.left + 35 rect3.top - 20)
-    (hpdf-page-show-text page "note icon.")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page rect4.left + 35 rect4.top - 20)
-    (hpdf-page-show-text page "help icon")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page rect5.left + 35 rect5.top - 20)
-    (hpdf-page-show-text page "newparagraph icon")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page rect6.left + 35 rect6.top - 20)
-    (hpdf-page-show-text page "paragraph icon")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page (+ (~ rect7 'left) 35)
-			     (- (~ rect7 'top) 20))
-    (hpdf-page-show-text page "insert icon")
-    (hpdf-page-end-text page)
-
-    (hpdf-page-begin-text page)
-    (hpdf-page-move-text-pos page (+ (~ rect8 'left) 35)
-			     (- (~ rect8 'top) 20))
-    (hpdf-page-show-text page "text icon(iso8859-2 text)")
-    (hpdf-page-end-text page)
-
+    (map (^ (entry)
+	   (let* ([rect (~ entry 0)]
+		  [comment (~ entry 1)])
+	     (begin-text page)
+	     (move-text-pos page (+ (~ rect 'left) 35) (- (~ rect 'top) 20))
+	     (show-text page comment)
+	     (end-text page)))
+	 `((,rect1 "Comment Icon")
+	   (,rect2 "Key Icon")
+	   (,rect3 "Note Icon")
+	   (,rect4 "Help Icon")
+	   (,rect5 "NewParagraph Icon")
+	   (,rect6 "Paragraph Icon")
+	   (,rect7 "Insert Icon")
+	   (,rect8 "Text Icon(ISO8859-2 text)")
+	   ))
 
     ;; save the document to a file 
-    (hpdf-save-to-file pdf fname)
-
+    (save-to-file pdf "test/text-annotation.pdf")
+    
     ;; clean up 
-    (hpdf-free pdf)
-
-    ))
+    (free pdf)))
     
