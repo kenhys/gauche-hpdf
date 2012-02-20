@@ -12,7 +12,7 @@
 
 (load "grid-sheet.scm")
 
-(define (draw-image pdf name x y text)
+(define (draw-image-proc pdf name x y text)
   (let* ([prefix (if (rxmatch #/.*test\/.*\.scm/ *program-name*)
 		     "test" ".")]
 	 [name1 (format #f "~a/pngsuite/~a.png" prefix name)]
@@ -26,15 +26,15 @@
     (if (and filename (file-is-readable? filename))
 	(set! image (hpdf-load-png-image-from-file pdf filename))
 	(error "not <hpdf-image>"))
-    (hpdf-page-draw-image page image x y 
+    (draw-image page image x y 
 			  (hpdf-image-get-width image)
 			  (hpdf-image-get-height image))
-    (hpdf-page-begin-text page)
-    (hpdf-page-set-text-leading page 16)
-    (hpdf-page-move-text-pos page x y)
-    (hpdf-page-show-text-next-line page dispname)
-    (hpdf-page-show-text-next-line page text)
-    (hpdf-page-end-text page)))
+    (begin-text page)
+    (text-leading! page 16)
+    (move-text-pos page x y)
+    (show-text-next-line page dispname)
+    (show-text-next-line page text)
+    (end-text page)))
 
 (define imgs
   '(("basn0g01" 100 -150 "1bit grayscale.")
@@ -65,26 +65,26 @@
 	 [dst 0] [image 0]
 	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
 		       "test/png-demo.pdf" "png-demo.pdf")])
-    (hpdf-set-compression-mode pdf HPDF_COMP_ALL)
+    (compression-mode! pdf HPDF_COMP_ALL)
     
-    (hpdf-page-set-width page 550)
-    (hpdf-page-set-height page 650)
+    (width! page 550)
+    (height! page 650)
 
-    (set! dst (hpdf-page-create-destination page))
-    (hpdf-destination-set-xyz dst 0 (hpdf-page-get-height page) 1)
-    (hpdf-set-open-action pdf dst)
+    (set! dst (create-destination page))
+    (destination-xyz! dst 0 (height page) 1)
+    (open-action! pdf dst)
 
-    (hpdf-page-begin-text page)
-    (hpdf-page-set-font-and-size page font 20)
-    (hpdf-page-move-text-pos page 220 (- (hpdf-page-get-height page) 70))
-    (hpdf-page-show-text page "PngDemo")
-    (hpdf-page-end-text page)
+    (begin-text page)
+    (font-and-size! page font 20)
+    (move-text-pos page 220 (- (height page) 70))
+    (show-text page "PngDemo")
+    (end-text page)
 
-    (hpdf-page-set-font-and-size page font 12)
+    (font-and-size! page font 12)
 
     (map (^ (entry)
-	   (draw-image pdf (~ entry 0) (~ entry 1)
-		       (+ (hpdf-page-get-height page) (~ entry 2))
+	   (draw-image-proc pdf (~ entry 0) (~ entry 1)
+		       (+ (height page) (~ entry 2))
 		       (~ entry 3))) imgs)
     
     (hpdf-save-to-file pdf filename)
