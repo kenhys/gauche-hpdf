@@ -25,8 +25,8 @@
   (page::<hpdf-page> line_width::<real>) ::<hpdf-status>
   (body <ulong> "HPDF_Page_SetLineWidth(page->h, line_width);"))
 
-(define-cproc hpdf-page-set-line-cap (page::<hpdf-page> cap::<hpdf-linecap>)
-  (body <ulong> "HPDF_Page_SetLineCap(page->h, cap->h);"))
+(define-cproc hpdf-page-set-line-cap (page::<hpdf-page> cap::<uint>)
+  (body <ulong> "HPDF_Page_SetLineCap(page->h, cap);"))
 
 (define-cproc hpdf-page-set-line-join (page::<hpdf-page> join::<uint>)
   (body <ulong>

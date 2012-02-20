@@ -78,6 +78,14 @@
 (define-method fill-stroke ((self <hpdf-page>))
   (hpdf-page-fill-stroke self))
 
+;; Clipping paths operator
+
+(define-method clip ((self <hpdf-page>))
+  (hpdf-page-clip self))
+
+(define-method eoclip ((self <hpdf-page>))
+  (hpdf-page-eoclip self))
+
 ;; color showing
 (define-method gray-fill! ((self <hpdf-page>) gray)
   (hpdf-page-set-gray-fill self gray))

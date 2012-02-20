@@ -1,4 +1,4 @@
-"
+" /* -*- mode:scheme; coding: utf-8 -*- */
 #include <hpdf.h>
 #include <hpdf_types.h>
 #include <hpdf_consts.h>
@@ -122,6 +122,16 @@
 (define-enum HPDF_MAX_DASH_PATTERN)
 
 (define-enum HPDF_MAX_JWW_NUM)
+
+;; hpdf-types.h HPDF_LineCap
+(define-enum HPDF_BUTT_END)
+(define-enum HPDF_ROUND_END)
+(define-enum HPDF_PROJECTING_SCUARE_END)
+
+;; hpdf-types.h HPDF_LineJoin
+(define-enum HPDF_MITER_JOIN)
+(define-enum HPDF_ROUND_JOIN)
+(define-enum HPDF_BEVEL_JOIN)
 
 ;; country code definition
 (define-constant HPDF_COUNTRY_AF (c "SCM_MAKE_STR(HPDF_COUNTRY_AF)")) ;;* AFGHANISTAN

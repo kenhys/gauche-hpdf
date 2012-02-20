@@ -39,6 +39,10 @@
 
 (define page-title "Line Example")
 
+(define DASH_MODE1 '(3))
+(define DASH_MODE2 '(3 7))
+(define DASH_MODE3 '(8 7 2 7))
+
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [page (add-page pdf)]
@@ -81,21 +85,19 @@
     (line-width! page 2.0)
     (draw-line page 60 710 "line width = 2.0")
 
-    ;; line dash pattern 
+    ;; Line dash pattern 
     (line-width! page 1.0)
 
-    (dash! page DASH_MODE1 1 1)
-    (draw-line page 60 680 "dash-ptn=[3] phase=1 -- "
-                "2 on 3 off 3 on...")
+    (dash! page DASH_MODE1 1)
+    (draw-line page 60 680 "dash-ptn=[3] phase=1 -- 2 on 3 off 3 on...")
 
-    (dash! page DASH_MODE2 2 2)
-    (draw-line page 60 650 "dash-ptn=[7 3] phase=2 -- "
-                "5 on 3 off 7 on...")
+    (dash! page DASH_MODE2 2)
+    (draw-line page 60 650 "dash-ptn=[7 3] phase=2 -- 5 on 3 off 7 on...")
 
-    (dash! page dash-mode3 4 0)
+    (dash! page DASH_MODE3 0)
     (draw-line page 60 620 "dash-ptn=[8 7 2 7] phase=0")
 
-    (dash! page null 0 0)
+    (dash! page '() 0)
 
     (line-width! page 30)
     (rgb-stroke! page 0.0 0.5 0.0)
@@ -110,7 +112,7 @@
     (line-cap! page HPDF_PROJECTING_SCUARE_END)
     (draw-line2 page 60 440 "pdf-projecting-scuare-end")
 
-    ;; line join style 
+    ;; Line join style 
     (line-width! page 30)
     (rgb-stroke! page 0.0 0.0 0.5)
 
@@ -122,7 +124,7 @@
 
     (begin-text page)
     (move-text-pos page 60 360)
-    (show-text page "PDF-MITER-JOIN")
+    (show-text page "PDF_MITER_JOIN")
     (end-text page)
 
     (line-join! page HPDF_ROUND_JOIN)
@@ -133,10 +135,10 @@
 
     (begin-text page)
     (move-text-pos page 60 255)
-    (show-text page "PDF-ROUND-JOIN")
+    (show-text page "PDF_ROUND_JOIN")
     (end-text page)
 
-    (line-join! page hpdf-bevel-join)
+    (line-join! page HPDF_BEVEL_JOIN)
     (moveto page 120 90)
     (lineto page 160 130)
     (lineto page 200 90)
@@ -156,7 +158,7 @@
     (stroke page)
 
     (draw-rect page 300 720 "fill")
-    (fill! page)
+    (fill page)
 
     (draw-rect page 300 670 "fill then stroke")
     (fill-stroke page)
