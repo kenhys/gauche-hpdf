@@ -673,14 +673,14 @@
 (define-enum HPDF_INFO_SUBJECT)
 (define-enum HPDF_INFO_KEYWORDS)
 ;; alias
-;; (define-enum CREATION_DATE)
-;; (define-enum MOD_DATE)
-;; (define-enum AUTHOR)
-;; (define-enum CREATOR)
-;; (define-enum PRODUCER)
-;; (define-enum TITLE)
-;; (define-enum SUBJECT)
-;; (define-enum KEYWORDS)
+(define-constant CREATION_DATE (c "SCM_MAKE_INT(HPDF_INFO_CREATION_DATE)"))
+(define-constant MOD_DATE (c "SCM_MAKE_INT(HPDF_INFO_MOD_DATE)"))
+(define-constant AUTHOR (c "SCM_MAKE_INT(HPDF_INFO_AUTHOR)"))
+(define-constant CREATOR (c "SCM_MAKE_INT(HPDF_INFO_CREATOR)"))
+(define-constant PRODUCER (c "SCM_MAKE_INT(HPDF_INFO_PRODUCER)"))
+(define-constant TITLE (c "SCM_MAKE_INT(HPDF_INFO_TITLE)"))
+(define-constant SUBJECT (c "SCM_MAKE_INT(HPDF_INFO_SUBJECT)"))
+(define-constant KEYWORDS (c "SCM_MAKE_INT(HPDF_INFO_KEYWORDS)"))
 
 ;; HPDF_EncryptMode	
 ;; (define-constant HPDF_ENCRYPT_R2 HPDF_ENCRYPT_R2)
