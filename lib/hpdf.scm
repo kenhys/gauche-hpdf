@@ -8,9 +8,11 @@
    hpdf.compat
    hpdf.destination
    hpdf.doc
+   hpdf.encoder
    hpdf.graphics
    hpdf.gstate
    hpdf.image
+   hpdf.outline
    hpdf.page
    hpdf.font
    hpdf.text)

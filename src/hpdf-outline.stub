@@ -15,33 +15,52 @@
 ;; Outline
 ;;
 (define-cproc hpdf-create-outline
-  (doc::<hpdf-doc> parent::<hpdf-outline>?
-		   title::<const-cstring> encoder::<hpdf-encoder>?)
-  (body <hpdf-outline>?
-        "GAUCHE_HPDF_FUNC(\"hpdf-create-outline\");"
-        "ScmHpdfOutline *h = SCM_NEW(ScmHpdfOutline);"
-        "SCM_SET_CLASS(h, SCM_CLASS_HPDF_OUTLINE);"
-        "if (parent) {"
-        "  if (encoder) {"
-        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, encoder->h);"
-        "  } else {"
-        "    h->h = HPDF_CreateOutline(doc->h, parent->h, title, NULL);"
-        "  }"
-        "} else {"
-        "  if (encoder) {"
-        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, encoder->h);"
-        "  } else {"
-        "    h->h = HPDF_CreateOutline(doc->h, NULL, title, NULL);"
-        "  }"
-        "}"
-        "SCM_RESULT = h;"))
+  (doc::<hpdf-doc> 
+   parent
+   title::<const-cstring> encoder) ::<hpdf-outline>
+   (let* ([ol::ScmHpdfOutline* (SCM_NEW ScmHpdfOutline)]
+	  [pol::ScmHpdfOutline* NULL]
+	  [enc::ScmHpdfEncoder* NULL])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-create-outline"))
+     (SCM_SET_CLASS ol SCM_CLASS_HPDF_OUTLINE)
+     (cond ([and (SCM_BOOLP parent) (SCM_BOOLP encoder)]
+	    ;; FIXME just ignore parent and encoder
+	    (set! (-> ol h)
+		  (HPDF_CreateOutline (-> doc h) NULL title NULL)))
+	   ([SCM_HPDF_OUTLINE_P parent]
+	    (set! pol (SCM_HPDF_OUTLINE parent))
+	    (set! enc (SCM_HPDF_ENCODER encoder))
+	    (if parent
+		(if encoder
+		    (set! (-> ol h)
+			  (HPDF_CreateOutline (-> doc h) (-> pol h)
+					      title (-> enc h)))
+		    (set! (-> ol h)
+			  (HPDF_CreateOutline (-> doc h) (-> pol h)
+					      title NULL)))
+		(if encoder
+		    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL
+							title (-> enc h)))
+		    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL title NULL)))))
+	   (else 
+	    ;; default fallback
+	    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL "" NULL))))
+     (result ol)))
 
 (define-cproc hpdf-outline-set-opened
-  (out::<hpdf-outline> opened::<boolean>) ::<ulong>
-  (let* ()
+  (out::<hpdf-outline> opened) ::<ulong>
+  (let* ([mode::int 0])
     (.if DEBUG
 	(GAUCHE_HPDF_FUNC "hpdf-set-opened"))
-    (result (HPDF_Outline_SetOpened (-> out h) opened))))
+    (cond ([SCM_BOOLP opened]
+	   (set! mode (SCM_INT_VALUE opened)))
+
+	  ([SCM_INTEGERP opened]
+	   (set! mode (SCM_INT_VALUE opened)))
+	  (else
+	   ;; default fallback
+	   (set! mode 0)))
+    (result (HPDF_Outline_SetOpened (-> out h) mode))))
 
 (define-cproc hpdf-outline-set-destination
   (out::<hpdf-outline> dst::<hpdf-destination>) ::<ulong>

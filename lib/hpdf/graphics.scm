@@ -56,10 +56,10 @@
   (hpdf-page-curveto self x1 y1 x2 y2 x3 y3))
 
 (define-method curveto2 ((self <hpdf-page>) x2 y2 x3 y3)
-  (hpdf-page-curveto self x2 y2 x3 y3))
+  (hpdf-page-curveto2 self x2 y2 x3 y3))
 
 (define-method curveto3 ((self <hpdf-page>) x1 y1 x3 y3)
-  (hpdf-page-curveto self x1 y1 x3 y3))
+  (hpdf-page-curveto3 self x1 y1 x3 y3))
 
 (define-method close-path ((self <hpdf-page>))
   (hpdf-page-close-path self))
@@ -75,8 +75,23 @@
 (define-method fill ((self <hpdf-page>))
   (hpdf-page-fill self))
 
+(define-method eofill ((self <hpdf-page>))
+  (hpdf-page-eofill self))
+
 (define-method fill-stroke ((self <hpdf-page>))
   (hpdf-page-fill-stroke self))
+
+(define-method eofill-stroke ((self <hpdf-page>))
+  (hpdf-page-eofill-stroke self))
+
+(define-method close-path-fill-stroke ((self <hpdf-page>))
+  (hpdf-page-close-path-fill-stroke self))
+
+(define-method close-path-eofill-stroke ((self <hpdf-page>))
+  (hpdf-page-close-path-eofill-stroke self))
+
+(define-method end-path ((self <hpdf-page>))
+  (hpdf-page-end-path self))
 
 ;; Clipping paths operator
 

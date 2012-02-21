@@ -26,7 +26,10 @@
 	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL)))
     (result font)))
 
-(define-cproc hpdf-load-type1-font-from-file (doc::<hpdf-doc> afm_file_name::<const-cstring> data_file_name::<const-cstring>)
+(define-cproc hpdf-load-type1-font-from-file
+  (doc::<hpdf-doc>
+   afm_file_name::<const-cstring>
+   data_file_name::<const-cstring>)
   (body <const-cstring>?
         "GAUCHE_HPDF_FUNC(\"hpdf-load-type1-font-from-file\");"
         "/* afm, pfb*/"

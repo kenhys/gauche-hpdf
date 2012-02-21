@@ -26,7 +26,7 @@
   (hpdf-get-page-mode self))
 
 (define-method page-mode! ((self <hpdf-doc>) mode)
-  (hpdf-set-page-mode self layout))
+  (hpdf-set-page-mode self mode))
 
 (define-method viewer-preference ((self <hpdf-doc>))
   (hpdf-get-viewer-preference self))

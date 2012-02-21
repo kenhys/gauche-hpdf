@@ -688,6 +688,19 @@
 (define-enum HPDF_ENCRYPT_R2)
 (define-enum HPDF_ENCRYPT_R3)
 
+;; enum HPDF_BlendMode
+(define-enum HPDF_BM_NORMAL)
+(define-enum HPDF_BM_MULTIPLY)
+(define-enum HPDF_BM_SCREEN)
+(define-enum HPDF_BM_OVERLAY)
+(define-enum HPDF_BM_DARKEN)
+(define-enum HPDF_BM_LIGHTEN)
+(define-enum HPDF_BM_COLOR_DODGE)
+(define-enum HPDF_BM_COLOR_BUM)
+(define-enum HPDF_BM_HARD_LIGHT)
+(define-enum HPDF_BM_SOFT_LIGHT)
+(define-enum HPDF_BM_DIFFERENCE)
+(define-enum HPDF_BM_EXCLUSHON)
 
 ;; enum HPDF_PageSlideShow
 (define-enum HPDF_TS_WIPE_RIGHT)
@@ -773,7 +786,7 @@
 (define-enum HPDF_ANNOT_DOWN_APPEARANCE)
 (define-enum HPDF_ANNOT_HIGHTLIGHT_MODE_EOF)
 
-    ;; HPDF_AnnotIcon
+;; HPDF_AnnotIcon
 (define-enum HPDF_ANNOT_ICON_COMMENT )
 (define-enum HPDF_ANNOT_ICON_KEY)
 (define-enum HPDF_ANNOT_ICON_NOTE)

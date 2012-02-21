@@ -23,6 +23,7 @@
 	 [page (hpdf-get-current-page pdf)]
 	 [dispname (format #f "~a.png" name)]
 	 [image 0])
+    (d filename)
     (if (and filename (file-is-readable? filename))
 	(set! image (hpdf-load-png-image-from-file pdf filename))
 	(error "not <hpdf-image>"))
@@ -87,6 +88,6 @@
 		       (+ (height page) (~ entry 2))
 		       (~ entry 3))) imgs)
     
-    (hpdf-save-to-file pdf filename)
+    (save-to-file pdf filename)
 
     (free pdf)))

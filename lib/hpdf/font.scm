@@ -39,6 +39,33 @@
 (define-method cap-height ((self <hpdf-font>))
   (hpdf-font-get-cap-height self))
 
+;; font handling
+
+(define-method font ((self <hpdf-doc>)
+		     font_name encoding_name)
+  (hpdf-get-font self font_name encoding_name))
+
+(define-method load-type1-font-from-file ((self <hpdf-doc>)
+					  afm data)
+  (hpdf-load-type1-font-from-file self afm data))
+
+(define-method ttfont-def-from-file ((self <hpdf-doc>)
+				     filename embed)
+  (hpdf-ttfont-def-from-file self filename embed))
+
+(define-method use-jp-fonts ((self <hpdf-doc>))
+  (hpdf-use-jp-fonts self))
+
+(define-method use-kr-fonts ((self <hpdf-doc>))
+  (hpdf-use-kr-fonts self))
+
+(define-method use-cns-fonts ((self <hpdf-doc>))
+  (hpdf-use-cns-fonts self))
+
+(define-method use-cnt-fonts ((self <hpdf-doc>))
+  (hpdf-use-cnt-fonts self))
+
+
 ;; Epilogue
 (provide "hpdf/font")
 

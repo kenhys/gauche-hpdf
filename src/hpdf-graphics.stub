@@ -65,14 +65,15 @@
     (let* ([dash::uint16* (calloc (sizeof uint16) num_param)]
 	   [i::int 0])
       (for [(set! i 0) (< i num_param) (post++ i)]
-	   (set! (aref dash i) (Scm_VectorRef vec i SCM_NIL)))
+	   (set! (aref dash i) (SCM_INT_VALUE (Scm_VectorRef vec i SCM_NIL))))
       (result (HPDF_Page_SetDash (-> page h) dash num_param phase)))))
 
 (define-cproc hpdf-page-set-flat (page::<hpdf-page> flatness::<float>)
   (expr <ulong> "HPDF_Page_SetFlat(page->h, flatness)"))
 
-(define-cproc hpdf-page-setextgstate (page::<hpdf-page> ext_gstate::<hpdf-extgstate>)
-  (expr <ulong> "HPDF_Page_SetExtGState(page->h, ext_gstate->h)"))
+(define-cproc hpdf-page-set-ext-gstate
+  (page::<hpdf-page> gs::<hpdf-extgstate>) ::<hpdf-status>
+  (result (HPDF_Page_SetExtGState (-> page h) (-> gs h))))
 
 ;; Special graphic state operator
 (define-cproc hpdf-page-gsave 

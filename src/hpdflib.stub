@@ -518,23 +518,6 @@ extern void hpdf_error_handler(HPDF_STATUS   error_no,
         "  break;"
         "}"))
 
-;; extended graphics state
-(define-cproc hpdf-create-ext-gstate (doc::<hpdf-doc>)
-  (body <hpdf-extgstate>
-        "  ScmHpdfExtGState *h = SCM_NEW(ScmHpdfExtGState);
-  SCM_SET_CLASS(h, SCM_CLASS_HPDF_EXTGSTATE);
-  h->h = HPDF_CreateExtGState(doc->h);
-  SCM_RESULT = h;"))
-
-(define-cproc hpdf-ext-gstate-set-alpha-stroke (ext_gstate::<hpdf-extgstate> value::<float>)
-  (expr <ulong> "HPDF_ExtGState_SetAlphaStroke(ext_gstate->h, value)"))
-
-(define-cproc hpdf-ext-gstate-set-alpha-fill (ext_gstate::<hpdf-extgstate> value::<float>)
-  (expr <ulong> "HPDF_ExtGState_SetAlphaFill(ext_gstate->h, value)"))
-
-(define-cproc hpdf-ext-gstate-set-blend-mode (ext_gstate::<hpdf-extgstate> mode::<fixnum>)
-  (expr <ulong> "HPDF_ExtGState_SetBlendMode(ext_gstate->h, mode)"))
-
 
 (define-cproc hpdf-page-get-width (page::<hpdf-page>)
   (expr <float> "HPDF_Page_GetWidth(page->h)"))

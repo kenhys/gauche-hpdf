@@ -16,6 +16,20 @@
 ;; Put your Scheme definitions here
 ;;
 
+(define-method create-ext-gstate ((self <hpdf-doc>))
+  (hpdf-create-ext-gstate self))
+
+(define-method ext-gstate-alpha-stroke! ((self <hpdf-extgstate>)
+					 value)
+  (hpdf-ext-gstate-set-alpha-stroke self value))
+
+(define-method ext-gstate-alpha-fill! ((self <hpdf-extgstate>)
+				       value)
+  (hpdf-ext-gstate-set-alpha-fill self value))
+
+(define-method ext-gstate-blend-mode! ((self <hpdf-extgstate>)
+				       mode)
+  (hpdf-ext-gstate-set-blend-mode self mode))
 
 (define-method text-width
   ((self <hpdf-page>)
