@@ -52,6 +52,11 @@
 (define-method gmode ((self <hpdf-page>))
   (hpdf-page-get-gmode self))
 
+;;(define-method current-pos ((self <hpdf-page>) pos)
+;;  (hpdf-page-get-current-font self))
+
+(define-method current-text-pos ((self <hpdf-page>))
+  (hpdf-page-get-current-text-pos self))
 
 
 (define-method current-font ((self <hpdf-page>))

@@ -27,21 +27,22 @@
 	    ;; FIXME just ignore parent and encoder
 	    (set! (-> ol h)
 		  (HPDF_CreateOutline (-> doc h) NULL title NULL)))
-	   ([SCM_HPDF_OUTLINE_P parent]
+	   ([and (SCM_HPDF_OUTLINE_P parent) (SCM_HPDF_ENCODER_P encoder)]
 	    (set! pol (SCM_HPDF_OUTLINE parent))
 	    (set! enc (SCM_HPDF_ENCODER encoder))
-	    (if parent
-		(if encoder
-		    (set! (-> ol h)
-			  (HPDF_CreateOutline (-> doc h) (-> pol h)
-					      title (-> enc h)))
-		    (set! (-> ol h)
-			  (HPDF_CreateOutline (-> doc h) (-> pol h)
-					      title NULL)))
-		(if encoder
-		    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL
-							title (-> enc h)))
-		    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL title NULL)))))
+	    (Scm_Warn "pol %p" pol)
+	    (Scm_Warn "enc %p" enc)
+	    (set! (-> ol h)
+		  (HPDF_CreateOutline (-> doc h) (-> pol h)
+				      title (-> enc h))))
+	   ([SCM_HPDF_OUTLINE_P parent]
+	    ;; ignore encoder
+	    (set! pol (SCM_HPDF_OUTLINE parent))
+	    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) (-> pol h) title NULL)))
+	   ([SCM_HPDF_ENCODER encoder]
+	    ;; ignore parent outline
+	    (set! enc (SCM_HPDF_ENCODER encoder))
+	    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL title (-> enc h))))
 	   (else 
 	    ;; default fallback
 	    (set! (-> ol h) (HPDF_CreateOutline (-> doc h) NULL "" NULL))))

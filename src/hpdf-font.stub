@@ -22,7 +22,7 @@
   (let* ([font::ScmHpdfFont* (SCM_NEW ScmHpdfFont)])
     (SCM_SET_CLASS font SCM_CLASS_HPDF_FONT)
     (if (> (strlen enc) 0)
-	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL))
+	(set! (-> font h) (HPDF_GetFont (-> doc h) name enc))
 	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL)))
     (result font)))
 
