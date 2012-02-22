@@ -54,11 +54,11 @@
    bottom::<float>
    text::<const-cstring>
    align::<fixnum>) ::<hpdf-status>
-   (let* ([uit::<uint> 0] [status::<int> 0])
+   (let* ([status::int 0])
      (set! status (HPDF_Page_TextRect (-> page h)
 				      left top right bottom
-				      text align &uint))
-     (result uit)))
+				      text align NULL))
+     (result status)))
 
 (define-cproc hpdf-page-set-slide-show
   (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)
