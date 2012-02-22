@@ -60,6 +60,7 @@ text-demo.scm text-demo2.scm ttfont-demo-jp.scm ttfont-demo.scm
 
 demo: $(DEMO_SCM)
 	for f in $(DEMO_SCM); do \
+	echo "generating demo $$f"; \
 	@GOSH@ -I../lib -I../src "$$f"; \
 	done
 

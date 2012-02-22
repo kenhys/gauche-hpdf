@@ -46,22 +46,19 @@
     (result (HPDF_Page_TextOut (-> page h) xpos ypos text))))
 
 
-(define-cproc hpdf-page-text-rect (page::<hpdf-page>
-                                   left::<float>
-                                   top::<float>
-                                   right::<float>
-                                   bottom::<float>
-                                   text::<const-cstring>
-                                   align::<fixnum>
-                                   )
-  (body <uint>
-          "unsigned int uint;"
-        "int status;"
-        "status = HPDF_Page_TextRect(page->h, left, top, right, bottom, text, align, &uint);"
-        "SCM_RESULT = uint;"))
-
-
-
+(define-cproc hpdf-page-text-rect
+  (page::<hpdf-page>
+   left::<float>
+   top::<float>
+   right::<float>
+   bottom::<float>
+   text::<const-cstring>
+   align::<fixnum>) ::<hpdf-status>
+   (let* ([uit::<uint> 0] [status::<int> 0])
+     (set! status (HPDF_Page_TextRect (-> page h)
+				      left top right bottom
+				      text align &uint))
+     (result uit)))
 
 (define-cproc hpdf-page-set-slide-show
   (page::<hpdf-page> type::<uint> disp::<float> trans::<float>)

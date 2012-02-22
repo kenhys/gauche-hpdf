@@ -61,7 +61,6 @@
 	    (set! x (+ (* j CELL_WIDTH) 50))
 	    
 	    (set! c (+ (* (- i 1) 16) (- j 1)))
-	    (display c)
 	    (if (>= c 32)
 		(begin
 		  (set! x (- x (/ (text-width page (format #f "~a" (ucs->char c))) 2)))
@@ -105,12 +104,6 @@
     (set! root (create-outline pdf #f "Encoding list" #f))
     (outline-opened! root HPDF_TRUE)
 
-    (d font_name)
-
-    (map (^ (enc)
-	   (let* ()
-	     (d enc))) encodings)
-    
     (map (^ (enc)
 	   (let* ([page (add-page pdf)]
 		  [outline 0]
@@ -142,7 +135,6 @@
 		   (else
 		    (set! font2 (hpdf-get-font pdf font_name enc))))
 
-	     (d (font-name font2))
 	     (font-and-size! page font2 14)
 	     (draw-fonts page))) encodings)
 

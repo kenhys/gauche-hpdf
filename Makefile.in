@@ -56,6 +56,9 @@ all :
 	cd src; $(MAKE) all
 #	cd doc; $(MAKE) all
 
+demo:
+	cd test; $(MAKE) demo
+
 check : all
 	@rm -f test.log
 	sh test/run-test.sh >> test.log

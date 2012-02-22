@@ -30,8 +30,6 @@
 	   ([and (SCM_HPDF_OUTLINE_P parent) (SCM_HPDF_ENCODER_P encoder)]
 	    (set! pol (SCM_HPDF_OUTLINE parent))
 	    (set! enc (SCM_HPDF_ENCODER encoder))
-	    (Scm_Warn "pol %p" pol)
-	    (Scm_Warn "enc %p" enc)
 	    (set! (-> ol h)
 		  (HPDF_CreateOutline (-> doc h) (-> pol h)
 				      title (-> enc h))))
