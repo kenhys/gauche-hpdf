@@ -23,16 +23,24 @@
 			       title)
   (hpdf-create-outline self #f title #f))
 
+(define-method create-outline ((self <hpdf-doc>)
+			       parent title)
+  (hpdf-create-outline self parent title #f))
+
 
 (define-method outline-opened! ((self <hpdf-outline>)
 				opened)
   (hpdf-outline-set-opened self opened))
 
+;; alias
 (define-method outline-destination! ((self <hpdf-outline>)
 				     (dst <hpdf-destination>))
   (hpdf-outline-set-destination self dst))
-
   
+(define-method destination! ((self <hpdf-outline>)
+			     (dst <hpdf-destination>))
+  (hpdf-outline-set-destination self dst))
+
 
 ;; Epilogue
 (provide "hpdf/outline")

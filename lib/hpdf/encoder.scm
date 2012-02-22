@@ -14,6 +14,18 @@
 ;;
 ;; Put your Scheme definitions here
 
+(define-method encoder ((self <hpdf-doc>) enc)
+  (hpdf-get-encoder self enc))
+
+(define-method current-encoder ((self <hpdf-doc>))
+  (hpdf-get-current-encoder self))
+
+(define-method current-encoder! ((self <hpdf-doc>) enc)
+  (hpdf-set-current-encoder self enc))
+
+(define-method encoder-type ((self <hpdf-encoder>))
+  (hpdf-encoder-get-type self))
+
 (define-method use-jp-encodings ((self <hpdf-doc>))
   (hpdf-use-jp-encodings self))
 

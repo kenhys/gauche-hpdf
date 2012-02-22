@@ -34,8 +34,8 @@
 
 (define-method text-rect ((self <hpdf-page>)
 			  left top right bottom
-			  text align len)
-  (hpdf-page-text-rect self left top right bottom text align len))
+			  text align)
+  (hpdf-page-text-rect self left top right bottom text align))
 
 ;; Epilogue
 (provide "hpdf/compat")
