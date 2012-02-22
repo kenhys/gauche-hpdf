@@ -21,7 +21,7 @@
     (font-and-size! page font 20)
     (set! tw (text-width page text))
     (move-text-pos page (/ (- (width page) tw) 2)
-			     (/ (- (height page) 20 2)))
+			     (/ (- (height page) 20) 2))
     (show-text page text)
     (end-text page)
     
