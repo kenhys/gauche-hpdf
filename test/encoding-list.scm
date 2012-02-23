@@ -2,6 +2,7 @@
 
 
 (use gauche.interactive)
+(use srfi-14)
 (use hpdf)
 
 (define PAGE_WIDTH 420)
@@ -14,6 +15,7 @@
   (let* ()
     (line-width! page 0.5)
     
+    ;; Draw vertical lines.
     (let* ([i 0] [x 0])
       (while (<= i 17)
 	(begin
@@ -64,7 +66,10 @@
 	    (if (>= c 32)
 		(begin
 		  (set! x (- x (/ (text-width page (format #f "~a" (ucs->char c))) 2)))
-		  (text-out page x y (format #f "~a" (ucs->char c)))))
+		  ;;(if (>= i 16)
+		  ;;(d (format #f "~X ~X |~D ~X ~a|" (- i 1)
+		  ;;(- j 1) c c (ucs->char c))))
+		  (text-out page x y (string (ucs->char c)))))
 	    (set! j (+ j 1)))
 	  (set! i (+ i 1)))))
     (end-text page)))
@@ -82,7 +87,15 @@
     "ISO8859-13"
     "ISO8859-14"
     "ISO8859-15"
-    "ISO8859-16"))
+    "ISO8859-16"
+    "CP1250"
+    "CP1251"
+    "CP1252"
+    "CP1254"
+    "CP1257"
+    "KOI8-R"
+    "Symbol-Set"
+    "ZapfDingbats-Set"))
 
 (define (main args)
   (let* ([pdf (hpdf-new)]
@@ -129,9 +142,9 @@
 	     (end-text page)
 	     
 	     (cond ([string=? enc "Symbol-Set"]
-		    )
+		    (set! font2 (hpdf-get-font pdf "Symbol" "")))
 		   ([string=? enc "ZapfDingbats-Set"]
-		    )
+		    (set! font2 (hpdf-get-font pdf "ZapfDingbats" "")))
 		   (else
 		    (set! font2 (hpdf-get-font pdf font_name enc))))
 
