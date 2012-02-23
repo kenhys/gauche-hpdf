@@ -20,15 +20,10 @@
 
 (define (main args)
   (let* ([pdf (hpdf-new)]
-	 [font (font pdf "Helvetica" "")]
+	 [font (font pdf "Helvetica" #f)]
 	 [pages (make-vector 3)]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
-	 [filename (format #f "~a/outline-demo-jp.pdf" prefix)]
-	 [sjisfile (format #f "~a/mbtext/sjis.txt" prefix)]
-	 [samp_text (call-with-input-file sjisfile port->string)])
-    
-    (use-jp-encodings pdf)
-
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
+	 [filename (format #f "~a/outline-demo.pdf" prefix)])
     (page-mode! pdf HPDF_PAGE_MODE_USE_OUTLINE)
 
     (map-with-index
@@ -36,7 +31,7 @@
        (vector-set! pages idx (add-page pdf))
        (font-and-size! (~ pages idx) font size)
        (print-page (~ pages idx) (+ idx 1)))
-     '(20 20 20))
+     '(30 30 30))
 
     ;; create outline root.
     (let* ([root (create-outline pdf #f "OutlineRoot" #f)]
@@ -50,8 +45,8 @@
 	     (vector-set! outlines idx (create-outline pdf root text))
 	     (vector-set! outlines idx
 			  (create-outline pdf root text
-					  (encoder pdf "90ms-RKSJ-H")))))
-       `("page1" "page2" ,samp_text))
+					  (encoder pdf "ISO8859-2")))))
+       '("page1" "page2" "ISO8859-2 text ﾓﾔﾕﾖﾗﾘﾙ"))
 
       ;; create destination objects on each pages 
       ;; and link it to outline items.

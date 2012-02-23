@@ -3,7 +3,7 @@
 ;;;
 
 (add-load-path ".")
-(add-load-path "./test")
+(add-load-path "./examples")
 
 (use gauche.sequence)
 (use gauche.interactive)
@@ -58,11 +58,11 @@
 	 [fsize 0]
 	 [pdf (hpdf-new)]
 	 [page (add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [len 0]
 	 [ypos 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/text-demo.pdf" "text-demo.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/text-demo.pdf" "text-demo.pdf")])
     (compression-mode! pdf HPDF_COMP_ALL)
     
     (print-grid pdf page)

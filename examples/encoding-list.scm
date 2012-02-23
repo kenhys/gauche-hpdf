@@ -100,9 +100,9 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [page (add-page pdf)]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [filename (format #f "~a/encoding-list.pdf" prefix)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [root 0]
 	 [afm  (format #f "~a/type1/a010013l.afm" prefix)]
 	 [pfb  (format #f "~a/type1/a010013l.pfb" prefix)]
@@ -142,9 +142,9 @@
 	     (end-text page)
 	     
 	     (cond ([string=? enc "Symbol-Set"]
-		    (set! font2 (hpdf-get-font pdf "Symbol" "")))
+		    (set! font2 (hpdf-get-font pdf "Symbol" #f)))
 		   ([string=? enc "ZapfDingbats-Set"]
-		    (set! font2 (hpdf-get-font pdf "ZapfDingbats" "")))
+		    (set! font2 (hpdf-get-font pdf "ZapfDingbats" #f)))
 		   (else
 		    (set! font2 (hpdf-get-font pdf font_name enc))))
 

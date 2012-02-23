@@ -9,7 +9,7 @@
 
 
 (define (draw-image-proc pdf filename x y text)
-  (let* ([prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+  (let* ([prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [page (current-page pdf)]
 	 [filename1 (format #f "~a/images/~a" prefix filename)]
 	 [image 0])
@@ -30,11 +30,11 @@
 
 (define (main args)
   (let* ([pdf (hpdf-new)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [page (add-page pdf)]
 	 [dst 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/jpeg-demo.pdf" "jpeg-demo.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/jpeg-demo.pdf" "jpeg-demo.pdf")])
     
     (compression-mode! pdf HPDF_COMP_ALL)
     

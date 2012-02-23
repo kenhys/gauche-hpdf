@@ -3,7 +3,7 @@
 (define (print-grid pdf page)
   (let* ([height (hpdf-page-get-height page)]
 	 [width (hpdf-page-get-width page)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [x 0]
 	 [y 0])
     

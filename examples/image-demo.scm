@@ -32,7 +32,7 @@
     (end-text page)))
 
 (define (load-png pdf name)
-  (let* ([prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+  (let* ([prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [name1 (format #f "~a/pngsuite/~a.png" prefix name)]
 	 [name2 (format #f "~a/PngSuite-2011apr25/~a.png" prefix name)]
 	 [filename (cond [(file-is-readable? name1) name1]			   
@@ -45,7 +45,7 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [page (add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [dst 0]
 	 [iw 0]
 	 [ih 0]
@@ -55,8 +55,8 @@
 	 [image3 0]
 	 [x 0]
 	 [y 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/image-demo.pdf" "image-demo.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/image-demo.pdf" "image-demo.pdf")])
     (compression-mode! pdf HPDF_COMP_ALL)
 
     (width! page 550)

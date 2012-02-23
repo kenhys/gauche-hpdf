@@ -3,7 +3,7 @@
 ;;;
 
 (add-load-path ".")
-(add-load-path "./test")
+(add-load-path "./examples")
 
 (use gauche.sequence)
 (use gauche.interactive)
@@ -13,8 +13,8 @@
 (load "grid-sheet.scm")
 
 (define (draw-image-proc pdf name x y text)
-  (let* ([prefix (if (rxmatch #/.*test\/.*\.scm/ *program-name*)
-		     "test" ".")]
+  (let* ([prefix (if (rxmatch #/.*examples\/.*\.scm/ *program-name*)
+		     "examples" ".")]
 	 [name1 (format #f "~a/pngsuite/~a.png" prefix name)]
 	 [name2 (format #f "~a/PngSuite-2011apr25/~a.png" prefix name)]
 	 [filename (cond [(file-is-readable? name1) name1]
@@ -60,12 +60,12 @@
 	 [samp_text2 "The quick brown fox jumps over the lazy dog."]
 	 [pdf (hpdf-new)]
 	 [page (hpdf-add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [tw 0]
 	 [fsize 0]
 	 [dst 0] [image 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/png-demo.pdf" "png-demo.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/png-demo.pdf" "png-demo.pdf")])
     (compression-mode! pdf HPDF_COMP_ALL)
     
     (width! page 550)

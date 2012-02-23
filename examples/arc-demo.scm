@@ -7,7 +7,7 @@
 (define (print-grid pdf page)
   (let* ([height (height page)]
 	 [width (width page)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [x 0]
 	 [y 0])
     
@@ -118,8 +118,8 @@
 	 [s (height! page 220)]
 	 [s (width! page 220)]
 	 [pos 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/arc-demo.pdf" "arc-demo.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/arc-demo.pdf" "arc-demo.pdf")])
     (print-grid pdf page)
 
 

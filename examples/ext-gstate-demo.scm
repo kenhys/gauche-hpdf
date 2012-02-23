@@ -28,9 +28,9 @@
 
 (define (main args)
   (let* ([pdf (hpdf-new)]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm/ *program-name*) "test" ".")]
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm/ *program-name*) "examples" ".")]
 	 [filename (format #f "~a/ext-gstate-demo.pdf" prefix)]
-	 [hfont (hpdf-get-font pdf "Helvetica" "")]
+	 [hfont (hpdf-get-font pdf "Helvetica" #f)]
 	 [page (add-page pdf)]
 	 [gstate 0])
     (font-and-size! page hfont 10)

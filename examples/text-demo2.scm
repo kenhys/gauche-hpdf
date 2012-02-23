@@ -1,7 +1,7 @@
 ;; -*- mode:scheme; coding: utf-8 -*-
 
 (add-load-path ".")
-(add-load-path "./test")
+(add-load-path "./examples")
 
 (use gauche.sequence)
 (use gauche.interactive)
@@ -22,7 +22,7 @@
 
 (define (main args)
   (let* ([pdf (hpdf-new)]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [filename (format #f "~a/text-demo2.pdf" prefix)]
 	 [page (add-page pdf)]
 	 [page_height 0] [page_width 0]
@@ -35,7 +35,7 @@
     
     (set! page_height (height page))
     
-    (set! font (hpdf-get-font pdf "Helvetica" ""))
+    (set! font (hpdf-get-font pdf "Helvetica" #f))
 
     (map
      (^ (entry)
@@ -114,7 +114,7 @@
 
     (let* ([angle1 (/ 360 (string-length SAMP_TXT))]
 	   [angle2 180]
-	   [font (hpdf-get-font pdf "Courier-Bold" "")])
+	   [font (hpdf-get-font pdf "Courier-Bold" #f)])
       (begin-text page)
       (font-and-size! page font 30)
       

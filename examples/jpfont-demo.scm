@@ -30,7 +30,7 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [prefix (if 
-		  (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+		  (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [filename (format #f "~a/jpfont-demo.pdf" prefix)]
 	 [sjisfile (format #f "~a/mbtext/sjis.txt" prefix)]
 	 [samp_text (call-with-input-file sjisfile port->string)]
@@ -64,7 +64,7 @@
 
 	     (outline-destination! ol dst)
 
-	     (set! title_font (hpdf-get-font pdf "Helvetica" ""))
+	     (set! title_font (hpdf-get-font pdf "Helvetica" #f))
 	     (font-and-size! page title_font 10)
 
 	     (begin-text page)

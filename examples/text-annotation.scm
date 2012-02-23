@@ -17,8 +17,8 @@
 	 [page (hpdf-add-page pdf)]
 	 [font (hpdf-get-font pdf "Times-Roman" "WinAnsiEncoding")]
 	 [annot 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/text-annotation.pdf" "text-annotation.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/text-annotation.pdf" "text-annotation.pdf")])
     
     (width! page 400)
     (height! page 500)

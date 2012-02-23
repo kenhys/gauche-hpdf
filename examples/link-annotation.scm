@@ -28,9 +28,9 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [index_page (hpdf-add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/link-annotation.pdf" "link-annotation.pdf")])
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/link-annotation.pdf" "link-annotation.pdf")])
 
     (define (page-highlight index_page index mode desc)
       (let* ([tp (make <hpdf-point>)]

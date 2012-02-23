@@ -27,8 +27,8 @@
 	 [page (add-page pdf)]
 	 [height (height page)]
 	 [width (width page)]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) 
-		       "test/font-demo.pdf" "font-demo.pdf")]
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) 
+		       "examples/font-demo.pdf" "font-demo.pdf")]
 	 [def_font 0]
 	 [tw 0]
 	 [page_title "Font Demo"])
@@ -38,7 +38,7 @@
     (rectangle page 50 50 (- width 100) (- height 110))
     (stroke page)
 
-    (set! def_font (hpdf-get-font pdf "Helvetica" ""))
+    (set! def_font (hpdf-get-font pdf "Helvetica" #f))
 
     ;;(hpdf-page-set-text-rendering-mode page HPDF_FILL)
 
@@ -59,7 +59,7 @@
 
     (map (^ (entry)
 	   (let* ([name (~ entry 0)]
-		  [font (hpdf-get-font pdf name "")])
+		  [font (hpdf-get-font pdf name #f)])
 
 	     (font-and-size! page def_font 9)
 	     (show-text page name)

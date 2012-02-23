@@ -10,7 +10,7 @@
   (let-args (cdr args)
       ((embed "E|embed") . restargs)
     (let* ([pdf (hpdf-new)]
-	   [prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	   [prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	   [filename (format #f "~a/ttfont-demo.pdf" prefix)]
 	   [page (add-page pdf)]
 	   [detail_font_name 0]
@@ -47,6 +47,6 @@
 	     (0 -20 "1234567890")))
 	     
       
-      (save-to-file pdf)
+      (save-to-file pdf filename)
       
       (free pdf))))

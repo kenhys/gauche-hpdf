@@ -56,9 +56,9 @@
 
 (define (main args)
   (let* ([pdf (hpdf-new)]
-	 [font (hpdf-get-font pdf "Courier" "")]
+	 [font (hpdf-get-font pdf "Courier" #f)]
 	 [pages (make-vector 17)]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [filename (format #f "~a/slide-show-demo.pdf" prefix)])
 
     (let* ([i 0])

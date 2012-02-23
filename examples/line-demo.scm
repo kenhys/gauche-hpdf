@@ -54,10 +54,10 @@
 	 [y2 0]
 	 [x3 0]
 	 [y3 0]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [tw 0]
-	 [filename (if (rxmatch #/.*test\/.*\.scm$/ *program-name*)
-		       "test/line-demo.pdf" "line-demo.pdf")])
+	 [filename (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*)
+		       "examples/line-demo.pdf" "line-demo.pdf")])
     
     (line-width! page 1)
     (rectangle page 50 50 (- (width page) 100)

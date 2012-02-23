@@ -13,7 +13,7 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [rect (make-rect 0 0 600 600)]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm$/ *program-name*) "test" ".")]
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm$/ *program-name*) "examples" ".")]
 	 [filename (format #f "~a/u3d-demo.pdf" prefix)]
 	 [modelfile (format #f "~a/3dmodels/axes.u3d" prefix)]
 	 [page (add-page pdf)]

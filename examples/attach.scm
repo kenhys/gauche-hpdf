@@ -8,9 +8,9 @@
 (define (main args)
   (let* ([pdf (hpdf-new)]
 	 [page (add-page pdf)]
-	 [font (hpdf-get-font pdf "Helvetica" "")]
+	 [font (hpdf-get-font pdf "Helvetica" #f)]
 	 [tw 0]
-	 [prefix (if (rxmatch #/.*test\/.*\.scm/ *program-name*) "test"".")]
+	 [prefix (if (rxmatch #/.*examples\/.*\.scm/ *program-name*) "examples"".")]
 	 [scmname (format #f "~a/attach.scm" prefix)]
 	 [filename (format #f "~a/attach.pdf" prefix)])
     (size! page HPDF_PAGE_SIZE_LETTER HPDF_PAGE_PORTRAIT)
