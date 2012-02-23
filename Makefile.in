@@ -57,7 +57,7 @@ all :
 #	cd doc; $(MAKE) all
 
 demo:
-	cd test; $(MAKE) demo
+	cd examples; $(MAKE) demo
 
 check : all
 	@rm -f test.log
