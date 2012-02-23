@@ -15,7 +15,8 @@
    hpdf.outline
    hpdf.page
    hpdf.font
-   hpdf.text)
+   hpdf.text
+   hpdf.u3d)
   (export-all)
   )
 (select-module hpdf)

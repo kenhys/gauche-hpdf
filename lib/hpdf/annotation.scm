@@ -15,6 +15,12 @@
 ;; Put your Scheme definitions here
 ;;
 
+(define-method create-3d-annot
+  ((self <hpdf-page>)
+   (rect <hpdf-rect>)
+   u3d)
+  (hpdf-page-create-3d-annot self rect u3d))
+
 (define-method create-text-annot
   ((self <hpdf-page>)
    (rect <hpdf-rect>)

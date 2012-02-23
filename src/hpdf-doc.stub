@@ -17,6 +17,13 @@
 (define-cproc hpdf-get-version () ::<const-cstring>
   (result (HPDF_GetVersion)))
 
+(define-cproc hpdf-set-version
+  (doc::<hpdf-doc> ver) ::<hpdf-status>
+  (let* ([pdf::HPDF_Doc (-> doc h)])
+    (Scm_Warn "hpdf-set-version")
+    "pdf->pdf_version = ver;"
+    (result 0)))
+
 (define-cproc hpdf-new
   (&optional callback) ::<hpdf-doc>
   (let* ([doc::ScmHpdfDoc*  (SCM_NEW ScmHpdfDoc)])

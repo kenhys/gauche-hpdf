@@ -37,5 +37,10 @@
 			  text align)
   (hpdf-page-text-rect self left top right bottom text align))
 
+(define-method slide-show! ((self <hpdf-page>)
+			    type disp trans)
+  (hpdf-page-set-slide-show self type disp trans))
+
+
 ;; Epilogue
 (provide "hpdf/compat")

@@ -19,12 +19,12 @@
 ;; Annotation
 ;;
 
-;; (define-cproc hpdf-page-create-3d-annot
-;;   (page::<hpdf-page>
-;;    rect::<hpdf-rect>
-;;    u3d::<hpdf-u3d>) ::<hpdf-annotation>
-;;    (let* ()
-;;      (result (HPDF_Page_Create3DAnnot (-> page h) (-> rect h) (-> u3d h)))))
+(define-cproc hpdf-page-create-3d-annot
+  (page::<hpdf-page>
+   rect::<hpdf-rect>
+   u3d::<hpdf-image>) ::<hpdf-annotation>
+   (let* ()
+     (result (HPDF_Page_Create3DAnnot (-> page h) (-> rect h) (-> u3d h)))))
 
 (define-cproc hpdf-page-create-text-annot
   (page::<hpdf-page> 

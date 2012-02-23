@@ -682,6 +682,13 @@
 (define-constant SUBJECT (c "SCM_MAKE_INT(HPDF_INFO_SUBJECT)"))
 (define-constant KEYWORDS (c "SCM_MAKE_INT(HPDF_INFO_KEYWORDS)"))
 
+(define-enum HPDF_VER_12)
+(define-enum HPDF_VER_13)
+(define-enum HPDF_VER_14)
+(define-enum HPDF_VER_15)
+(define-enum HPDF_VER_16)
+(define-enum HPDF_VER_17)
+
 ;; HPDF_EncryptMode	
 ;; (define-constant HPDF_ENCRYPT_R2 HPDF_ENCRYPT_R2)
 ;; (define-constant HPDF_ENCRYPT_R3 HPDF_ENCRYPT_R3)

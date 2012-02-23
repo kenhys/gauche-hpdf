@@ -29,34 +29,80 @@
 ;; HPDF_EXPORT(HPDF_JavaScript) HPDF_CreateJavaScript(HPDF_Doc pdf, const char *code);
 
 
-;; (define-cproc hpdf-load-u3d-from-file
-;;   (pdf::<hpdf-doc> filename::<const-cstring>) ::<hpdf-u3d>
-;;   (let* ()
-;;     (result (HPDF_LoadU3DFromFile (-> pdf h) filename))))
+(define-cproc hpdf-load-u3d-from-file
+   (pdf::<hpdf-doc> filename::<const-cstring>) ::<hpdf-image>
+   (let* ([image::ScmHpdfImage* (SCM_NEW ScmHpdfImage)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-load-u3d-from-file"))
+     (SCM_SET_CLASS image SCM_CLASS_HPDF_IMAGE)
+     (set! (-> image h) (HPDF_LoadU3DFromFile (-> pdf h) filename))
+     (result image)))
 
-;; (define-cproc hpdf-create-3d-view 
-;;   (mmgr::<hpdf-mmgr> name::<const-cstring>) ::<hpdf-dict>
-;;   (let* ()
-;;     (result (HPDF_Create3DView (-> mmgr h) name))))
+;;
+;; 
+(define-cproc hpdf-create-3dview 
+  (u3d::<hpdf-image> name::<const-cstring>) ::<hpdf-dict>
+  (let* ([view::ScmHpdfDict* (SCM_NEW ScmHpdfDict)]
+	 [u3d-c::HPDF_U3D NULL]
+	 [mmgr::HPDF_MMgr NULL])
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-create-3d-view"))
+     (SCM_SET_CLASS view SCM_CLASS_HPDF_DICT)
+     (set! u3d-c (-> u3d h))
+    "mmgr = u3d_c.mmgr;"
+    "view->h = HPDF_Create3DView(u3d_c.mmgr, name);"
+    (result view)))
 
-;; (define-cproc hpdf-u3d-add-3d-view
-;;   (u3d::<hpdf-u3d> view::<hpdf-dict>) ::<ulong>
-;;   (let* ()
-;;     (result (HPDF_U3D_Add3DView (-> u3d h) (-> view h)))))
+(define-cproc hpdf-u3d-add-3dview
+  (u3d::<hpdf-image> view::<hpdf-dict>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_U3D_Add3DView (-> u3d h) (-> view h)))))
 
-;; (define-cproc hpdf-u3d-set-default-3d-view
-;;   (u3d::<hpdf-u3d> name::<const-cstring>) ::<ulong>
-;;   (let* ()
-;;     (result (HPDF_U3D_SetDefault3DView (-> u3d h) name))))
+(define-cproc hpdf-u3d-set-default-3d-view
+  (u3d::<hpdf-image> name::<const-cstring>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_U3D_SetDefault3DView (-> u3d h) name))))
 
 ;; HPDF_EXPORT(HPDF_STATUS) HPDF_U3D_AddOnInstanciate(HPDF_U3D u3d, HPDF_JavaScript javaScript);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_AddNode(HPDF_Dict view, const char *name, HPDF_REAL opacity, HPDF_BOOL visible);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetLighting(HPDF_Dict view, const char *scheme);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetBackgroundColor(HPDF_Dict view, HPDF_REAL r, HPDF_REAL g, HPDF_REAL b);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetPerspectiveProjection(HPDF_Dict view, HPDF_REAL fov);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetOrthogonalProjection(HPDF_Dict view, HPDF_REAL mag);
-;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetCamera(HPDF_Dict view, HPDF_REAL coox, HPDF_REAL cooy, HPDF_REAL cooz, HPDF_REAL c2cx, HPDF_REAL c2cy, HPDF_REAL c2cz, HPDF_REAL roo, HPDF_REAL roll);
 
+;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_AddNode(HPDF_Dict view, const char *name, HPDF_REAL opacity, HPDF_BOOL visible);
+(define-cproc hpdf-3dview-add-node
+  (view::<hpdf-dict>
+   name::<const-cstring> opacity::<real> visible::<boolean>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_3DView_AddNode (-> view h) name opacity visible))))
+
+;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetLighting(HPDF_Dict view, const char *scheme);
+(define-cproc hpdf-3dview-set-lighting
+  (view::<hpdf-dict> scheme::<const-cstring>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_3DView_SetLighting (-> view h) scheme))))
+
+;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetBackgroundColor(HPDF_Dict view, HPDF_REAL r, HPDF_REAL g, HPDF_REAL b);
+(define-cproc hpdf-3dview-set-background-color
+  (view::<hpdf-dict> r::<real> g::<real> b::<real>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_3DView_SetBackgroundColor
+	     (-> view h) r g b))))
+
+;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetPerspectiveProjection(HPDF_Dict view, HPDF_REAL fov);
+(define-cproc hpdf-3dview-set-perspective-projection
+  (view::<hpdf-dict> fov::<real>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_3DView_SetPerspectiveProjection
+	     (-> view h) fov))))
+
+;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetOrthogonalProjection(HPDF_Dict view, HPDF_REAL mag);
+
+;; HPDF_EXPORT(HPDF_STATUS) HPDF_3DView_SetCamera(HPDF_Dict view, HPDF_REAL coox, HPDF_REAL cooy, HPDF_REAL cooz, HPDF_REAL c2cx, HPDF_REAL c2cy, HPDF_REAL c2cz, HPDF_REAL roo, HPDF_REAL roll);
+(define-cproc hpdf-3dview-set-camera
+  (view::<hpdf-dict> 
+   coox::<real> cooy::<real> cooz::<real>
+   c2cx::<real> c2cy::<real> c2cz::<real>
+   roo::<real> roll::<real>) ::<hpdf-status>
+  (let* ()
+    (result (HPDF_3DView_SetCamera 
+	     (-> view h) coox cooy cooz c2cx c2cy c2cz roo roll))))
+				   
+   
 ;;;
 ;;; hpdf.h
 ;;;
@@ -136,12 +182,13 @@
   (let* ()
     (result (HPDF_3DAnnotExData_Set3DMeasurement (-> exdata h) (-> measure h)))))
 
-(define-cproc hpdf-page-create-3d-view
+(define-cproc hpdf-page-create-3dview
   (page::<hpdf-page>
    u3d::<hpdf-u3d>
    annot3d::<hpdf-annotation>
    name::<const-cstring>) ::<hpdf-dict>
    (let* ()
+     (Scm_Warn "hpdf-page-create-3d-view")
      (result (HPDF_Page_Create3DView (-> page h) (-> u3d h)
 				     (-> annot3d h) name))))
 

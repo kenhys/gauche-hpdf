@@ -354,9 +354,9 @@ HPDF_Dict h;
 } ScmHpdfDict;
 
 SCM_CLASS_DECL(Scm_HpdfDictClass);
- #define SCM_CLASS_HPDFDICT (&Scm_HpdfDictClass)
+ #define SCM_CLASS_HPDF_DICT (&Scm_HpdfDictClass)
  #define SCM_HPDF_DICT(obj) ((ScmHpdfDict*)(obj))
- #define SCM_HPDF_DICT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDFDICT))
+ #define SCM_HPDF_DICT_P(obj) (SCM_XTYPEP(obj, SCM_CLASS_HPDF_DICT))
 
 typedef struct ScmHpdfTextWidthRec {
 SCM_HEADER;

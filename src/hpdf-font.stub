@@ -17,13 +17,17 @@
 ;; Font Handling
 ;;
 (define-cproc hpdf-get-font
-  (doc::<hpdf-doc> name::<const-cstring>
-		   enc::<const-cstring>) ::<hpdf-font>
+  (doc::<hpdf-doc> name::<const-cstring> enc) ::<hpdf-font>
   (let* ([font::ScmHpdfFont* (SCM_NEW ScmHpdfFont)])
     (SCM_SET_CLASS font SCM_CLASS_HPDF_FONT)
-    (if (> (strlen enc) 0)
-	(set! (-> font h) (HPDF_GetFont (-> doc h) name enc))
-	(set! (-> font h) (HPDF_GetFont (-> doc h) name NULL)))
+    (cond ([SCM_STRINGP enc]
+	   (if (> (strlen enc) 0)
+	       (set! (-> font h) (HPDF_GetFont (-> doc h) name enc))
+	       (set! (-> font h) (HPDF_GetFont (-> doc h) name NULL))))
+	  ([SCM_BOOLP enc]
+	   (set! (-> font h) (HPDF_GetFont (-> doc h) name NULL)))
+	  (else
+	   (Scm_Error "")))
     (result font)))
 
 (define-cproc hpdf-load-type1-font-from-file

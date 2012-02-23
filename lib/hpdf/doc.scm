@@ -16,8 +16,11 @@
 ;; Put your Scheme definitions here
 ;;
 
-(define-method get-version ()
+(define-method version ()
   (hpdf-get-version))
+
+(define-method version! ((self <hpdf-doc>) ver)
+  (hpdf-set-version self ver))
 
 ;; TODO
 ;;(define-method new-ex ()

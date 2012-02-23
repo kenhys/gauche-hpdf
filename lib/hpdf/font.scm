@@ -42,8 +42,10 @@
 ;; font handling
 
 (define-method font ((self <hpdf-doc>)
-		     font_name encoding_name)
-  (hpdf-get-font self font_name encoding_name))
+		     font_name :optional encoding_name)
+  (if encoding_name
+      (hpdf-get-font self font_name encoding_name)
+      (hpdf-get-font self font_name #f)))
 
 (define-method load-type1-font-from-file ((self <hpdf-doc>)
 					  afm data)
