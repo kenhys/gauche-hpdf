@@ -1,0 +1,76 @@
+#
+# $Id$
+#
+
+# General info
+SHELL       = @SHELL@
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+libdir      = @libdir@
+datadir     = @datadir@
+datarootdir = @datarootdir@
+srcdir      = @srcdir@
+VPATH       = $(srcdir)
+
+# These may be overridden by make invocators
+DESTDIR        =
+GOSH           = @GOSH@
+GAUCHE_CONFIG  = @GAUCHE_CONFIG@
+GAUCHE_PACKAGE = @GAUCHE_PACKAGE@
+INSTALL        = @GAUCHE_INSTALL@
+
+# add 2007/04/12
+CPPFLAGS       = -I. -I@HPDF_INCDIR@ # @CPPFLAGS@
+LDFLAGS        = -lpng -lz # @LDFLAGS@
+LIBS           = -L@HPDF_LIBDIR@ -lhpdf # @LIBS@
+
+
+# Other parameters
+SOEXT  = @SOEXT@
+OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
+
+# Module-specific stuff
+PACKAGE   = Gauche-hpdf
+
+ARCHFILES = hpdf.$(SOEXT)
+SCMFILES  = hpdf.scm
+HEADERS   = 
+
+TARGET    = $(ARCHFILES)
+GENERATED = *.pdf log/*.log data/*.pdf
+CONFIG_GENERATED = Makefile
+
+GAUCHE_PKGINCDIR  = $(DESTDIR)@GAUCHE_PKGINCDIR@
+GAUCHE_PKGLIBDIR  = $(DESTDIR)@GAUCHE_PKGLIBDIR@
+GAUCHE_PKGARCHDIR = $(DESTDIR)@GAUCHE_PKGARCHDIR@
+
+check :
+	make clean
+	@rm -f test.log
+	sh run-test.sh >> test.log
+	cat test.record
+
+
+DEMO_SCM = arc-demo.scm attach.scm encoding-list.scm encryption.scm ext-gstate-demo.scm \
+font-demo.scm image-demo.scm jpeg-demo.scm line-demo.scm link-annotation.scm \
+outline-demo.scm permission.scm png-demo.scm raw-image-demo.scm slide-show-demo.scm text-annotation.scm \
+text-demo.scm text-demo2.scm ttfont-demo-jp.scm ttfont-demo.scm u3d-demo.scm
+
+demo: $(DEMO_SCM)
+	for f in $(DEMO_SCM); do \
+	echo "generating demo $$f"; \
+	@GOSH@ -I../lib -I../src "$$f"; \
+	done
+
+
+clean :
+	rm -rf core $(TARGET) $(GENERATED) *~
+
+distclean : clean
+	rm -rf $(CONFIG_GENERATED)
+
+maintainer-clean : clean
+	rm -rf $(CONFIG_GENERATED) configure VERSION
+

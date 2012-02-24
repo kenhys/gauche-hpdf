@@ -10,9 +10,11 @@ test/PngSuite-2011apr25
 test/data/*.pdf
 test/font/*.tt[cf]
 test/font/*.otf
-test/mbtext/*.txt
-test/rawimage/*.dat
-test/type1/*
-test/*.pdf
-test/images/*.jpg
-test/pngsuite/*.png
+examples/mbtext/*.txt
+examples/rawimage/*.dat
+examples/type1/*
+examples/*.pdf
+examples/ttfont
+examples/images/*.jpg
+examples/pngsuite
+examples/3dmodels
