@@ -71,23 +71,28 @@
 ;;(define-cproc hpdf-image-get-size2 (image::<hpdf-image> size::<hpdf-point>)
 ;;  (body <ulong> "SCM_RESULT = HPDF_Image_GetSize2 (image->h, size->h);"))
 
-(define-cproc hpdf-image-get-width (img::<hpdf-image>)
-  (expr <uint> "SCM_RESULT = HPDF_Image_GetWidth(img->h)"))
+(define-cproc hpdf-image-get-width
+  (img::<hpdf-image>) ::<uint>
+  (result (HPDF_Image_GetWidth (-> img h))))
 
-(define-cproc hpdf-image-get-height (image::<hpdf-image>)
-  (expr <uint> "SCM_RESULT = HPDF_Image_GetHeight(image->h)"))
+(define-cproc hpdf-image-get-height
+  (image::<hpdf-image>) ::<uint>
+  (result (HPDF_Image_GetHeight (-> image h))))
 
-(define-cproc hpdf-image-get-bits-per-component (image::<hpdf-image>)
-  (expr <uint> "SCM_RESULT = HPDF_Image_GetBitsPerComponent(image->h)"))
+(define-cproc hpdf-image-get-bits-per-component
+  (image::<hpdf-image>) ::<uint>
+  (result (HPDF_Image_GetBitsPerComponent (-> image h))))
 
-(define-cproc hpdf-image-get-color-space (image::<hpdf-image>)
-  (expr <const-cstring> "SCM_RESULT = HPDF_Image_GetColorSpace(image->h)"))
+(define-cproc hpdf-image-get-color-space
+  (image::<hpdf-image>) ::<const-cstring>
+  (result (HPDF_Image_GetColorSpace (-> image h))))
 
-(define-cproc hpdf-image-set-color-mask (image::<hpdf-image> rmin::<uint> rmax::<uint> gmin::<uint> gmax::<uint> bmin::<uint> bmax::<uint>)
-  (expr <ulong> "SCM_RESULT = HPDF_Image_SetColorMask(image->h, rmin, rmax, gmin, gmax, bmin, bmax)"))
+(define-cproc hpdf-image-set-color-mask (image::<hpdf-image> rmin::<uint> rmax::<uint> gmin::<uint> gmax::<uint> bmin::<uint> bmax::<uint>) ::<ulong>
+  (result (HPDF_Image_SetColorMask (-> image h) rmin rmax gmin gmax bmin bmax)))
 
-(define-cproc hpdf-image-set-mask-image (image::<hpdf-image> mask_image::<hpdf-image>)
-  (expr <ulong> "SCM_RESULT = HPDF_Image_SetMaskImage(image->h, mask_image->h)"))
+(define-cproc hpdf-image-set-mask-image
+  (image::<hpdf-image> mask_image::<hpdf-image>) ::<ulong>
+  (result (HPDF_Image_SetMaskImage (-> image h) (-> mask_image h))))
 
 ;; Local variables:
 ;; mode: scheme
