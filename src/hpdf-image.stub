@@ -67,9 +67,9 @@
     (set! (-> point h) (HPDF_Image_GetSize (-> image h)))
     (result point)))
 
-;; FIXME
-;;(define-cproc hpdf-image-get-size2 (image::<hpdf-image> size::<hpdf-point>)
-;;  (body <ulong> "SCM_RESULT = HPDF_Image_GetSize2 (image->h, size->h);"))
+(define-cproc hpdf-image-get-size2
+  (image::<hpdf-image> size::<hpdf-point>) ::<ulong>
+  (result (HPDF_Image_GetSize2 (-> image h) (& (-> size h)))))
 
 (define-cproc hpdf-image-get-width
   (img::<hpdf-image>) ::<uint>
