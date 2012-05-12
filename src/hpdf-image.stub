@@ -46,13 +46,13 @@
 ;; FIXME
 (define-cproc hpdf-load-raw-image-from-mem
   (doc::<hpdf-doc>
-   buf::<const-cstring> 
+   buf::<const-cstring>
    width::<uint> height::<uint> color_space::<fixnum>
    bits_per_component::<uint>) ::<hpdf-image>
-  (let* ([image::ScmHpdfImage* (SCM_NEW ScmHpdfImage)]
-	 [null (SCM_SET_CLASS image SCM_CLASS_HPDF_IMAGE)])
+  (let* ([image::ScmHpdfImage* (SCM_NEW ScmHpdfImage)])
+    (SCM_SET_CLASS image SCM_CLASS_HPDF_IMAGE)
     (set! (-> image h)
-	  (HPDF_LoadRawImageFromMem 
+	  (HPDF_LoadRawImageFromMem
 	   (-> doc h)
 	   buf width height color_space bits_per_component))
     (result image)))
@@ -62,8 +62,8 @@
   (result (HPDF_Image_AddSMask (-> image h) (-> smask h))))
 
 (define-cproc hpdf-image-get-size (image::<hpdf-image>) ::<hpdf-point>
-  (let* ([point::ScmHpdfPoint* (SCM_NEW ScmHpdfPoint)]
-	 [null (SCM_SET_CLASS point SCM_CLASS_HPDF_POINT)])
+  (let* ([point::ScmHpdfPoint* (SCM_NEW ScmHpdfPoint)])
+    (SCM_SET_CLASS point SCM_CLASS_HPDF_POINT)
     (set! (-> point h) (HPDF_Image_GetSize (-> image h)))
     (result point)))
 
