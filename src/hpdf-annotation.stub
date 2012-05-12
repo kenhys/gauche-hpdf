@@ -29,12 +29,11 @@
      (result annot)))
 
 (define-cproc hpdf-page-create-text-annot
-  (page::<hpdf-page> 
+  (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    :optional (encoder::<hpdf-encoder>? #f)) ::<hpdf-annotation>
-   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)]
-	  )
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
      (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-text-annot"))
      (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
      (if encoder
@@ -51,17 +50,23 @@
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateFreeTextAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-free-text-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateFreeTextAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-line-annot
   (page::<hpdf-page>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateLineAnnot
-	      (-> page h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-line-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateLineAnnot
+			 (-> page h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-link-annot
   (page::<hpdf-page> rect::<hpdf-rect> dst::<hpdf-destination>)
@@ -87,53 +92,71 @@
    text::<const-cstring>
    encoder::<hpdf-encoder>
    subType::<int>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateTextMarkupAnnot
-	      (-> page h) (-> rect h) text (-> encoder h) subType))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-text-markup-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateTextMarkupAnnot
+			 (-> page h) (-> rect h) text (-> encoder h) subType))
+     (result annot)))
 
 (define-cproc hpdf-page-create-highlight-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateHighlightAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-highlight-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateHighlightAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-underline-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateUnderlineAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-underline-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateUnderlineAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-squiggly-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateSquigglyAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-squiggly-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateSquigglyAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-strikeout-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateStrikeOutAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-strikeout-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateStrikeOutAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-popup-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    parent::<hpdf-annotation>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreatePopupAnnot
-	      (-> page h) (-> rect h) (-> parent h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-popup-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreatePopupAnnot
+			 (-> page h) (-> rect h) (-> parent h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-stamp-annot
   (page::<hpdf-page>
@@ -141,38 +164,48 @@
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateStampAnnot
-	      (-> page h) (-> rect h) name text (-> encoder h)))))
-
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-stamp-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateStampAnnot
+			 (-> page h) (-> rect h) name text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-projection-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateProjectionAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-projection-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateProjectionAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-square-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateSquareAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-square-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateSquareAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-page-create-circle-annot
   (page::<hpdf-page>
    rect::<hpdf-rect>
    text::<const-cstring>
    encoder::<hpdf-encoder>) ::<hpdf-annotation>
-   (let* ()
-     (result (HPDF_Page_CreateCircleAnnot
-	      (-> page h) (-> rect h) text (-> encoder h)))))
-
+   (let* ([annot::ScmHpdfAnnotation*  (SCM_NEW ScmHpdfAnnotation)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-circle-annot"))
+     (SCM_SET_CLASS annot SCM_CLASS_HPDF_ANNOTATION)
+     (set! (-> annot h) (HPDF_Page_CreateCircleAnnot
+			 (-> page h) (-> rect h) text (-> encoder h)))
+     (result annot)))
 
 (define-cproc hpdf-link-annot-set-highlight-mode
   (annot::<hpdf-annotation> mode::<fixnum>)
