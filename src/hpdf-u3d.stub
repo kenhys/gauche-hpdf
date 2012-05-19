@@ -110,9 +110,12 @@
   (page::<hpdf-page>
    first::<hpdf-point3d>
    anchor::<hpdf-point3d>) ::<hpdf-3d-measure>
-   (let* ()
-     (result (HPDF_Page_Create3DC3DMeasure
-	      (-> page h) (-> first h) (-> anchor h)))))
+   (let* ([measure::ScmHpdf3DMeasure* (SCM_NEW ScmHpdf3DMeasure)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-3d-c3d-measure"))
+     (SCM_SET_CLASS measure SCM_CLASS_HPDF3DMEASURE)
+     (set! (-> measure h) (HPDF_Page_Create3DC3DMeasure
+			   (-> page h) (-> first h) (-> anchor h)))
+     (result measure)))
 
 (define-cproc hpdf-page-create-pd3-3d-measure
   (page::<hpdf-page>
@@ -120,15 +123,18 @@
    first::<hpdf-point3d>
    second::<hpdf-point3d>
    leader::<hpdf-point3d>
-   measure::<hpdf-point3d>
+   measurement::<hpdf-point3d>
    ydirection::<hpdf-point3d>
    value::<real>
    units::<const-cstring>) ::<hpdf-3d-measure>
-  (let* ()
-    (result (HPDF_Page_CreatePD33DMeasure
-	     (-> page h) (-> annot h) (-> first h)
-	     (-> second h) (-> leader h) (-> measure h) 
-	     (-> ydirection h) value units))))
+   (let* ([measure::ScmHpdf3DMeasure* (SCM_NEW ScmHpdf3DMeasure)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-pd3-c3d-measure"))
+     (SCM_SET_CLASS measure SCM_CLASS_HPDF3DMEASURE)
+     (set! (-> measure h) (HPDF_Page_CreatePD33DMeasure
+			   (-> page h) (-> annot h) (-> first h)
+			   (-> second h) (-> leader h) (-> measurement h)
+			   (-> ydirection h) value units))
+     (result measure)))
 
 (define-cproc hpdf-3d-measure-set-name
   (measure::<hpdf-3d-measure>
@@ -173,12 +179,15 @@
 
 (define-cproc hpdf-page-create-3d-annot-exdata
   (page::<hpdf-page>) ::<hpdf-exdata>
-  (let* ()
-    (result (HPDF_Page_Create3DAnnotExData (-> page h)))))
+  (let* ([exdata::ScmHpdfExData* (SCM_NEW ScmHpdfExData)])
+    (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-3d-annot-exdata"))
+    (SCM_SET_CLASS exdata SCM_CLASS_HPDFEXDATA)
+    (set! (-> exdata h) (HPDF_Page_Create3DAnnotExData (-> page h)))
+    (result exdata)))
 
 (define-cproc hpdf-3d-annot-exdata-set-3d-measurement
   (exdata::<hpdf-exdata>
-   measure::<hpdf-3d-measure>)
+   measure::<hpdf-3d-measure>) ::<hpdf-status>
   (let* ()
     (result (HPDF_3DAnnotExData_Set3DMeasurement (-> exdata h) (-> measure h)))))
 
@@ -187,10 +196,12 @@
    u3d::<hpdf-u3d>
    annot3d::<hpdf-annotation>
    name::<const-cstring>) ::<hpdf-dict>
-   (let* ()
-     (Scm_Warn "hpdf-page-create-3d-view")
-     (result (HPDF_Page_Create3DView (-> page h) (-> u3d h)
-				     (-> annot3d h) name))))
+   (let* ([dict::ScmHpdfDict* (SCM_NEW ScmHpdfDict)])
+     (.if DEBUG (GAUCHE_HPDF_FUNC "hpdf-page-create-3dview"))
+     (SCM_SET_CLASS dict SCM_CLASS_HPDF_DICT)
+     (set! (-> dict h) (HPDF_Page_Create3DView (-> page h) (-> u3d h)
+					       (-> annot3d h) name))
+     (result dict)))
 
 (define-cproc hpdf-3dview-add-3d-c3d-measure
   (view::<hpdf-dict>
