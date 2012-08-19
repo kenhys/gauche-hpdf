@@ -14,4 +14,4 @@ before_script:
   - ./configure --with-zlib=/usr --with-png=/usr --with-hpdf=/usr/local
   - make
 script:
-  - test/run-test.sh
+  - sh test/run-test.sh
