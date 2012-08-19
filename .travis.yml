@@ -1,0 +1,13 @@
+notifications:
+  recipients:
+    - kenhys@gmail.com
+install:
+  - sudo apt-get install -y autotools-dev intltool
+  - git clone git://github.com/libharu/libharu.git
+  - (cd libharu; sh buildconf.sh --force; sh configure; make; sudo make install)
+before_script:
+  - sh ./DIST
+  - ./configure --with-zlib=/usr --with-png=/usr --with-hpdf=/usr/local
+  - make  
+script:
+  - test/run-test.sh
