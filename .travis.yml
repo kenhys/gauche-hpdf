@@ -4,6 +4,7 @@ notifications:
     - kenhys@gmail.com
 install:
   - sudo apt-get install -y autotools-dev intltool
+  - sudo apt-get install -y ttf-takao ttf-umefont ttf-umeplus ttf-vlgothic
   - wget http://prdownloads.sourceforge.net/gauche/Gauche-0.9.3.3.tgz
   - tar zxvf Gauche-0.9.3.3.tgz
   - (cd Gauche-0.9.3.3; sh ./configure; make; sudo make install)
