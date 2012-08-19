@@ -3,11 +3,13 @@ notifications:
     - kenhys@gmail.com
 install:
   - sudo apt-get install -y autotools-dev intltool
+  - git clone git://gauche.git.sourceforge.net/gitroot/gauche/Gauche
+  - (cd Gauche; sh ./DIST gen; sh ./configure; make; sudo make install)
   - git clone git://github.com/libharu/libharu.git
   - (cd libharu; sh buildconf.sh --force; sh configure; make; sudo make install)
 before_script:
-  - sh ./DIST
+  - sh ./DIST gen
   - ./configure --with-zlib=/usr --with-png=/usr --with-hpdf=/usr/local
-  - make  
+  - make
 script:
   - test/run-test.sh
